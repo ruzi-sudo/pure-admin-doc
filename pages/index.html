@@ -3,64 +3,63 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Flip7 记分派对 · pure-admin 设计规范演示页</title>
-<meta name="description" content="参考 Flip7 卡牌派对设计系统，使用 vue-pure-admin 设计令牌实现的静态记分页。">
+<title>Flip7 设计系统 · 视觉规范</title>
+<meta name="description" content="Flip7 设计系统的可视化规范示例页：颜色、字体、组件、阴影与动效，点击任意规范块即可复制 Markdown 片段。">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232BA8A2'/%3E%3Ctext x='16' y='23' font-size='18' font-weight='800' text-anchor='middle' fill='%23FFF8E7'%3EF7%3C/text%3E%3C/svg%3E">
 <style>
 /* ==========================================================================
-   1. 设计令牌
+   1. 令牌：单一一套品牌色系（青绿主色 + 金色强调 + 珊瑚危险 + 天空蓝信息）
    --------------------------------------------------------------------------
-   结构 / 交互色：沿用 DESIGN.zh-CN.md 的语义令牌（Element Plus + pure-*）。
-   固定色（--game-*）：Flip7 品牌身份色，属于「需要固化的品牌场景」，
-   仅在记分牌面、奖牌、BOOM/Flip7 状态等游戏语义中使用，
-   并在深色模式下提供提亮变体以保证对比度。
+   无第二套主色：状态色、焦点、链接、按钮、图表全部落在同一色系内，
+   只用明度与背景深浅区分层级，不在页面里混入蓝色 / 绿色 / 紫色等其它主色。
    ========================================================================== */
 :root {
   color-scheme: light;
 
-  /* 语义色：状态与文本层 */
-  --el-color-primary: #409EFF;
-  --el-color-primary-light-9: #ecf5ff;
-  --el-color-success: #67C23A;
-  --el-color-warning: #E6A23C;
-  --el-color-danger: #F56C6C;
-  --el-color-info: #909399;
-  --el-text-color-primary: #303133;
-  --el-text-color-regular: #606266;
-  --el-text-color-secondary: #909399;
-  --pure-border-color: #dcdfe6;
-  --pure-border-light: #ebeef5;
+  /* 主色：青绿 */
+  --c-primary: #2BA8A2;
+  --c-primary-light: #3CC4BD;
+  --c-primary-strong: #1E8C86;
+  --c-primary-bg: #E8F6F5;
 
-  /* 表层色 */
-  --pure-page-bg: #f0f2f5;
-  --pure-surface: #ffffff;
-  --pure-surface-soft: #f7f8fa;
+  /* 强调：金色 */
+  --c-gold: #FFD23F;
+  --c-gold-dark: #E6B800;
+  --c-gold-bg: #FFF6D6;
 
-  /* 游戏身份色（固定，附深色模式变体） */
-  --game-teal: #2BA8A2;
-  --game-teal-dark: #1E8C86;
-  --game-teal-bg: #E8F6F5;
-  --game-gold: #FFD23F;
-  --game-gold-dark: #E6B800;
-  --game-gold-bg: #FFF6D6;
-  --game-sky: #5DADE2;
-  --game-sky-bg: #EAF4FB;
-  --game-coral: #EF6C4A;
-  --game-coral-dark: #D45233;
-  --game-coral-bg: #FDEDE8;
-  --game-cream: #FFF8E7;
-  --game-silver: #9aa4b2;
+  /* 危险 / 出局：珊瑚 */
+  --c-coral: #EF6C4A;
+  --c-coral-dark: #D45233;
+  --c-coral-bg: #FDEDE8;
 
-  /* 阴影：稳重的轻层级，游戏态才用彩色光晕 */
-  --shadow-subtle: 0 1px 2px rgb(0 0 0 / 8%);
-  --shadow-popover: 0 2px 8px rgb(0 0 0 / 15%);
-  --shadow-teal-glow: 0 2px 8px rgb(43 168 162 / 30%);
-  --shadow-gold-glow: 0 2px 8px rgb(230 184 0 / 40%);
-  --shadow-coral-glow: 0 2px 8px rgb(239 108 74 / 35%);
-  --shadow-sky-glow: 0 2px 8px rgb(93 173 226 / 30%);
-  --shadow-focus: 0 0 0 3px rgb(64 158 255 / 18%);
+  /* 信息：天空蓝 */
+  --c-sky: #5DADE2;
+  --c-sky-bg: #EAF4FB;
 
-  /* 圆角与间距 */
+  --c-cream: #FFF8E7;
+  --c-silver: #9aa4b2;
+
+  /* 语义映射：不引入第五种色相 */
+  --c-success: #2BA8A2;
+  --c-warning: #E6B800;
+  --c-danger: #EF6C4A;
+  --c-info: #5DADE2;
+
+  /* 表层与文本：同一青绿中性色系 */
+  --c-bg: #F7FBFA;
+  --c-surface-base: #EFF8F7;
+  --c-surface: #FFFFFF;
+  --c-surface-soft: #F3FAF9;
+  --c-border: #D2E2DE;
+  --c-border-light: #E3EFEC;
+  --c-text: #22302E;
+  --c-text-2: #4E605D;
+  --c-text-3: #667874;
+
+  --shadow-subtle: 0 1px 2px rgb(20 60 55 / 8%);
+  --shadow-popover: 0 2px 10px rgb(20 60 55 / 16%);
+  --shadow-focus: 0 0 0 3px rgb(43 168 162 / 22%);
+
   --radius-sm: 3px;
   --radius: 4px;
   --radius-md: 6px;
@@ -73,11 +72,8 @@
   --space-6: 24px;
   --space-8: 32px;
 
-  /* 动效 */
   --motion-fast: 0.12s;
   --motion: 0.3s;
-  --motion-ease: ease;
-
   --font-sans: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
     "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
   --font-num: "SF Mono", "JetBrains Mono", Consolas, "Courier New", monospace;
@@ -86,50 +82,49 @@
 [data-theme="dark"] {
   color-scheme: dark;
 
-  --el-color-primary: #409EFF;
-  --el-color-primary-light-9: #18222c;
-  --el-color-success: #6ed07a;
-  --el-color-warning: #e6a23c;
-  --el-color-danger: #f78989;
-  --el-color-info: #8d9095;
-  --el-text-color-primary: #E5EAF3;
-  --el-text-color-regular: #CFD3DC;
-  --el-text-color-secondary: #A3A6AD;
-  --pure-border-color: #4C4D4F;
-  --pure-border-light: #363637;
+  --c-primary: #3CC4BD;
+  --c-primary-light: #5FD9D2;
+  --c-primary-strong: #1E8C86;
+  --c-primary-bg: #123230;
 
-  --pure-page-bg: #141414;
-  --pure-surface: #1d1e1f;
-  --pure-surface-soft: #232324;
+  --c-gold: #FFD23F;
+  --c-gold-dark: #FFE47A;
+  --c-gold-bg: #38300F;
 
-  /* 深色模式下提亮品牌色，保持可读性 */
-  --game-teal: #3CC4BD;
-  --game-teal-dark: #86E3DE;
-  --game-teal-bg: #123230;
-  --game-gold: #FFD23F;
-  --game-gold-dark: #FFE47A;
-  --game-gold-bg: #38300f;
-  --game-sky: #6FB7E8;
-  --game-sky-bg: #16293a;
-  --game-coral: #FF8A6A;
-  --game-coral-dark: #FFAE95;
-  --game-coral-bg: #3a1d16;
-  --game-cream: #26261f;
-  --game-silver: #b6bfcc;
+  --c-coral: #FF8A6A;
+  --c-coral-dark: #FFAE95;
+  --c-coral-bg: #3A1D16;
 
-  --shadow-subtle: 0 1px 2px rgb(0 0 0 / 40%);
-  --shadow-popover: 0 2px 8px rgb(0 0 0 / 55%);
-  --shadow-focus: 0 0 0 3px rgb(64 158 255 / 28%);
+  --c-sky: #6FB7E8;
+  --c-sky-bg: #16293A;
+
+  --c-cream: #26261F;
+  --c-silver: #B6BFCC;
+
+  --c-success: #3CC4BD;
+  --c-warning: #FFE47A;
+  --c-danger: #FF8A6A;
+  --c-info: #6FB7E8;
+
+  --c-bg: #0F1A19;
+  --c-surface-base: #12201E;
+  --c-surface: #16211F;
+  --c-surface-soft: #1B2725;
+  --c-border: #2E403D;
+  --c-border-light: #24322F;
+  --c-text: #E4F1EF;
+  --c-text-2: #C3D3D1;
+  --c-text-3: #9CADAA;
+
+  --shadow-subtle: 0 1px 2px rgb(0 0 0 / 45%);
+  --shadow-popover: 0 2px 10px rgb(0 0 0 / 55%);
+  --shadow-focus: 0 0 0 3px rgb(60 196 189 / 28%);
 }
 
 /* ==========================================================================
-   2. 基础排版
+   2. 基础
    ========================================================================== */
-*,
-*::before,
-*::after { box-sizing: border-box; }
-
-html { -webkit-text-size-adjust: 100%; }
+*, *::before, *::after { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -137,15 +132,20 @@ body {
   font-family: var(--font-sans);
   font-size: 14px;
   line-height: 1.5;
-  color: var(--el-text-color-primary);
-  background: var(--pure-page-bg);
-  transition: background-color var(--motion) var(--motion-ease),
-    color var(--motion) var(--motion-ease);
+  color: var(--c-text);
+  background: var(--c-bg);
+  transition: background-color var(--motion) ease, color var(--motion) ease;
 }
 
-h1, h2, h3, p, ul, ol { margin: 0; }
+h1, h2, h3, h4, p, ul, ol, figure { margin: 0; }
 ul, ol { padding: 0; list-style: none; }
 button, input, select { font: inherit; color: inherit; }
+code { font-family: var(--font-num); }
+
+:focus-visible {
+  outline: 2px solid var(--c-primary);
+  outline-offset: 2px;
+}
 
 .sr-only {
   position: absolute;
@@ -157,110 +157,62 @@ button, input, select { font: inherit; color: inherit; }
   border: 0;
 }
 
-:focus-visible {
-  outline: 2px solid var(--el-color-primary);
-  outline-offset: 2px;
-  box-shadow: var(--shadow-focus);
+.i {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* ==========================================================================
-   3. 页面骨架
+   3. 顶栏
    ========================================================================== */
-.shell {
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: color-mix(in srgb, var(--c-bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--c-border);
+}
+
+.site-header__inner {
   max-width: 1240px;
   margin: 0 auto;
-  padding: var(--space-6) var(--space-6) var(--space-8);
-}
-
-/* ---------- 页头 ---------- */
-.app-header {
+  padding: var(--space-3) var(--space-6);
   display: flex;
   align-items: center;
-  gap: var(--space-4);
+  gap: var(--space-3);
   flex-wrap: wrap;
-  padding-bottom: var(--space-5);
-  border-bottom: 1px solid var(--pure-border-color);
 }
 
-.brand {
-  position: relative;
-  display: inline-flex;
+.site-title {
+  display: flex;
   align-items: center;
-  padding: 10px 14px;
-  text-decoration: none;
-  isolation: isolate;
+  gap: var(--space-3);
+  flex-wrap: wrap;
 }
 
-/* 复古扇形卡背 */
-.brand__cards {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-}
-
-.brand__cards i {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 26px;
-  height: 36px;
-  margin: -18px 0 0 -13px;
-  border-radius: var(--radius-sm);
-  border: 1.5px solid var(--game-teal-dark);
-  background: var(--game-teal);
-  opacity: 0.85;
-  transform-origin: 50% 115%;
-}
-
-.brand__cards i:nth-child(1) { transform: rotate(-24deg) translateX(-16px); background: var(--game-coral); border-color: var(--game-coral-dark); }
-.brand__cards i:nth-child(2) { transform: rotate(-12deg) translateX(-9px); background: var(--game-sky); border-color: var(--game-sky); }
-.brand__cards i:nth-child(3) { transform: rotate(0deg); }
-.brand__cards i:nth-child(4) { transform: rotate(12deg) translateX(9px); background: var(--game-gold); border-color: var(--game-gold-dark); }
-.brand__cards i:nth-child(5) { transform: rotate(24deg) translateX(16px); background: var(--game-teal); }
-
-.brand__plate {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 2px;
-  padding: 2px 10px 4px;
-  background: var(--game-cream);
-  border: 2px solid var(--game-teal-dark);
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-subtle);
-  transform: skewX(-6deg) rotate(-3deg);
-}
-
-.brand__flip,
-.brand__seven {
-  font-weight: 800;
-  letter-spacing: 1px;
-  line-height: 1;
-  display: inline-block;
-  transform: skewX(6deg);
-}
-
-.brand__flip {
-  font-size: 15px;
-  color: var(--game-teal-dark);
-}
-
-.brand__seven {
-  font-size: 26px;
-  color: var(--game-gold);
-  transform: skewX(6deg) rotate(5deg);
-  text-shadow: 1px 1px 0 var(--game-coral-dark), 2px 2px 0 var(--game-teal-dark);
-}
-
-.headline { min-width: 200px; }
-.headline h1 {
+.site-title h1 {
   font-size: 20px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
 }
-.headline p {
-  margin-top: var(--space-1);
-  font-size: 12px;
-  color: var(--el-text-color-secondary);
+
+.format-badge {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-text-3);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-pill);
+  padding: 2px 8px;
+  white-space: nowrap;
 }
 
 .header-actions {
@@ -271,654 +223,1166 @@ button, input, select { font: inherit; color: inherit; }
   flex-wrap: wrap;
 }
 
-/* ---------- 统计条 ---------- */
-.stat-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--space-4);
-  margin-top: var(--space-5);
+.segmented {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  background: var(--c-surface-soft);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
 }
 
-.stat-card {
-  padding: var(--space-4);
-  background: var(--pure-surface);
-  border: 1px solid var(--pure-border-light);
-  border-radius: var(--radius-md);
+.segmented button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 0 12px;
+  font-size: 13px;
+  color: var(--c-text-2);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--motion-fast) ease, color var(--motion-fast) ease;
+}
+
+.segmented button:hover { color: var(--c-text); }
+
+.segmented button[aria-pressed="true"] {
+  background: var(--c-surface);
+  color: var(--c-text);
+  font-weight: 500;
   box-shadow: var(--shadow-subtle);
 }
 
-.stat-card__label {
-  display: block;
-  font-size: 12px;
-  color: var(--el-text-color-secondary);
-}
-
-.stat-card__value {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-2);
-  margin-top: var(--space-1);
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 1.2;
-}
-
-.stat-card__value small {
-  font-size: 12px;
-  font-weight: 400;
-  color: var(--el-text-color-secondary);
-}
-
-.stat-card--accent { border-top: 2px solid var(--game-teal); }
-.stat-card--gold { border-top: 2px solid var(--game-gold); }
-
-/* ---------- 主体两栏 ---------- */
-.layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 340px;
-  gap: var(--space-4);
-  margin-top: var(--space-4);
-  align-items: start;
-}
-
-.panel {
-  background: var(--pure-surface);
-  border: 1px solid var(--pure-border-light);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-subtle);
-}
-
-.panel__head {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-  padding: var(--space-4) var(--space-5);
-  border-bottom: 1px dashed var(--pure-border-color);
-}
-
-.panel__head h2 {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.panel__head h2::before {
-  content: "";
-  width: 4px;
-  height: 14px;
-  border-radius: var(--radius-pill);
-  background: var(--game-teal);
-}
-
-.panel__head .spacer { margin-left: auto; }
-
-.panel__body { padding: var(--space-5); }
-
-.panel__foot {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-  padding: var(--space-4) var(--space-5);
-  border-top: 1px solid var(--pure-border-light);
-  background: var(--pure-surface-soft);
-  border-radius: 0 0 var(--radius-md) var(--radius-md);
-}
-
-/* ==========================================================================
-   4. 按钮与标签
-   ========================================================================== */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  min-height: 34px;
+  min-height: 32px;
   padding: 0 var(--space-4);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
-  border: 1px solid var(--pure-border-color);
+  border: 1px solid var(--c-border);
   border-radius: var(--radius);
-  background: var(--pure-surface);
-  color: var(--el-text-color-regular);
+  background: var(--c-surface);
+  color: var(--c-text-2);
   cursor: pointer;
-  transition: background-color var(--motion-fast) var(--motion-ease),
-    border-color var(--motion-fast) var(--motion-ease),
-    color var(--motion-fast) var(--motion-ease),
-    transform var(--motion-fast) var(--motion-ease);
+  transition: color var(--motion-fast) ease, border-color var(--motion-fast) ease,
+    background-color var(--motion-fast) ease, transform var(--motion-fast) ease;
 }
-
-.btn:hover { color: var(--el-color-primary); border-color: var(--el-color-primary); }
+.btn:hover { color: var(--c-primary); border-color: var(--c-primary); }
 .btn:active { transform: scale(0.97); }
-
 .btn--primary {
-  background: var(--el-color-primary);
-  border-color: var(--el-color-primary);
+  background: var(--c-primary-strong);
+  border-color: var(--c-primary-strong);
   color: #fff;
-  box-shadow: var(--shadow-subtle);
 }
 .btn--primary:hover {
-  background: #66b1ff;
-  border-color: #66b1ff;
+  background: color-mix(in srgb, var(--c-primary-strong) 86%, #fff);
+  border-color: transparent;
   color: #fff;
 }
 
-.btn--ghost { background: transparent; }
-
-.btn--danger:hover {
-  color: var(--el-color-danger);
-  border-color: var(--el-color-danger);
+/* ==========================================================================
+   4. 页面容器与章节标题
+   ========================================================================== */
+.page {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-6) var(--space-8);
 }
 
-.btn--lg {
-  min-height: 40px;
-  padding: 0 var(--space-6);
-  font-size: 16px;
+.section { margin-top: var(--space-8); }
+
+.section__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-text-3);
 }
 
-.btn[disabled] {
-  cursor: not-allowed;
-  opacity: 0.55;
-  transform: none;
+.section__title::before {
+  content: "";
+  width: 3px;
+  height: 12px;
+  border-radius: var(--radius-pill);
+  background: var(--c-primary);
 }
 
-.icon-btn {
+.section__note {
+  margin-bottom: var(--space-3);
+  font-size: 13px;
+  color: var(--c-text-3);
+}
+
+/* ==========================================================================
+   5. 可复制块
+   ========================================================================== */
+.copyable {
+  position: relative;
+  cursor: pointer;
+  transition: box-shadow var(--motion-fast) ease;
+}
+
+.copyable::after {
+  content: "⧉ 复制规范";
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 5;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--c-text-2);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-subtle);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--motion-fast) ease;
+}
+
+.copyable:hover::after,
+.copyable:focus-visible::after { opacity: 1; }
+
+.copyable:hover {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--c-primary) 40%, transparent);
+}
+
+.copyable.is-copied::after {
+  content: "✓ 已复制";
+  opacity: 1;
+  color: var(--c-success);
+  border-color: color-mix(in srgb, var(--c-success) 55%, transparent);
+}
+
+.copyable.is-copied {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--c-success) 55%, transparent);
+}
+
+/* ==========================================================================
+   6. Hero：示例界面
+   ========================================================================== */
+.hero {
+  margin-top: var(--space-6);
+  padding: var(--space-4);
+  background: var(--c-surface-base);
+  border: 1px solid var(--c-border-light);
+  border-radius: 10px;
+}
+
+.mock {
+  display: grid;
+  grid-template-columns: 152px minmax(0, 1fr) 190px;
+  overflow: hidden;
+  font-size: 10px;
+  line-height: 1.35;
+  color: var(--c-text-2);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border-light);
+  border-radius: 8px;
+  box-shadow: var(--shadow-subtle);
+}
+
+.mock__side {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 14px 10px;
+  background: var(--c-surface);
+  border-right: 1px solid var(--c-border-light);
+}
+
+.mock__brand {
+  padding-left: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--c-text);
+  line-height: 1.2;
+}
+.mock__brand small {
+  display: block;
+  margin-top: 3px;
+  font-size: 6.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--c-text-3);
+}
+
+.mock__nav { display: flex; flex-direction: column; gap: 2px; }
+
+.mock__nav-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  font-size: 9px;
+  border-radius: var(--radius);
+  color: var(--c-text-2);
+}
+.mock__nav-item .i { width: 10px; height: 10px; }
+.mock__nav-item.is-active {
+  background: var(--c-primary-strong);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--c-primary) 40%, transparent);
+}
+
+.mock__upgrade {
+  margin-top: auto;
+  padding: 7px 8px;
+  font-size: 8.5px;
+  font-weight: 600;
+  text-align: center;
+  color: #fff;
+  background: var(--c-primary-strong);
+  border-radius: var(--radius);
+}
+
+.mock__main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--c-surface);
+}
+
+.mock__top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--c-border-light);
+}
+
+.mock__search {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 5px 9px;
+  font-size: 8.5px;
+  color: var(--c-text-3);
+  background: var(--c-surface-soft);
+  border-radius: var(--radius-pill);
+}
+.mock__search .i { width: 9px; height: 9px; }
+
+.mock__icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
-  padding: 0;
-  font-size: 13px;
-  color: var(--el-text-color-secondary);
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: var(--radius);
-  cursor: pointer;
-  transition: color var(--motion-fast) var(--motion-ease),
-    background-color var(--motion-fast) var(--motion-ease);
+  width: 20px;
+  height: 20px;
+  color: var(--c-text-3);
+  border-radius: 50%;
 }
-.icon-btn:hover { color: var(--el-color-danger); background: var(--game-coral-bg); }
+.mock__icon .i { width: 11px; height: 11px; }
 
-.tag {
+.mock__avatar {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
-  padding: 1px var(--space-2);
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--el-text-color-regular);
-  background: var(--pure-surface-soft);
-  border: 1px solid var(--pure-border-color);
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  font-size: 8px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--c-primary-strong);
+  border-radius: 50%;
+}
+
+.mock__body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  background: var(--c-surface-base);
+}
+
+.mock__heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.mock__eyebrow {
+  font-size: 6.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--c-coral);
+}
+
+.mock__title {
+  margin-top: 3px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--c-text);
+}
+
+.mock__heading-actions { display: flex; align-items: center; gap: 6px; }
+
+.mock__range {
+  padding: 4px 8px;
+  font-size: 8px;
+  color: var(--c-text-2);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border-light);
+  border-radius: var(--radius);
+}
+
+.mock__cta {
+  padding: 4px 10px;
+  font-size: 8px;
+  font-weight: 600;
+  color: #4a3a00;
+  background: linear-gradient(180deg, var(--c-gold), var(--c-gold-dark));
+  border-radius: var(--radius-pill);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--c-gold) 55%, transparent);
+}
+
+.mock__stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+
+.mock__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 7px 8px;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border-light);
+  border-radius: var(--radius-md);
+}
+
+.mock__stat-top { display: flex; align-items: center; justify-content: space-between; gap: 4px; }
+.mock__stat-top .i { width: 11px; height: 11px; color: var(--c-primary); }
+.mock__stat-label { font-size: 6.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-text-3); }
+.mock__stat-value { font-size: 11px; font-weight: 700; color: var(--c-text); letter-spacing: -0.01em; }
+
+.mock__delta {
+  font-size: 6.5px;
+  font-weight: 600;
+  padding: 1px 4px;
   border-radius: var(--radius-pill);
   white-space: nowrap;
 }
+.mock__delta.is-up { color: var(--c-primary-strong); background: var(--c-primary-bg); }
+.mock__delta.is-down { color: var(--c-coral-dark); background: var(--c-coral-bg); }
 
-.tag--teal { color: var(--game-teal-dark); background: var(--game-teal-bg); border-color: transparent; }
-.tag--gold { color: var(--game-gold-dark); background: var(--game-gold-bg); border-color: transparent; }
-.tag--sky { color: var(--game-sky); background: var(--game-sky-bg); border-color: transparent; }
-.tag--coral { color: var(--game-coral-dark); background: var(--game-coral-bg); border-color: transparent; }
-.tag--primary { color: var(--el-color-primary); background: var(--el-color-primary-light-9); border-color: transparent; }
+.mock__charts { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 8px; }
 
-/* ==========================================================================
-   5. 玩家记分卡
-   ========================================================================== */
-.player-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
-  gap: var(--space-4);
+.mock__card {
+  padding: 8px;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border-light);
+  border-radius: var(--radius-md);
 }
 
-.player-card {
+.mock__card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 9px;
+  color: var(--c-text);
+}
+.mock__card-sub { margin-top: 2px; font-size: 6.5px; color: var(--c-text-3); }
+
+.mock__legend { display: inline-flex; align-items: center; gap: 4px; font-size: 6.5px; color: var(--c-text-3); }
+.mock__legend i { width: 5px; height: 5px; border-radius: 50%; background: var(--c-primary); }
+.mock__legend i:nth-of-type(2) { background: var(--c-text-3); opacity: 0.6; }
+
+.mock__line { display: block; width: 100%; height: 74px; margin-top: 4px; color: var(--c-text-3); }
+
+.mock__axis {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2px;
+  font-size: 6px;
+  color: var(--c-text-3);
+}
+.mock__axis--tiny { font-size: 5.5px; }
+
+.mock__donut {
   position: relative;
+  display: grid;
+  place-items: center;
+  width: 68px;
+  height: 68px;
+  margin: 6px auto;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--c-text);
+  background: conic-gradient(
+    var(--c-primary) 0 62%,
+    var(--c-gold) 62% 86%,
+    var(--c-coral) 86% 100%
+  );
+  border-radius: 50%;
+}
+.mock__donut::before {
+  content: "";
+  position: absolute;
+  inset: 16%;
+  background: var(--c-surface);
+  border-radius: 50%;
+}
+.mock__donut span { position: relative; z-index: 1; text-align: center; line-height: 1.1; }
+.mock__donut small { display: block; font-size: 5.5px; font-weight: 500; letter-spacing: 0.1em; color: var(--c-text-3); }
+.mock__donut--sm { width: 48px; height: 48px; margin: 0; font-size: 8px; }
+
+.mock__legend-list { display: flex; flex-direction: column; gap: 3px; font-size: 6.5px; color: var(--c-text-2); }
+.mock__legend-list li { display: flex; align-items: center; gap: 4px; }
+.mock__legend-list i { width: 5px; height: 5px; border-radius: 50%; flex: 0 0 auto; }
+
+/* 右侧洞察栏 */
+.mock__rail {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
-  padding: var(--space-4);
-  padding-left: calc(var(--space-4) + 4px);
-  background: var(--pure-surface);
-  border: 1px solid var(--pure-border-light);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-subtle);
-  overflow: hidden;
-  transition: border-color var(--motion) var(--motion-ease),
-    box-shadow var(--motion) var(--motion-ease);
+  gap: 6px;
+  padding: 10px;
+  background: var(--c-surface);
+  border-left: 1px solid var(--c-border-light);
 }
 
-/* 左侧状态色条：常态青、领先金、BOOM 珊瑚 */
-.player-card::before {
+.mock__rail-head { display: flex; align-items: center; justify-content: space-between; font-size: 8.5px; color: var(--c-text); }
+.mock__rail-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--c-text);
+}
+.mock__pill {
+  font-size: 5.5px;
+  font-weight: 500;
+  padding: 1px 4px;
+  border: 1px solid var(--c-border-light);
+  border-radius: var(--radius-pill);
+  color: var(--c-text-3);
+  white-space: nowrap;
+}
+
+.mock__mini { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.mock__mini > div {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 5px 6px;
+  background: var(--c-surface-soft);
+  border-radius: var(--radius);
+  font-size: 6px;
+  color: var(--c-text-3);
+}
+.mock__mini strong { font-size: 9px; color: var(--c-text); }
+
+.mock__rail-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 6px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-text-3);
+}
+.mock__rail-label span { text-transform: none; color: var(--c-primary-strong); letter-spacing: 0; }
+
+.mock__bars { display: flex; align-items: flex-end; gap: 3px; height: 46px; margin-top: 5px; }
+.mock__bars i {
+  flex: 1 1 auto;
+  background: color-mix(in srgb, var(--c-primary) 55%, var(--c-surface));
+  border-radius: 2px 2px 0 0;
+}
+.mock__bars i:nth-child(5),
+.mock__bars i:nth-child(6) { background: var(--c-primary); }
+
+.mock__seg-row { display: flex; align-items: center; gap: 8px; margin-top: 5px; }
+
+.mock__activity ul { display: flex; flex-direction: column; gap: 5px; margin-top: 6px; }
+.mock__activity li { display: flex; align-items: center; gap: 5px; font-size: 6.5px; color: var(--c-text-2); }
+.mock__activity .mock__avatar { width: 14px; height: 14px; font-size: 6px; background: var(--c-gold); color: #4a3a00; }
+.mock__activity li:nth-child(2) .mock__avatar { background: var(--c-coral); color: #fff; }
+.mock__activity li:nth-child(3) .mock__avatar { background: var(--c-primary-strong); color: #fff; }
+.mock__activity time { margin-left: auto; color: var(--c-text-3); }
+
+/* ==========================================================================
+   7. 概览描述
+   ========================================================================== */
+.overview {
+  display: flex;
+  gap: var(--space-6);
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-top: var(--space-6);
+  padding: var(--space-5);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border-light);
+  border-radius: var(--radius-md);
+}
+
+.overview p {
+  flex: 1 1 420px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--c-text-2);
+}
+
+.overview__points {
+  flex: 0 1 320px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.overview__points li {
+  display: flex;
+  gap: var(--space-2);
+  font-size: 13px;
+  color: var(--c-text-2);
+}
+
+.overview__points li::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  margin-top: 7px;
+  border-radius: 50%;
+  background: var(--c-primary);
+}
+
+/* ==========================================================================
+   8. 规范总览板
+   ========================================================================== */
+.board {
+  display: grid;
+  grid-template-columns: 228px minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: var(--space-4);
+  align-items: start;
+  margin-top: var(--space-4);
+}
+
+.board__col { display: flex; flex-direction: column; gap: var(--space-4); }
+
+.board__cell {
+  padding: var(--space-4);
+  background: var(--c-surface-base);
+  border: 1px solid var(--c-border-light);
+  border-radius: var(--radius-md);
+}
+
+.board__cell-title {
+  margin-bottom: var(--space-3);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-text-3);
+}
+
+/* 色卡 */
+.color-card {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-subtle);
+}
+.color-card + .color-card { margin-top: var(--space-2); }
+
+.color-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: 8px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--on-swatch, #fff);
+  background: var(--swatch, var(--c-primary));
+}
+.color-card__head code { font-size: 10px; font-weight: 500; opacity: 0.85; }
+
+.color-card__ramp {
+  height: 26px;
+  background: linear-gradient(to right,
+    color-mix(in srgb, var(--swatch) 45%, #000) 0 16.6%,
+    color-mix(in srgb, var(--swatch) 70%, #000) 16.6% 33.3%,
+    var(--swatch) 33.3% 50%,
+    color-mix(in srgb, var(--swatch) 65%, #fff) 50% 66.6%,
+    color-mix(in srgb, var(--swatch) 35%, #fff) 66.6% 83.3%,
+    color-mix(in srgb, var(--swatch) 15%, #fff) 83.3% 100%);
+}
+
+/* 字体样例 */
+.sample { padding: var(--space-3) 0; }
+.sample + .sample { border-top: 1px dashed var(--c-border); }
+.sample__meta { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); font-size: 11px; color: var(--c-text-3); }
+.sample__meta code { font-size: 10px; }
+.sample__aa {
+  margin-top: var(--space-1);
+  font-size: 42px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--c-text);
+}
+.sample--body .sample__aa { font-size: 26px; font-weight: 400; }
+.sample--label .sample__aa { font-size: 17px; font-weight: 500; letter-spacing: 0.02em; }
+
+/* 组件小样网格 */
+.sample-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
+
+.sample-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 92px;
+  padding: var(--space-3);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border-light);
+  border-radius: var(--radius-md);
+}
+
+.sample-tile--wide { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; }
+
+.mini-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 26px;
+  padding: 0 10px;
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  cursor: inherit;
+}
+.mini-btn--primary { background: var(--c-primary-strong); color: #fff; }
+.mini-btn--secondary { background: var(--c-surface); border-color: var(--c-border); color: var(--c-text-2); }
+.mini-btn--danger { background: var(--c-coral); color: #fff; }
+.mini-btn--outline { background: transparent; border-color: var(--c-primary); color: var(--c-primary-strong); }
+
+.mini-input {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 6px 9px;
+  font-size: 11px;
+  color: var(--c-text-3);
+  background: var(--c-cream);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+}
+
+.icon-row { display: flex; align-items: center; gap: 8px; }
+.icon-tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: var(--c-primary-strong);
+  background: var(--c-primary-bg);
+  border-radius: var(--radius);
+}
+.icon-tile--round { border-radius: 50%; }
+.icon-tile--coral { color: var(--c-coral-dark); background: var(--c-coral-bg); }
+.icon-tile--gold { color: var(--c-gold-dark); background: var(--c-gold-bg); }
+
+/* ==========================================================================
+   9. 字体规范
+   ========================================================================== */
+.type-row {
+  margin-bottom: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: var(--c-surface-soft);
+  border: 1px solid var(--c-border-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.type-row__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.chip-label {
+  padding: 1px 8px;
+  font-family: var(--font-num);
+  font-size: 11px;
+  color: var(--c-text-2);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+}
+
+.type-row__meta { font-family: var(--font-num); font-size: 11px; color: var(--c-text-3); }
+
+.type-row__sample {
+  font-size: var(--sample-size);
+  font-weight: var(--sample-weight);
+  line-height: 1.3;
+  letter-spacing: var(--sample-tracking, 0);
+  white-space: nowrap;
+  overflow: hidden;
+  color: var(--c-text);
+  -webkit-mask-image: linear-gradient(to right, #000 82%, transparent 99%);
+  mask-image: linear-gradient(to right, #000 82%, transparent 99%);
+}
+
+/* ==========================================================================
+   10. 组件规范
+   ========================================================================== */
+.specimen-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+  gap: var(--space-3);
+}
+
+.specimen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  min-height: 108px;
+  padding: var(--space-3);
+  background: var(--c-surface-soft);
+  border: 1px solid var(--c-border-light);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.specimen__label {
+  order: -1;
+  font-family: var(--font-num);
+  font-size: 11px;
+  color: var(--c-text-3);
+}
+
+.sw-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 14px;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  cursor: inherit;
+  transition: background-color var(--motion-fast) ease, color var(--motion-fast) ease,
+    border-color var(--motion-fast) ease, transform var(--motion-fast) ease;
+}
+.sw-btn:active { transform: scale(0.97); }
+.sw-btn--primary { background: var(--c-primary-strong); color: #fff; box-shadow: var(--shadow-subtle); }
+.sw-btn--secondary { background: var(--c-surface); border-color: var(--c-border); color: var(--c-text-2); }
+.sw-btn--danger { background: var(--c-surface); border-color: color-mix(in srgb, var(--c-danger) 45%, transparent); color: var(--c-danger); }
+.sw-btn--pill {
+  border-radius: var(--radius-pill);
+  background: var(--c-primary);
+  color: #fff;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--c-primary) 35%, transparent);
+}
+.sw-btn--boom {
+  border-radius: var(--radius-pill);
+  background: var(--c-coral);
+  color: #fff;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--c-coral) 35%, transparent);
+}
+.sw-btn--flip7 {
+  border-radius: var(--radius-pill);
+  background: var(--c-sky);
+  color: #fff;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--c-sky) 35%, transparent);
+}
+
+.demo-card {
+  width: 100%;
+  padding: var(--space-3);
+  padding-left: calc(var(--space-3) + 4px);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-subtle);
+  text-align: left;
+}
+.demo-card::before {
   content: "";
   position: absolute;
   inset: 0 auto 0 0;
   width: 4px;
-  background: var(--game-teal);
-  transition: background-color var(--motion) var(--motion-ease);
+  background: var(--c-primary);
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
 }
+.demo-card strong { display: block; font-size: 13px; font-weight: 600; }
+.demo-card p { margin-top: 2px; font-size: 11px; color: var(--c-text-3); }
 
-.player-card--leader {
-  border-color: var(--game-gold);
-  box-shadow: var(--shadow-gold-glow);
+.demo-card--highlight {
+  border-color: var(--c-gold);
+  box-shadow: 0 2px 10px color-mix(in srgb, var(--c-gold) 35%, transparent);
 }
-.player-card--leader::before { background: var(--game-gold); }
+.demo-card--highlight::before { background: var(--c-gold); }
 
-.player-card--boom::before { background: var(--game-coral); }
-.player-card--boom { border-color: var(--game-coral); }
-
-.player-card--done {
-  border-color: var(--el-color-success);
-  box-shadow: 0 2px 8px rgb(103 194 58 / 25%);
+.demo-card--boom {
+  border-color: var(--c-coral);
+  background: var(--c-coral-bg);
+  box-shadow: 0 2px 10px color-mix(in srgb, var(--c-coral) 30%, transparent);
 }
-.player-card--done::before { background: var(--el-color-success); }
+.demo-card--boom::before { background: var(--c-coral); }
+.demo-card--boom strong { color: var(--c-coral-dark); }
 
-.player-card__top {
-  display: flex;
+.section-title-demo {
+  width: 100%;
+  padding: var(--space-2) 0 var(--space-2);
+  border-bottom: 1px dashed var(--c-border);
+  text-align: left;
+}
+.section-title-demo span {
+  display: inline-flex;
   align-items: center;
   gap: var(--space-2);
+  font-size: 16px;
+  font-weight: 600;
 }
-
-.avatar {
+.section-title-demo i {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex: 0 0 auto;
-  width: 32px;
-  height: 32px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--game-teal-dark);
-  background: var(--game-teal-bg);
-  border-radius: var(--radius-pill);
-}
-
-.player-name {
-  flex: 1 1 auto;
-  min-width: 0;
-  height: 30px;
-  padding: 0 var(--space-2);
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--el-text-color-primary);
-  background: transparent;
-  border: 1px solid transparent;
+  width: 24px;
+  height: 24px;
+  font-style: normal;
+  font-size: 12px;
+  color: var(--c-primary-strong);
+  background: var(--c-primary-bg);
   border-radius: var(--radius);
-  transition: background-color var(--motion-fast) var(--motion-ease),
-    border-color var(--motion-fast) var(--motion-ease);
-}
-.player-name:hover { background: var(--pure-surface-soft); }
-.player-name:focus {
-  background: var(--game-cream);
-  border-color: var(--el-color-primary);
-  outline: none;
 }
 
-.player-card__score {
+.logo-tile {
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: var(--space-3);
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: var(--space-3);
+  background: var(--c-cream);
+  border: 1px solid var(--c-border-light);
+  border-radius: var(--radius-md);
 }
 
-.total { display: flex; flex-direction: column; gap: 2px; flex: 0 0 auto; }
-.total__label { font-size: 12px; color: var(--el-text-color-secondary); }
-.total__value {
-  display: flex;
+.brand {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 10px;
+  isolation: isolate;
+}
+.brand__cards { position: absolute; inset: 0; z-index: -1; }
+.brand__cards i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 20px;
+  height: 28px;
+  margin: -14px 0 0 -10px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--c-primary-strong);
+  background: var(--c-primary);
+  opacity: 0.85;
+  transform-origin: 50% 115%;
+}
+.brand__cards i:nth-child(1) { transform: rotate(-24deg) translateX(-13px); background: var(--c-coral); border-color: var(--c-coral-dark); }
+.brand__cards i:nth-child(2) { transform: rotate(-12deg) translateX(-7px); background: var(--c-sky); }
+.brand__cards i:nth-child(3) { transform: rotate(0deg); }
+.brand__cards i:nth-child(4) { transform: rotate(12deg) translateX(7px); background: var(--c-gold); border-color: var(--c-gold-dark); }
+.brand__cards i:nth-child(5) { transform: rotate(24deg) translateX(13px); background: var(--c-primary); }
+.brand__plate {
+  display: inline-flex;
   align-items: baseline;
   gap: 2px;
-  font-family: var(--font-num);
+  padding: 1px 8px 3px;
+  background: var(--c-cream);
+  border: 2px solid var(--c-primary-strong);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-subtle);
+  transform: skewX(-6deg) rotate(-3deg);
+}
+.brand__flip,
+.brand__seven { font-weight: 800; line-height: 1; letter-spacing: 1px; transform: skewX(6deg); }
+.brand__flip { font-size: 12px; color: var(--c-primary-strong); }
+.brand__seven {
   font-size: 20px;
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-}
-.total__value small { font-size: 12px; font-weight: 400; line-height: 1; color: var(--el-text-color-secondary); }
-
-/* 本轮计数器：奶油色输入面 + 珊瑚减 / 青绿加 */
-.counter {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  padding: 2px;
-  background: var(--pure-surface-soft);
-  border: 1px solid var(--pure-border-light);
-  border-radius: var(--radius-md);
+  color: var(--c-gold);
+  transform: skewX(6deg) rotate(5deg);
+  text-shadow: 1px 1px 0 var(--c-coral-dark), 2px 2px 0 var(--c-primary-strong);
 }
 
-.counter__btn {
-  width: 26px;
-  height: 28px;
+.brand-mark {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1;
-  border: 1px solid transparent;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: background-color var(--motion-fast) var(--motion-ease),
-    transform var(--motion-fast) var(--motion-ease);
+  width: 34px;
+  height: 34px;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--c-gold);
+  background: var(--c-primary-strong);
+  border: 2px solid var(--c-cream);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-subtle);
+  transform: rotate(-6deg);
 }
-.counter__btn:active { transform: scale(0.92); }
-.counter__btn--minus { color: var(--game-coral-dark); background: var(--game-coral-bg); }
-.counter__btn--plus { color: var(--game-teal-dark); background: var(--game-teal-bg); }
 
-.counter__input {
-  width: 54px;
-  height: 28px;
-  padding: 0 var(--space-1);
-  font-family: var(--font-num);
-  font-size: 14px;
-  font-weight: 600;
-  text-align: center;
-  color: var(--el-text-color-primary);
-  background: var(--game-cream);
-  border: 1px solid var(--pure-border-color);
-  border-radius: var(--radius-sm);
-  -moz-appearance: textfield;
-  appearance: textfield;
+/* 阴影 */
+.elev-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+  gap: var(--space-4) var(--space-3);
+  padding: var(--space-5);
+  background: var(--c-surface-soft);
+  border: 1px solid var(--c-border-light);
+  border-radius: var(--radius-md);
 }
-.counter__input::-webkit-outer-spin-button,
-.counter__input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-.counter__input:focus {
-  border-color: var(--el-color-primary);
-  outline: none;
-  box-shadow: var(--shadow-focus);
-}
-.counter__input::placeholder { color: var(--el-text-color-secondary); font-weight: 400; }
 
-/* 快速记分：胶囊型“游戏棋子” */
-.chips {
+.elev {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-1);
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-1);
 }
 
-.chip {
-  min-height: 26px;
-  padding: 0 10px;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--el-text-color-regular);
-  background: var(--pure-surface-soft);
-  border: 1px solid var(--pure-border-light);
-  border-radius: var(--radius-pill);
-  cursor: pointer;
-  transition: background-color var(--motion-fast) var(--motion-ease),
-    border-color var(--motion-fast) var(--motion-ease),
-    color var(--motion-fast) var(--motion-ease),
-    transform var(--motion-fast) var(--motion-ease);
-}
-.chip:hover {
-  color: var(--game-teal-dark);
-  border-color: var(--game-teal);
-  background: var(--game-teal-bg);
-}
-.chip:active { transform: scale(0.94); }
-
-.chip--gold {
-  color: var(--game-gold-dark);
-  background: var(--game-gold-bg);
-  border-color: transparent;
-}
-.chip--gold:hover {
-  color: var(--game-gold-dark);
-  background: var(--game-gold);
-  border-color: var(--game-gold-dark);
-  box-shadow: var(--shadow-gold-glow);
+.elev__box {
+  width: 78px;
+  height: 78px;
+  background: var(--c-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--elev);
 }
 
-.chip--sky {
-  color: var(--game-sky);
-  background: var(--game-sky-bg);
-  border-color: transparent;
-}
-.chip--sky:hover { color: #fff; background: var(--game-sky); border-color: var(--game-sky); box-shadow: var(--shadow-sky-glow); }
-
-.chip--coral {
-  color: var(--game-coral-dark);
-  background: var(--game-coral-bg);
-  border-color: transparent;
-}
-.chip--coral:hover { color: #fff; background: var(--game-coral); border-color: var(--game-coral-dark); box-shadow: var(--shadow-coral-glow); }
-
-.chip--coral.is-active {
-  color: #fff;
-  background: var(--game-coral);
-  border-color: var(--game-coral-dark);
-  box-shadow: var(--shadow-coral-glow);
-  animation: boom-pulse 2s var(--motion-ease) infinite;
+.elev__label {
+  font-family: var(--font-num);
+  font-size: 11px;
+  color: var(--c-text-3);
+  text-align: center;
 }
 
-/* 进度条与卡片底部信息 */
-.progress {
-  height: 6px;
-  background: var(--pure-surface-soft);
-  border-radius: var(--radius-pill);
-  overflow: hidden;
+/* ==========================================================================
+   11. Do / Don't 与动效
+   ========================================================================== */
+.principles { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+
+.principle {
+  padding: var(--space-4);
+  border: 1px solid;
+  border-radius: var(--radius-md);
+}
+.principle--do {
+  background: color-mix(in srgb, var(--c-success) 8%, var(--c-surface));
+  border-color: color-mix(in srgb, var(--c-success) 30%, transparent);
+}
+.principle--dont {
+  background: color-mix(in srgb, var(--c-danger) 8%, var(--c-surface));
+  border-color: color-mix(in srgb, var(--c-danger) 28%, transparent);
 }
 
-.progress__bar {
-  display: block;
-  height: 100%;
-  width: 0;
-  background: var(--game-teal);
-  border-radius: var(--radius-pill);
-  transition: width var(--motion) var(--motion-ease),
-    background-color var(--motion) var(--motion-ease);
-}
-.player-card--leader .progress__bar { background: var(--game-gold); }
-.player-card--done .progress__bar { background: var(--el-color-success); }
-
-.player-card__meta {
+.principle__head {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  flex-wrap: wrap;
-  font-size: 12px;
-  color: var(--el-text-color-secondary);
+  margin-bottom: var(--space-3);
+  font-size: 13px;
+  font-weight: 600;
 }
-.player-card__meta .spacer { margin-left: auto; }
+.principle--do .principle__head { color: var(--c-success); }
+.principle--dont .principle__head { color: var(--c-danger); }
+.principle__head .i { width: 15px; height: 15px; stroke-width: 2.2; }
+
+.principle ul { display: flex; flex-direction: column; gap: var(--space-2); }
+.principle li {
+  position: relative;
+  padding-left: var(--space-4);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--c-text-2);
+}
+.principle li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 8px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--c-success);
+}
+.principle--dont li::before { background: var(--c-danger); }
+
+/* 动效展示 */
+.anim-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-3);
+}
+
+.anim-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-items: flex-start;
+  padding: var(--space-4);
+  background: var(--c-surface-soft);
+  border: 1px solid var(--c-border-light);
+  border-radius: var(--radius-md);
+}
+
+.anim-card__stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 68px;
+  background: var(--c-surface);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.anim-card__name { font-size: 13px; font-weight: 600; }
+.anim-card__meta { font-family: var(--font-num); font-size: 11px; color: var(--c-text-3); }
+
+.anim-demo--bounce {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--c-gold);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--c-gold) 50%, transparent);
+  animation: crown-bounce 1.5s ease-in-out infinite;
+}
+
+.anim-demo--glow {
+  width: 54px;
+  height: 34px;
+  border-radius: var(--radius-md);
+  background: var(--c-surface);
+  border: 1px solid var(--c-gold);
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+.anim-demo--boom {
+  padding: 6px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--c-coral);
+  border-radius: var(--radius-pill);
+  animation: boom-pulse 2s ease-in-out infinite;
+}
+
+.anim-demo--confetti { position: relative; width: 100%; height: 100%; }
+.anim-demo--confetti i {
+  position: absolute;
+  top: 0;
+  width: 6px;
+  height: 9px;
+  border-radius: 1px;
+  animation: confetti-fall 2.6s linear infinite;
+}
+.anim-demo--confetti i:nth-child(1) { left: 18%; background: var(--c-primary); animation-delay: 0s; }
+.anim-demo--confetti i:nth-child(2) { left: 36%; background: var(--c-gold); animation-delay: 0.5s; }
+.anim-demo--confetti i:nth-child(3) { left: 54%; background: var(--c-coral); animation-delay: 0.9s; }
+.anim-demo--confetti i:nth-child(4) { left: 72%; background: var(--c-sky); animation-delay: 1.3s; }
+.anim-demo--confetti i:nth-child(5) { left: 86%; background: var(--c-primary-strong); animation-delay: 1.7s; }
+
+@keyframes crown-bounce {
+  0%, 100% { transform: translateY(0) rotate(-4deg); }
+  35% { transform: translateY(-12px) rotate(5deg); }
+  60% { transform: translateY(-4px) rotate(-3deg); }
+  80% { transform: translateY(-9px) rotate(2deg); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--c-gold) 45%, transparent); opacity: 1; }
+  50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--c-gold) 0%, transparent); opacity: 0.85; }
+}
+
+@keyframes boom-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--c-coral) 45%, transparent); }
+  50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--c-coral) 0%, transparent); }
+}
+
+@keyframes confetti-fall {
+  0% { transform: translate3d(0, -12px, 0) rotate(0deg); opacity: 1; }
+  100% { transform: translate3d(10px, 78px, 0) rotate(420deg); opacity: 0.9; }
+}
 
 /* ==========================================================================
-   6. 排行榜
+   12. 源码视图
    ========================================================================== */
-.board { display: flex; flex-direction: column; gap: var(--space-2); }
+.raw { margin-top: var(--space-6); }
 
-.board__item {
-  position: relative;
+.raw__head {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  padding: var(--space-2) var(--space-3);
-  padding-left: calc(var(--space-3) + 4px);
-  background: var(--pure-surface);
-  border: 1px solid var(--pure-border-light);
-  border-radius: var(--radius-md);
-  transition: border-color var(--motion) var(--motion-ease),
-    background-color var(--motion) var(--motion-ease);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-3);
 }
 
-.board__item::before {
-  content: "";
-  position: absolute;
-  inset: 6px auto 6px 0;
-  width: 4px;
-  border-radius: var(--radius-pill);
-  background: var(--pure-border-color);
-}
-
-.board__item--gold { border-color: var(--game-gold); background: linear-gradient(100deg, var(--game-gold-bg), transparent 70%); }
-.board__item--gold::before { background: var(--game-gold); }
-.board__item--silver::before { background: var(--game-silver); }
-.board__item--bronze::before { background: var(--game-coral); }
-.board__item--bronze { background: linear-gradient(100deg, var(--game-coral-bg), transparent 70%); }
-
-.board__rank {
-  flex: 0 0 auto;
-  width: 20px;
-  font-family: var(--font-num);
-  font-size: 12px;
-  font-weight: 600;
-  text-align: center;
-  color: var(--el-text-color-secondary);
-}
-.board__item--gold .board__rank { color: var(--game-gold-dark); }
-
-.board__avatar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  width: 28px;
-  height: 28px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--game-teal-dark);
-  background: var(--game-teal-bg);
-  border-radius: var(--radius-pill);
-}
-.board__item--gold .board__avatar {
-  color: #4a3a00;
-  background: linear-gradient(135deg, var(--game-gold), var(--game-gold-dark));
-  box-shadow: var(--shadow-gold-glow);
-}
-.board__item--silver .board__avatar {
-  color: #2b3138;
-  background: linear-gradient(135deg, #e2e8f0, var(--game-silver));
-}
-.board__item--bronze .board__avatar {
-  color: #fff;
-  background: linear-gradient(135deg, #ff9f80, var(--game-coral));
-}
-
-.board__name {
-  flex: 1 1 auto;
-  min-width: 0;
-  font-size: 14px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.board__item--gold .board__name { font-weight: 600; }
-
-.board__score {
-  font-family: var(--font-num);
-  font-size: 14px;
-  font-weight: 600;
-}
-.board__item--gold .board__score { font-size: 16px; color: var(--game-gold-dark); }
-
-.board__empty {
-  padding: var(--space-5);
-  font-size: 13px;
-  color: var(--el-text-color-secondary);
-  text-align: center;
-  border: 1px dashed var(--pure-border-color);
-  border-radius: var(--radius-md);
-}
-
-/* 最近结算 */
-.history {
-  margin-top: var(--space-4);
-  padding-top: var(--space-4);
-  border-top: 1px dashed var(--pure-border-color);
-}
-
-.history h3 {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--el-text-color-regular);
-  margin-bottom: var(--space-2);
-}
-
-.history__item { padding: var(--space-2) 0; border-bottom: 1px dashed var(--pure-border-light); }
-.history__item:last-child { border-bottom: 0; padding-bottom: 0; }
-.history__item:first-child { padding-top: 0; }
-
-.history__head {
+.raw__head h2 {
   display: flex;
   align-items: center;
   gap: var(--space-2);
   font-size: 12px;
-  color: var(--el-text-color-secondary);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-text-3);
 }
-.history__head strong {
-  color: var(--el-text-color-regular);
-  font-weight: 500;
-  white-space: nowrap;
+.raw__head h2::before {
+  content: "";
+  width: 3px;
+  height: 12px;
+  border-radius: var(--radius-pill);
+  background: var(--c-primary);
 }
-.history__head .spacer { margin-left: auto; }
 
-.history__detail {
-  margin-top: 2px;
-  font-size: 12px;
-  line-height: 1.6;
-  color: var(--el-text-color-secondary);
+.raw pre {
+  margin: 0;
+  padding: var(--space-6);
+  font-family: var(--font-num);
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: var(--c-text-2);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border-light);
+  border-radius: var(--radius-md);
+  white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
 
-.board__foot {
-  margin-top: var(--space-4);
-  font-size: 12px;
-  line-height: 1.6;
-  color: var(--el-text-color-secondary);
-}
+.raw pre::selection { background: color-mix(in srgb, var(--c-primary) 30%, transparent); }
 
 /* ==========================================================================
-   7. 规则区
-   ========================================================================== */
-.rules { margin-top: var(--space-4); }
-.rules__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: var(--space-4);
-}
-
-.rule {
-  display: flex;
-  gap: var(--space-3);
-  padding: var(--space-4);
-  background: var(--pure-surface-soft);
-  border: 1px solid var(--pure-border-light);
-  border-radius: var(--radius-md);
-}
-
-.rule__icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  width: 30px;
-  height: 30px;
-  font-size: 14px;
-  font-weight: 600;
-  border-radius: var(--radius);
-  color: var(--game-teal-dark);
-  background: var(--game-teal-bg);
-}
-.rule:nth-child(2) .rule__icon { color: var(--game-gold-dark); background: var(--game-gold-bg); }
-.rule:nth-child(3) .rule__icon { color: var(--game-sky); background: var(--game-sky-bg); }
-.rule:nth-child(4) .rule__icon { color: var(--game-coral-dark); background: var(--game-coral-bg); }
-
-.rule h3 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
-.rule p { font-size: 12px; line-height: 1.6; color: var(--el-text-color-secondary); }
-
-.page-foot {
-  margin-top: var(--space-6);
-  font-size: 12px;
-  color: var(--el-text-color-secondary);
-  text-align: center;
-}
-.page-foot a { color: var(--el-color-primary); text-decoration: none; }
-.page-foot a:hover { text-decoration: underline; }
-
-/* ==========================================================================
-   8. 提示条、庆祝动画
+   13. 提示条与页脚
    ========================================================================== */
 .toast {
   position: fixed;
@@ -931,645 +1395,1129 @@ button, input, select { font: inherit; color: inherit; }
   max-width: calc(100vw - 32px);
   padding: var(--space-3) var(--space-4);
   font-size: 13px;
-  color: var(--el-text-color-primary);
-  background: var(--pure-surface);
-  border: 1px solid var(--pure-border-color);
-  border-left: 3px solid var(--el-color-primary);
+  color: var(--c-text);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-left: 3px solid var(--c-success);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-popover);
-  transform: translate(-50%, 12px);
   opacity: 0;
+  transform: translate(-50%, 12px);
   pointer-events: none;
-  transition: opacity var(--motion) var(--motion-ease),
-    transform var(--motion) var(--motion-ease);
+  transition: opacity var(--motion) ease, transform var(--motion) ease;
 }
 .toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
-.toast--gold { border-left-color: var(--game-gold); }
-.toast--coral { border-left-color: var(--game-coral); }
+.toast.is-error { border-left-color: var(--c-danger); }
 
-.confetti {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  overflow: hidden;
-  pointer-events: none;
+.page-foot {
+  margin-top: var(--space-8);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--c-border);
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--c-text-3);
+  text-align: center;
 }
-
-.confetti i {
-  position: absolute;
-  top: -12px;
-  width: 8px;
-  height: 12px;
-  border-radius: 2px;
-  opacity: 0.9;
-  animation: confetti-fall var(--fall-duration, 2.6s) linear forwards;
-  animation-delay: var(--fall-delay, 0s);
-}
-
-@keyframes confetti-fall {
-  0% { transform: translate3d(0, -10vh, 0) rotate(0deg); opacity: 1; }
-  100% { transform: translate3d(var(--drift, 0), 110vh, 0) rotate(720deg); opacity: 0.9; }
-}
-
-@keyframes boom-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgb(239 108 74 / 35%); }
-  50% { box-shadow: 0 0 0 4px rgb(239 108 74 / 0%); }
-}
+.page-foot a { color: var(--c-primary); text-decoration: none; }
+.page-foot a:hover { text-decoration: underline; }
 
 /* ==========================================================================
-   9. 响应式与无障碍
+   14. 响应式与无障碍
    ========================================================================== */
-@media (max-width: 1024px) {
-  .layout { grid-template-columns: minmax(0, 1fr); }
-  .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 1080px) {
+  .board { grid-template-columns: 200px minmax(0, 1fr); }
+  .board__col:last-child { grid-column: 1 / -1; }
+  .sample-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .sample-tile--wide { grid-column: auto; }
+}
+
+@media (max-width: 900px) {
+  .mock { grid-template-columns: 128px minmax(0, 1fr); }
+  .mock__rail { display: none; }
+  .mock__charts { grid-template-columns: minmax(0, 1fr); }
+  .mock__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .principles { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (max-width: 720px) {
-  .shell { padding: var(--space-4) var(--space-4) var(--space-6); }
-  .app-header { align-items: flex-start; }
+  .page { padding: var(--space-4) var(--space-4) var(--space-6); }
+  .site-header__inner { padding: var(--space-3) var(--space-4); }
   .header-actions { width: 100%; margin-left: 0; }
-  .headline h1 { font-size: 18px; }
-  .stat-grid { gap: var(--space-2); }
-  .stat-card { padding: var(--space-3); }
-  .stat-card__value { font-size: 18px; }
-  .panel__head, .panel__body, .panel__foot { padding: var(--space-4); }
-  .player-grid { grid-template-columns: minmax(0, 1fr); }
-  .counter__btn, .icon-btn { width: 32px; height: 32px; }
-  .chip { min-height: 32px; }
-  .btn { min-height: 38px; }
-  .toast { left: var(--space-4); right: var(--space-4); bottom: var(--space-4); transform: translateY(12px); max-width: none; }
+  .board { grid-template-columns: minmax(0, 1fr); }
+  .board__col:last-child { grid-column: auto; }
+  .sample-grid { grid-template-columns: 1fr 1fr; }
+  .sample-tile--wide { grid-column: 1 / -1; }
+  .overview { padding: var(--space-4); }
+  .overview p { font-size: 15px; }
+  .hero { padding: var(--space-2); }
+  .mock { grid-template-columns: minmax(0, 1fr); }
+  .mock__side { display: none; }
+  .mock__title { font-size: 14px; }
+  .specimen-grid { grid-template-columns: 1fr 1fr; }
+  .segmented button { padding: 0 9px; }
+  .toast { left: var(--space-4); right: var(--space-4); transform: translateY(12px); max-width: none; }
   .toast.is-visible { transform: translateY(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  .confetti { display: none; }
 }
 </style>
 </head>
 <body>
-<div class="shell">
 
-  <!-- ===================== 页头 ===================== -->
-  <header class="app-header">
-    <a class="brand" href="#main" aria-label="Flip7 记分派对">
-      <span class="brand__cards" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
-      <span class="brand__plate" aria-hidden="true">
-        <span class="brand__flip">FLIP</span><span class="brand__seven">7</span>
-      </span>
-    </a>
+<!-- 图标库 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-home" viewBox="0 0 20 20"><path d="M3 9.2 10 3l7 6.2V16a1 1 0 0 1-1 1h-4.2v-5.2H8.2V17H4a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 20 20"><path d="M3 17h14"/><path d="M5.5 17v-5.5M10 17V6.5M14.5 17v-8.5"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 20 20"><path d="M5 3h7l3 3v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M8 11h5M8 14h4M8 8h3"/></symbol>
+  <symbol id="i-cog" viewBox="0 0 20 20"><circle cx="10" cy="10" r="2.6"/><path d="M10 3v2M10 15v2M3 10h2M15 10h2M5.1 5.1l1.4 1.4M13.5 13.5l1.4 1.4M14.9 5.1l-1.4 1.4M6.5 13.5l-1.4 1.4"/></symbol>
+  <symbol id="i-search" viewBox="0 0 20 20"><circle cx="9" cy="9" r="5.2"/><path d="m13 13 4 4"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 20 20"><path d="M6 14V9a4 4 0 0 1 8 0v5l1.5 2h-11z"/><path d="M8.5 17.5a1.5 1.5 0 0 0 3 0"/></symbol>
+  <symbol id="i-help" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7"/><path d="M8.2 7.6A1.9 1.9 0 0 1 12 8.4c0 1.3-1.9 1.5-1.9 3"/><circle cx="10" cy="14" r=".6" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-user" viewBox="0 0 20 20"><circle cx="10" cy="7" r="3"/><path d="M4.5 17a5.5 5.5 0 0 1 11 0"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 20 20"><path d="M16 12.4A6.5 6.5 0 0 1 7.6 4a6.5 6.5 0 1 0 8.4 8.4z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 20 20"><circle cx="10" cy="10" r="3.4"/><path d="M10 2.4v2M10 15.6v2M2.4 10h2M15.6 10h2M4.6 4.6l1.4 1.4M14 14l1.4 1.4M15.4 4.6 14 6M6 14l-1.4 1.4"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 20 20"><path d="M3.5 9.2V4.5a1 1 0 0 1 1-1h4.7l7 7-5.7 5.7z"/><circle cx="7.2" cy="7.2" r="1"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 20 20"><path d="M4 6h12M8 6V4h4v2M6 6l.8 10.2a1 1 0 0 0 1 .8h4.4a1 1 0 0 0 1-.8L14 6"/><path d="M8.5 9v5M11.5 9v5"/></symbol>
+  <symbol id="i-check" viewBox="0 0 20 20"><path d="m4.5 10.5 3.6 3.6 7.4-8"/></symbol>
+  <symbol id="i-x" viewBox="0 0 20 20"><path d="m5.5 5.5 9 9M14.5 5.5l-9 9"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 20 20"><rect x="7" y="7" width="9" height="10" rx="1.4"/><path d="M13 7V4.4A1.4 1.4 0 0 0 11.6 3H5.4A1.4 1.4 0 0 0 4 4.4v8.2A1.4 1.4 0 0 0 5.4 14H7"/></symbol>
+  <symbol id="i-coins" viewBox="0 0 20 20"><ellipse cx="10" cy="5.5" rx="6" ry="2.5"/><path d="M4 5.5v4c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5v-4"/><path d="M4 9.5v4c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5v-4"/></symbol>
+  <symbol id="i-users" viewBox="0 0 20 20"><circle cx="7.5" cy="7.5" r="2.6"/><path d="M3 16a4.5 4.5 0 0 1 9 0"/><path d="M13.2 5.2a2.4 2.4 0 0 1 0 4.6M14.5 16a4.6 4.6 0 0 0-1.9-3.7"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 20 20"><path d="M11 2.5 4.5 11H9l-1 6.5L15 8.5h-4.5z"/></symbol>
+  <symbol id="i-target" viewBox="0 0 20 20"><circle cx="10" cy="10" r="6.5"/><circle cx="10" cy="10" r="2.6"/></symbol>
+</svg>
 
-    <div class="headline">
-      <h1>Flip7 记分派对</h1>
-      <p>卡牌派对记分台 · 数据仅保存在本机浏览器</p>
+<header class="site-header">
+  <div class="site-header__inner">
+    <div class="site-title">
+      <h1>Flip7 设计系统</h1>
+      <span class="format-badge">Alpha · Visual Spec</span>
     </div>
 
     <div class="header-actions">
-      <span class="tag tag--teal" id="roundTag">第 1 轮</span>
-      <button class="btn btn--ghost" id="themeToggle" type="button" aria-pressed="false">
-        <span id="themeLabel">深色模式</span>
+      <div class="segmented" role="group" aria-label="主题">
+        <button type="button" data-theme-btn="light" aria-pressed="true">
+          <svg class="i" aria-hidden="true"><use href="#i-sun"/></svg>浅色
+        </button>
+        <button type="button" data-theme-btn="dark" aria-pressed="false">
+          <svg class="i" aria-hidden="true"><use href="#i-moon"/></svg>深色
+        </button>
+      </div>
+
+      <div class="segmented" role="group" aria-label="视图">
+        <button type="button" data-view-btn="visual" aria-pressed="true">可视化</button>
+        <button type="button" data-view-btn="raw" aria-pressed="false">源码</button>
+      </div>
+
+      <button class="btn btn--primary" type="button" id="copyAll">
+        <svg class="i" aria-hidden="true"><use href="#i-copy"/></svg>复制全部规范
       </button>
-      <button class="btn btn--ghost btn--danger" id="resetBtn" type="button">清空对局</button>
     </div>
-  </header>
+  </div>
+</header>
 
-  <!-- ===================== 统计条 ===================== -->
-  <section class="stat-grid" aria-label="对局概览">
-    <article class="stat-card stat-card--accent">
-      <span class="stat-card__label">当前轮次</span>
-      <div class="stat-card__value"><span id="statRound">1</span><small>已结算 <span id="statSettled">0</span> 轮</small></div>
-    </article>
-    <article class="stat-card">
-      <span class="stat-card__label">玩家</span>
-      <div class="stat-card__value"><span id="statPlayers">4</span><small>位</small></div>
-    </article>
-    <article class="stat-card stat-card--gold">
-      <span class="stat-card__label">当前领先</span>
-      <div class="stat-card__value"><span id="statLeader">—</span><small id="statLeaderScore"></small></div>
-    </article>
-    <article class="stat-card">
-      <span class="stat-card__label">目标分</span>
-      <div class="stat-card__value"><span id="statTarget">200</span><small id="statProgress">最高 0 分</small></div>
-    </article>
-  </section>
+<div class="page" id="visualView">
 
-  <!-- ===================== 主体 ===================== -->
-  <main class="layout" id="main">
+  <!-- Hero 示例界面 -->
+  <div class="hero copyable" data-spec="preview" data-label="示例界面" tabindex="0" aria-label="复制示例界面规范">
+    <div class="mock">
+      <aside class="mock__side">
+        <div class="mock__brand">Flip7 SaaS<small>PURE-ADMIN SPEC</small></div>
+        <nav class="mock__nav" aria-hidden="true">
+          <span class="mock__nav-item"><svg class="i"><use href="#i-home"/></svg>概览</span>
+          <span class="mock__nav-item is-active"><svg class="i"><use href="#i-chart"/></svg>记分派对</span>
+          <span class="mock__nav-item"><svg class="i"><use href="#i-doc"/></svg>数据报告</span>
+          <span class="mock__nav-item"><svg class="i"><use href="#i-cog"/></svg>设置</span>
+        </nav>
+        <span class="mock__upgrade">升级套餐</span>
+      </aside>
 
-    <!-- 玩家记分 -->
-    <section class="panel" aria-labelledby="playersTitle">
-      <div class="panel__head">
-        <h2 id="playersTitle">玩家记分</h2>
-        <span class="tag" id="draftCounter">待记分 0</span>
-        <div class="spacer"></div>
-        <button class="btn btn--ghost" id="addPlayerBtn" type="button">+ 添加玩家</button>
-      </div>
-
-      <div class="panel__body">
-        <div class="player-grid" id="playerGrid"></div>
-      </div>
-
-      <div class="panel__foot">
-        <button class="btn btn--primary btn--lg" id="commitBtn" type="button">结算本轮 · 第 1 轮</button>
-        <button class="btn btn--ghost" id="undoBtn" type="button">撤销上一轮</button>
-        <span class="tag tag--sky">本轮得分留空即代表缺席</span>
-      </div>
-    </section>
-
-    <!-- 排行榜 -->
-    <aside class="panel" aria-labelledby="boardTitle">
-      <div class="panel__head">
-        <h2 id="boardTitle">排行榜</h2>
-        <span class="tag tag--gold">目标 200 分</span>
-      </div>
-      <div class="panel__body">
-        <ol class="board" id="leaderboard" aria-live="polite"></ol>
-
-        <div class="history">
-          <h3>最近结算</h3>
-          <div id="historyList"></div>
+      <div class="mock__main">
+        <div class="mock__top">
+          <span class="mock__search"><svg class="i"><use href="#i-search"/></svg>搜索玩家、轮次…</span>
+          <span class="mock__icon"><svg class="i"><use href="#i-bell"/></svg></span>
+          <span class="mock__icon"><svg class="i"><use href="#i-help"/></svg></span>
+          <span class="mock__avatar">阿</span>
         </div>
 
-        <p class="board__foot">
-          第 1 名用金色高亮，第 2 / 3 名为银、铜展示；达到 200 分会触发庆祝动画。
-        </p>
-      </div>
-    </aside>
-  </main>
+        <div class="mock__body">
+          <div class="mock__heading">
+            <div>
+              <p class="mock__eyebrow">PERFORMANCE OVERVIEW</p>
+              <h3 class="mock__title">记分派对总览</h3>
+            </div>
+            <div class="mock__heading-actions">
+              <span class="mock__range">最近 30 天</span>
+              <span class="mock__cta">导出数据</span>
+            </div>
+          </div>
 
-  <!-- ===================== 规则 ===================== -->
-  <section class="panel rules" aria-labelledby="rulesTitle">
-    <div class="panel__head">
-      <h2 id="rulesTitle">记分规则</h2>
-      <span class="tag">派对手记</span>
+          <div class="mock__stats">
+            <div class="mock__stat">
+              <span class="mock__stat-top"><svg class="i"><use href="#i-coins"/></svg><span class="mock__delta is-up">+12.5%</span></span>
+              <span class="mock__stat-label">总积分</span>
+              <strong class="mock__stat-value">428,900</strong>
+            </div>
+            <div class="mock__stat">
+              <span class="mock__stat-top"><svg class="i"><use href="#i-users"/></svg><span class="mock__delta is-up">+8.2%</span></span>
+              <span class="mock__stat-label">活跃玩家</span>
+              <strong class="mock__stat-value">84,232</strong>
+            </div>
+            <div class="mock__stat">
+              <span class="mock__stat-top"><svg class="i"><use href="#i-bolt"/></svg><span class="mock__delta is-down">-2.1%</span></span>
+              <span class="mock__stat-label">平均回合分</span>
+              <strong class="mock__stat-value">4.82</strong>
+            </div>
+            <div class="mock__stat">
+              <span class="mock__stat-top"><svg class="i"><use href="#i-target"/></svg><span class="mock__delta is-up">达标</span></span>
+              <span class="mock__stat-label">BOOM 率</span>
+              <strong class="mock__stat-value">1.2%</strong>
+            </div>
+          </div>
+
+          <div class="mock__charts">
+            <div class="mock__card">
+              <div class="mock__card-head">
+                <strong>积分走势</strong>
+                <span class="mock__legend"><i></i>实际<i></i>目标</span>
+              </div>
+              <p class="mock__card-sub">预测值与 Q3 实际增长</p>
+              <svg class="mock__line" viewBox="0 0 320 120" preserveAspectRatio="none" aria-hidden="true">
+                <defs>
+                  <linearGradient id="areaTeal" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#2BA8A2" stop-opacity="0.30"/>
+                    <stop offset="1" stop-color="#2BA8A2" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <path d="M0,96 C30,90 48,60 70,58 C92,56 108,86 132,80 C156,74 168,38 196,40 C224,42 240,14 268,18 C292,22 306,26 320,22 L320,120 L0,120 Z" fill="url(#areaTeal)"/>
+                <path d="M0,96 C30,90 48,60 70,58 C92,56 108,86 132,80 C156,74 168,38 196,40 C224,42 240,14 268,18 C292,22 306,26 320,22" fill="none" stroke="#2BA8A2" stroke-width="2.2" stroke-linecap="round"/>
+                <path d="M0,104 C40,100 60,92 90,94 C120,96 150,88 180,90 C210,92 250,80 280,82 C300,83 312,78 320,76" fill="none" stroke="currentColor" stroke-opacity="0.4" stroke-width="1.6" stroke-dasharray="4 4"/>
+              </svg>
+              <div class="mock__axis"><span>1月</span><span>2月</span><span>3月</span><span>4月</span><span>5月</span><span>6月</span><span>7月</span></div>
+            </div>
+
+            <div class="mock__card">
+              <div class="mock__card-head"><strong>玩家分层</strong></div>
+              <p class="mock__card-sub">按累计积分分层</p>
+              <div class="mock__donut"><span>100%<small>TOTAL</small></span></div>
+              <ul class="mock__legend-list">
+                <li><i style="background:var(--c-primary)"></i>核心玩家 65%</li>
+                <li><i style="background:var(--c-gold)"></i>进阶玩家 20%</li>
+                <li><i style="background:var(--c-coral)"></i>新手玩家 15%</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="mock__rail" aria-hidden="true">
+        <div class="mock__rail-head"><strong>洞察</strong><span>⋯</span></div>
+        <div class="mock__rail-title">派对表现<span class="mock__pill">最近 30 天</span></div>
+        <div class="mock__mini">
+          <div><span>总积分</span><strong>428,900</strong><em class="mock__delta is-up">+12.5%</em></div>
+          <div><span>活跃玩家</span><strong>24,512</strong><em class="mock__delta is-down">-24.0%</em></div>
+        </div>
+
+        <div class="mock__card">
+          <span class="mock__rail-label">积分走势 · 日均 2.4k</span>
+          <div class="mock__bars">
+            <i style="height:38%"></i><i style="height:62%"></i><i style="height:48%"></i>
+            <i style="height:84%"></i><i style="height:92%"></i><i style="height:55%"></i>
+            <i style="height:72%"></i>
+          </div>
+          <div class="mock__axis mock__axis--tiny"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+        </div>
+
+        <div class="mock__card">
+          <span class="mock__rail-label">玩家分层</span>
+          <div class="mock__seg-row">
+            <div class="mock__donut mock__donut--sm"><span>100%</span></div>
+            <ul class="mock__legend-list">
+              <li><i style="background:var(--c-primary)"></i>核心 65%</li>
+              <li><i style="background:var(--c-gold)"></i>进阶 20%</li>
+              <li><i style="background:var(--c-coral)"></i>新手 15%</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mock__card mock__activity">
+          <span class="mock__rail-label">最近动态<span>查看全部</span></span>
+          <ul>
+            <li><span class="mock__avatar">阿</span>阿乐 · 达成 204 分<time>刚刚</time></li>
+            <li><span class="mock__avatar">小</span>小满 · BOOM 出局<time>3 分钟</time></li>
+            <li><span class="mock__avatar">N</span>Nova · 新房间<time>12 分钟</time></li>
+          </ul>
+        </div>
+      </aside>
     </div>
-    <div class="panel__body">
-      <div class="rules__grid">
-        <article class="rule">
-          <span class="rule__icon" aria-hidden="true">#</span>
-          <div>
-            <h3>数字牌 0–12</h3>
-            <p>本轮数字牌点数相加即为基础分，重复数字直接 BOOM 归零。</p>
+  </div>
+
+  <!-- 概览 -->
+  <section class="overview copyable" data-spec="overview" data-label="设计原则概览" tabindex="0" aria-label="复制设计原则概览">
+    <p>
+      Flip7 是一套复古、活泼的青绿—珊瑚—金色设计系统，为卡牌派对记分场景打造，保留原版包装的复古温度与移动端 UX 的清爽节奏。
+      整页只用这一套配色：青绿主色、金色强调、珊瑚危险、天空蓝信息，全部由 <code>--c-*</code> 令牌驱动，
+      间距、圆角、阴影与字号沿用 <code>DESIGN.zh-CN.md</code> 的档位，不在页面里再混入第二套主色。
+    </p>
+    <ul class="overview__points">
+      <li>单色系：状态色与主色同族，不混入其它色相</li>
+      <li>双主题：亮 / 暗模式只改变明度与表层，不换色相</li>
+      <li>交互：点击任意规范块即可复制 Markdown 片段</li>
+    </ul>
+  </section>
+
+  <!-- 规范总览板 -->
+  <div class="board">
+    <!-- 颜色 -->
+    <div class="board__col">
+      <div class="board__cell">
+        <div class="board__cell-title">Colors</div>
+
+        <div class="color-card copyable" data-spec="colorPrimary" data-label="Primary Teal" tabindex="0" style="--swatch:#2BA8A2;--on-swatch:#fff" aria-label="复制 Primary Teal 规范">
+          <div class="color-card__head"><span>Primary Teal</span><code>#2BA8A2</code></div>
+          <div class="color-card__ramp"></div>
+        </div>
+
+        <div class="color-card copyable" data-spec="colorPrimaryLight" data-label="Primary Light" tabindex="0" style="--swatch:#3CC4BD;--on-swatch:#0c2b29" aria-label="复制 Primary Light 规范">
+          <div class="color-card__head"><span>Primary Light</span><code>#3CC4BD</code></div>
+          <div class="color-card__ramp"></div>
+        </div>
+
+        <div class="color-card copyable" data-spec="colorGold" data-label="Accent Gold" tabindex="0" style="--swatch:#FFD23F;--on-swatch:#3a2c00" aria-label="复制 Accent Gold 规范">
+          <div class="color-card__head"><span>Accent Gold</span><code>#FFD23F</code></div>
+          <div class="color-card__ramp"></div>
+        </div>
+
+        <div class="color-card copyable" data-spec="colorSurface" data-label="Surface Base" tabindex="0" style="--swatch:#EFF8F7;--on-swatch:#1E8C86" aria-label="复制 Surface Base 规范">
+          <div class="color-card__head"><span>Surface Base</span><code>#EFF8F7</code></div>
+          <div class="color-card__ramp"></div>
+        </div>
+
+        <div class="color-card copyable" data-spec="colorCoral" data-label="Coral" tabindex="0" style="--swatch:#EF6C4A;--on-swatch:#fff" aria-label="复制 Coral 规范">
+          <div class="color-card__head"><span>Coral</span><code>#EF6C4A</code></div>
+          <div class="color-card__ramp"></div>
+        </div>
+
+        <div class="color-card copyable" data-spec="colorSky" data-label="Sky Blue" tabindex="0" style="--swatch:#5DADE2;--on-swatch:#08283d" aria-label="复制 Sky Blue 规范">
+          <div class="color-card__head"><span>Sky Blue</span><code>#5DADE2</code></div>
+          <div class="color-card__ramp"></div>
+        </div>
+
+        <div class="color-card copyable" data-spec="colorCream" data-label="Cream" tabindex="0" style="--swatch:#FFF8E7;--on-swatch:#8a6a12" aria-label="复制 Cream 规范">
+          <div class="color-card__head"><span>Cream</span><code>#FFF8E7</code></div>
+          <div class="color-card__ramp"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 字体 -->
+    <div class="board__col">
+      <div class="board__cell">
+        <div class="board__cell-title">Typography</div>
+
+        <div class="sample copyable" data-spec="typeHeadline" data-label="Headline" tabindex="0" aria-label="复制 Headline 字号规范">
+          <div class="sample__meta"><span>Headline</span><code>600 · 42 / 1.1</code></div>
+          <div class="sample__aa">Aa 记分</div>
+        </div>
+
+        <div class="sample sample--body copyable" data-spec="typeBody" data-label="Body" tabindex="0" aria-label="复制 Body 字号规范">
+          <div class="sample__meta"><span>Body</span><code>400 · 26 / 1.5</code></div>
+          <div class="sample__aa">Aa 记分</div>
+        </div>
+
+        <div class="sample sample--label copyable" data-spec="typeLabel" data-label="Label" tabindex="0" aria-label="复制 Label 字号规范">
+          <div class="sample__meta"><span>Label</span><code>500 · 17 / 1.4</code></div>
+          <div class="sample__aa">Aa 记分派对</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 组件小样 -->
+    <div class="board__col">
+      <div class="board__cell">
+        <div class="board__cell-title">Components</div>
+        <div class="sample-grid">
+
+          <div class="sample-tile copyable" data-spec="compButtonPrimary" data-label="按钮组合" tabindex="0" aria-label="复制按钮规范">
+            <span class="mini-btn mini-btn--primary">主要按钮</span>
+            <span class="mini-btn mini-btn--secondary">次要按钮</span>
+            <span class="mini-btn mini-btn--danger">危险操作</span>
+            <span class="mini-btn mini-btn--outline">描边按钮</span>
           </div>
-        </article>
-        <article class="rule">
-          <span class="rule__icon" aria-hidden="true">+</span>
-          <div>
-            <h3>加成牌</h3>
-            <p>+2 / +4 / +6 / +8 / +10 与数字牌叠加；×2 只对数字牌生效。</p>
+
+          <div class="sample-tile copyable" data-spec="compIconButton" data-label="图标按钮" tabindex="0" aria-label="复制图标按钮规范">
+            <div class="icon-row">
+              <span class="icon-tile"><svg class="i"><use href="#i-moon"/></svg></span>
+              <span class="icon-tile icon-tile--gold"><svg class="i"><use href="#i-sun"/></svg></span>
+              <span class="icon-tile icon-tile--coral"><svg class="i"><use href="#i-tag"/></svg></span>
+              <span class="icon-tile icon-tile--coral"><svg class="i"><use href="#i-trash"/></svg></span>
+            </div>
           </div>
-        </article>
-        <article class="rule">
-          <span class="rule__icon" aria-hidden="true">7</span>
-          <div>
-            <h3>Flip7 奖励</h3>
-            <p>集齐 7 张不同数字牌，额外 +15 分，本轮继续保持手牌。</p>
+
+          <div class="sample-tile sample-tile--wide copyable" data-spec="compInput" data-label="输入框" tabindex="0" aria-label="复制输入框规范">
+            <span class="mini-input"><svg class="i"><use href="#i-search"/></svg>搜索玩家名称</span>
           </div>
-        </article>
-        <article class="rule">
-          <span class="rule__icon" aria-hidden="true">!</span>
-          <div>
-            <h3>BOOM 归零</h3>
-            <p>抽到重复数字立即出局，本轮记 0 分，分数从下一轮重新累积。</p>
+
+          <div class="sample-tile sample-tile--wide copyable" data-spec="compNavIcon" data-label="导航图标" tabindex="0" aria-label="复制导航图标规范">
+            <div class="icon-row">
+              <span class="icon-tile icon-tile--round"><svg class="i"><use href="#i-home"/></svg></span>
+              <span class="icon-tile icon-tile--round"><svg class="i"><use href="#i-search"/></svg></span>
+              <span class="icon-tile icon-tile--round"><svg class="i"><use href="#i-user"/></svg></span>
+              <span class="icon-tile icon-tile--round icon-tile--gold"><svg class="i"><use href="#i-chart"/></svg></span>
+            </div>
           </div>
-        </article>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 字体规范 -->
+  <section class="section">
+    <h2 class="section__title">Typography · 字号体系</h2>
+    <p class="section__note">字号、行高与字重按层级固定，避免页面内自由发挥。点击任意一行复制该字号规范。</p>
+
+    <div class="type-row copyable" data-spec="typePageTitle" data-label="pageTitle" tabindex="0" style="--sample-size:20px;--sample-weight:600" aria-label="复制 pageTitle 字号规范">
+      <div class="type-row__head"><span class="chip-label">pageTitle</span><span class="type-row__meta">系统字体栈 · 20px · 600 · 行高 1.5</span></div>
+      <div class="type-row__sample">页面标题只出现一次，用于交代当前页面的主任务与上下文。</div>
+    </div>
+
+    <div class="type-row copyable" data-spec="typeSectionTitle" data-label="sectionTitle" tabindex="0" style="--sample-size:18px;--sample-weight:600" aria-label="复制 sectionTitle 字号规范">
+      <div class="type-row__head"><span class="chip-label">sectionTitle</span><span class="type-row__meta">系统字体栈 · 18px · 600 · 行高 1.5</span></div>
+      <div class="type-row__sample">区块标题负责切分信息层级，让长页面保持稳定的阅读节奏。</div>
+    </div>
+
+    <div class="type-row copyable" data-spec="typeBodyLarge" data-label="bodyLarge" tabindex="0" style="--sample-size:16px;--sample-weight:400" aria-label="复制 bodyLarge 字号规范">
+      <div class="type-row__head"><span class="chip-label">bodyLarge</span><span class="type-row__meta">系统字体栈 · 16px · 400 · 行高 1.5</span></div>
+      <div class="type-row__sample">正文与表单内容使用 16px，保证中英混排下的清晰度与舒适阅读。</div>
+    </div>
+
+    <div class="type-row copyable" data-spec="typeBody" data-label="body" tabindex="0" style="--sample-size:14px;--sample-weight:400" aria-label="复制 body 字号规范">
+      <div class="type-row__head"><span class="chip-label">body</span><span class="type-row__meta">系统字体栈 · 14px · 400 · 行高 1.5</span></div>
+      <div class="type-row__sample">菜单、标签、二级信息与常规控件统一使用 14px，界面密度稳定。</div>
+    </div>
+
+    <div class="type-row copyable" data-spec="typeCompact" data-label="compact" tabindex="0" style="--sample-size:13px;--sample-weight:500" aria-label="复制 compact 字号规范">
+      <div class="type-row__head"><span class="chip-label">compact</span><span class="type-row__meta">系统字体栈 · 13px · 500 · 行高 1.5</span></div>
+      <div class="type-row__sample">紧凑信息用于说明、辅助标签与按钮文案，强调可读但不抢层级。</div>
+    </div>
+
+    <div class="type-row copyable" data-spec="typeCaption" data-label="caption" tabindex="0" style="--sample-size:12px;--sample-weight:400" aria-label="复制 caption 字号规范">
+      <div class="type-row__head"><span class="chip-label">caption</span><span class="type-row__meta">系统字体栈 · 12px · 400 · 行高 1.5</span></div>
+      <div class="type-row__sample">注释、时间戳与说明文字使用 12px，永不承担关键操作信息。</div>
+    </div>
+  </section>
+
+  <!-- 按钮 -->
+  <section class="section">
+    <h2 class="section__title">Components · Buttons</h2>
+    <p class="section__note">主按钮只用于关键动作；品牌胶囊按钮用于游戏语义，不替代主按钮。</p>
+
+    <div class="specimen-grid">
+      <div class="specimen copyable" data-spec="compButtonPrimary" data-label="主按钮" tabindex="0" aria-label="复制主按钮规范">
+        <span class="specimen__label">primary</span>
+        <button class="sw-btn sw-btn--primary" type="button" tabindex="-1">导出数据</button>
+      </div>
+
+      <div class="specimen copyable" data-spec="compButtonSecondary" data-label="次按钮" tabindex="0" aria-label="复制次按钮规范">
+        <span class="specimen__label">secondary</span>
+        <button class="sw-btn sw-btn--secondary" type="button" tabindex="-1">取消</button>
+      </div>
+
+      <div class="specimen copyable" data-spec="compButtonDanger" data-label="危险按钮" tabindex="0" aria-label="复制危险按钮规范">
+        <span class="specimen__label">danger</span>
+        <button class="sw-btn sw-btn--danger" type="button" tabindex="-1">清空对局</button>
+      </div>
+
+      <div class="specimen copyable" data-spec="compButtonPill" data-label="胶囊按钮" tabindex="0" aria-label="复制胶囊按钮规范">
+        <span class="specimen__label">pill</span>
+        <button class="sw-btn sw-btn--pill" type="button" tabindex="-1">开始记分</button>
+      </div>
+
+      <div class="specimen copyable" data-spec="compButtonBoom" data-label="BOOM 按钮" tabindex="0" aria-label="复制 BOOM 按钮规范">
+        <span class="specimen__label">boom</span>
+        <button class="sw-btn sw-btn--boom" type="button" tabindex="-1">BOOM</button>
+      </div>
+
+      <div class="specimen copyable" data-spec="compButtonFlip7" data-label="Flip7 按钮" tabindex="0" aria-label="复制 Flip7 按钮规范">
+        <span class="specimen__label">flip7</span>
+        <button class="sw-btn sw-btn--flip7" type="button" tabindex="-1">Flip7 +15</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 卡片 -->
+  <section class="section">
+    <h2 class="section__title">Components · Cards</h2>
+    <p class="section__note">卡片靠左侧色条表达状态：青绿为常态、金色为高亮与奖励、珊瑚为 BOOM 与危险。</p>
+
+    <div class="specimen-grid">
+      <div class="specimen copyable" data-spec="compCardDefault" data-label="默认卡片" tabindex="0" aria-label="复制默认卡片规范">
+        <span class="specimen__label">default</span>
+        <div class="demo-card copyable" style="position:relative">
+          <strong>记分卡片</strong>
+          <p>本轮的得分与加成会汇总到这里。</p>
+        </div>
+      </div>
+
+      <div class="specimen copyable" data-spec="compCardHighlight" data-label="高亮卡片" tabindex="0" aria-label="复制高亮卡片规范">
+        <span class="specimen__label">highlight</span>
+        <div class="demo-card demo-card--highlight" style="position:relative">
+          <strong>领先玩家</strong>
+          <p>金色强调用于奖励、冠军与 Flip7 加成。</p>
+        </div>
+      </div>
+
+      <div class="specimen copyable" data-spec="compCardBoom" data-label="BOOM 卡片" tabindex="0" aria-label="复制 BOOM 卡片规范">
+        <span class="specimen__label">boom</span>
+        <div class="demo-card demo-card--boom" style="position:relative">
+          <strong>BOOM 出局</strong>
+          <p>珊瑚色提示风险，配合脉冲动效强调。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 区块标题与 Logo -->
+  <section class="section">
+    <h2 class="section__title">Components · Section Titles &amp; Logo</h2>
+
+    <div class="specimen-grid">
+      <div class="specimen copyable" data-spec="compSectionTitle" data-label="区块标题" tabindex="0" aria-label="复制区块标题规范">
+        <span class="specimen__label">section-title</span>
+        <div class="section-title-demo">
+          <span><i>#</i>本轮记分</span>
+        </div>
+      </div>
+
+      <div class="specimen copyable" data-spec="compLogoFull" data-label="完整 Logo" tabindex="0" aria-label="复制完整 Logo 规范">
+        <span class="specimen__label">logo · default</span>
+        <div class="logo-tile">
+          <span class="brand">
+            <span class="brand__cards" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+            <span class="brand__plate" aria-hidden="true"><span class="brand__flip">FLIP</span><span class="brand__seven">7</span></span>
+          </span>
+        </div>
+      </div>
+
+      <div class="specimen copyable" data-spec="compLogoMark" data-label="Logo 图形标" tabindex="0" aria-label="复制 Logo 图形标规范">
+        <span class="specimen__label">logo · 7_digit</span>
+        <div class="logo-tile">
+          <span class="brand-mark">7</span>
+        </div>
+      </div>
+
+      <div class="specimen copyable" data-spec="compLogoRules" data-label="Logo 使用规则" tabindex="0" aria-label="复制 Logo 使用规则">
+        <span class="specimen__label">logo · ratio</span>
+        <div class="section-title-demo" style="border-bottom-style:solid;border-bottom-color:var(--c-border-light)">
+          <span style="font-size:12px;font-weight:400;color:var(--c-text-3);line-height:1.7">
+            保持彩色卡扇在左、文字牌在右；7 始终旋转 4–6deg 并带双层描边阴影。
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 阴影 -->
+  <section class="section">
+    <h2 class="section__title">Elevation &amp; Depth</h2>
+    <p class="section__note">静态层级只用极轻阴影；彩色光晕仅出现在可交互或庆祝元素上。</p>
+
+    <div class="elev-grid">
+      <div class="elev copyable" data-spec="shadowSm" data-label="shadow-sm" tabindex="0" aria-label="复制 shadow-sm 规范">
+        <div class="elev__box" style="--elev:0 1px 2px rgb(20 60 55 / 8%)"></div>
+        <span class="elev__label">shadow-sm</span>
+      </div>
+      <div class="elev copyable" data-spec="shadowMd" data-label="shadow-md" tabindex="0" aria-label="复制 shadow-md 规范">
+        <div class="elev__box" style="--elev:0 2px 8px rgb(20 60 55 / 12%)"></div>
+        <span class="elev__label">shadow-md</span>
+      </div>
+      <div class="elev copyable" data-spec="shadowLg" data-label="shadow-lg" tabindex="0" aria-label="复制 shadow-lg 规范">
+        <div class="elev__box" style="--elev:0 4px 16px rgb(20 60 55 / 16%)"></div>
+        <span class="elev__label">shadow-lg</span>
+      </div>
+      <div class="elev copyable" data-spec="shadowCard" data-label="shadow-card" tabindex="0" aria-label="复制 shadow-card 规范">
+        <div class="elev__box" style="--elev:0 2px 10px rgb(43 168 162 / 14%)"></div>
+        <span class="elev__label">shadow-card</span>
+      </div>
+      <div class="elev copyable" data-spec="shadowTealGlow" data-label="shadow-teal-glow" tabindex="0" aria-label="复制 shadow-teal-glow 规范">
+        <div class="elev__box" style="--elev:0 2px 10px rgb(43 168 162 / 30%)"></div>
+        <span class="elev__label">shadow-teal-glow</span>
+      </div>
+      <div class="elev copyable" data-spec="shadowAccentGlow" data-label="shadow-accent-glow" tabindex="0" aria-label="复制 shadow-accent-glow 规范">
+        <div class="elev__box" style="--elev:0 2px 10px rgb(230 184 0 / 40%)"></div>
+        <span class="elev__label">shadow-accent-glow</span>
+      </div>
+      <div class="elev copyable" data-spec="shadowCoralGlow" data-label="shadow-coral-glow" tabindex="0" aria-label="复制 shadow-coral-glow 规范">
+        <div class="elev__box" style="--elev:0 2px 10px rgb(239 108 74 / 35%)"></div>
+        <span class="elev__label">shadow-coral-glow</span>
+      </div>
+      <div class="elev copyable" data-spec="shadowSkyGlow" data-label="shadow-sky-glow" tabindex="0" aria-label="复制 shadow-sky-glow 规范">
+        <div class="elev__box" style="--elev:0 2px 10px rgb(93 173 226 / 30%)"></div>
+        <span class="elev__label">shadow-sky-glow</span>
+      </div>
+      <div class="elev copyable" data-spec="shadowFocus" data-label="shadow-focus" tabindex="0" aria-label="复制 shadow-focus 规范">
+        <div class="elev__box" style="--elev:0 0 0 3px rgb(43 168 162 / 22%)"></div>
+        <span class="elev__label">shadow-focus</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 动效 -->
+  <section class="section">
+    <h2 class="section__title">Animations</h2>
+    <p class="section__note">动效服务于反馈，不用于炫技；全部遵循 prefers-reduced-motion。</p>
+
+    <div class="anim-grid">
+      <div class="anim-card copyable" data-spec="animConfetti" data-label="Confetti" tabindex="0" aria-label="复制 Confetti 动效规范">
+        <div class="anim-card__stage">
+          <span class="anim-demo--confetti"><i></i><i></i><i></i><i></i><i></i></span>
+        </div>
+        <span class="anim-card__name">Confetti · 庆祝</span>
+        <span class="anim-card__meta">3.2–4.5s · 下落 + 旋转</span>
+      </div>
+
+      <div class="anim-card copyable" data-spec="animCrown" data-label="Crown Bounce" tabindex="0" aria-label="复制 Crown Bounce 动效规范">
+        <div class="anim-card__stage"><span class="anim-demo--bounce"></span></div>
+        <span class="anim-card__name">Crown Bounce · 冠军</span>
+        <span class="anim-card__meta">1.5s · infinite · 4 段关键帧</span>
+      </div>
+
+      <div class="anim-card copyable" data-spec="animGlow" data-label="Glow Pulse" tabindex="0" aria-label="复制 Glow Pulse 动效规范">
+        <div class="anim-card__stage"><span class="anim-demo--glow"></span></div>
+        <span class="anim-card__name">Glow Pulse · 获胜卡片</span>
+        <span class="anim-card__meta">2s · infinite · 透明度 0.85–1</span>
+      </div>
+
+      <div class="anim-card copyable" data-spec="animBoom" data-label="BOOM Pulse" tabindex="0" aria-label="复制 BOOM Pulse 动效规范">
+        <div class="anim-card__stage"><span class="anim-demo--boom">BOOM</span></div>
+        <span class="anim-card__name">BOOM Pulse · 出局</span>
+        <span class="anim-card__meta">2s · infinite · 光环扩散</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Do / Don't -->
+  <section class="section">
+    <h2 class="section__title">Do's &amp; Don'ts</h2>
+
+    <div class="principles">
+      <div class="principle principle--do copyable" data-spec="principlesDo" data-label="Do 清单" tabindex="0" aria-label="复制 Do 清单">
+        <div class="principle__head">
+          <svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Do
+        </div>
+        <ul>
+          <li>为可交互元素使用带品牌色的柔和光晕。</li>
+          <li>胶囊按钮在全站保持一致。</li>
+          <li>输入面使用奶油色 #FFF8E7。</li>
+          <li>用左侧色条表达卡片状态。</li>
+          <li>用虚线分隔区块，保持轻松手感。</li>
+          <li>同时验证亮色与深色模式下的对比度。</li>
+        </ul>
+      </div>
+
+      <div class="principle principle--dont copyable" data-spec="principlesDont" data-label="Don't 清单" tabindex="0" aria-label="复制 Don't 清单">
+        <div class="principle__head">
+          <svg class="i" aria-hidden="true"><use href="#i-x"/></svg>Don't
+        </div>
+        <ul>
+          <li>给交互元素使用纯黑重阴影。</li>
+          <li>用主色表示所有不同状态。</li>
+          <li>在 flex 子项的伪元素里写百分比高度。</li>
+          <li>把动效做到 500ms 以上。</li>
+          <li>为了填补留白而堆叠无关卡片。</li>
+        </ul>
       </div>
     </div>
   </section>
 
   <p class="page-foot">
-    按 <a href="https://github.com/pure-admin/vue-pure-admin">vue-pure-admin</a> 设计规范实现 ·
-    品牌视觉参考 Flip7 卡牌派对设计系统
+    规范来源 <a href="https://github.com/ruzi-sudo/pure-admin-doc/blob/main/DESIGN.zh-CN.md">DESIGN.zh-CN.md</a> ·
+    品牌视觉参考 <a href="https://designmd.ai/yiujc/flip7-card-game">Flip7 设计系统</a> ·
+    点击任意模块复制 Markdown 片段
   </p>
 </div>
 
+<!-- 源码视图 -->
+<div class="page" id="rawView" hidden>
+  <div class="raw">
+    <div class="raw__head">
+      <h2>Raw Markdown</h2>
+      <button class="btn" type="button" id="copyRaw">
+        <svg class="i" aria-hidden="true"><use href="#i-copy"/></svg>复制本页源码
+      </button>
+    </div>
+    <pre id="rawContent" tabindex="0"></pre>
+  </div>
+</div>
+
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<div class="confetti" id="confetti" aria-hidden="true"></div>
 
 <script>
 (function () {
   "use strict";
 
-  var STORAGE_KEY = "flip7.scoreParty.v1";
-  var THEME_KEY = "flip7.scoreParty.theme";
-  var TARGET = 200;
-  var MAX_PLAYERS = 8;
-  var MIN_PLAYERS = 2;
+  var THEME_KEY = "flip7.spec.theme";
+  var VIEW_KEY = "flip7.spec.view";
 
-  var els = {
-    grid: document.getElementById("playerGrid"),
-    board: document.getElementById("leaderboard"),
-    history: document.getElementById("historyList"),
-    roundTag: document.getElementById("roundTag"),
-    statRound: document.getElementById("statRound"),
-    statSettled: document.getElementById("statSettled"),
-    statPlayers: document.getElementById("statPlayers"),
-    statLeader: document.getElementById("statLeader"),
-    statLeaderScore: document.getElementById("statLeaderScore"),
-    statTarget: document.getElementById("statTarget"),
-    statProgress: document.getElementById("statProgress"),
-    draftCounter: document.getElementById("draftCounter"),
-    commitBtn: document.getElementById("commitBtn"),
-    undoBtn: document.getElementById("undoBtn"),
-    addPlayerBtn: document.getElementById("addPlayerBtn"),
-    resetBtn: document.getElementById("resetBtn"),
-    themeToggle: document.getElementById("themeToggle"),
-    themeLabel: document.getElementById("themeLabel"),
-    toast: document.getElementById("toast"),
-    confetti: document.getElementById("confetti")
+  /* ======================================================================
+     规范片段：可视化区块与 Raw 视图共用同一份数据
+     ====================================================================== */
+  var SPECS = {
+    preview: "## 示例界面 · 记分派对总览\n\n" +
+      "三栏后台结构：侧边栏 + 顶栏 + 内容区 + 右侧洞察栏。\n\n" +
+      "- 页面底色：--c-bg（#EFF8F7）\n" +
+      "- 表层：--c-surface（#FFFFFF），圆角 --radius-md（6px）\n" +
+      "- 层级：--shadow-subtle（0 1px 2px rgb(20 60 55 / 8%)）\n" +
+      "- 主按钮：--c-primary-strong，承载导出数据等关键动作\n" +
+      "- 品牌强调：--c-primary，用于选中态与图表主色\n" +
+      "- 奖励 / 冠军：--c-gold；BOOM / 危险：--c-coral\n" +
+      "- 文本：--c-text / --c-text-2 / --c-text-3 三层\n\n" +
+      "    <section class=\"panel\">\n      <h2 class=\"panel__title\">记分派对总览</h2>\n    </section>",
+
+    overview: "## 概览\n\n" +
+      "Flip7 是一套复古、活泼的青绿—珊瑚—金色设计系统，为卡牌派对记分场景打造。\n\n" +
+      "整页只用这一套配色：青绿主色、金色强调、珊瑚危险、天空蓝信息，全部由 --c-* 令牌驱动；" +
+      "间距、圆角、阴影与字号沿用 DESIGN.zh-CN.md 的档位，不在页面里再混入第二套主色。\n\n" +
+      "- 单色系：状态色与主色同族，不混入其它色相\n" +
+      "- 双主题：亮 / 暗模式只改变明度与表层，不换色相\n" +
+      "- 可落地：字号、间距、圆角、状态色均有固定档位",
+
+    /* ---- 颜色 ---- */
+    colorPrimary: "### Primary Teal\n\n" +
+      "- Token：--c-primary\n" +
+      "- Value：#2BA8A2\n" +
+      "- 深色变体：#3CC4BD\n" +
+      "- 用途：主界面、选中态、头像、进度条、默认卡片左侧强调条\n\n" +
+      "    --c-primary: #2BA8A2;",
+
+    colorPrimaryLight: "### Primary Light\n\n" +
+      "- Token：--c-primary-light\n" +
+      "- Value：#3CC4BD\n" +
+      "- 深色变体：#5FD9D2\n" +
+      "- 用途：悬停态、轻强调、图表次色\n" +
+      "- 注意：与 --c-primary-strong（#1E8C86）配对使用，同一色相只用明度区分层级\n\n" +
+      "    --c-primary-light: #3CC4BD;\n    --c-primary-strong: #1E8C86;",
+
+    colorGold: "### Accent Gold\n\n" +
+      "- Token：--c-gold\n" +
+      "- Value：#FFD23F\n" +
+      "- 深色变体：#FFE47A\n" +
+      "- 用途：关键 CTA、冠军与领奖台、Flip7 加成、庆祝动效\n" +
+      "- 文字搭配：深色文字 #4a3a00，不用白色\n\n" +
+      "    --c-gold: #FFD23F;\n    --c-gold-dark: #E6B800;",
+
+    colorSurface: "### Surface Base\n\n" +
+      "- Token：--c-surface-base\n" +
+      "- Value：#EFF8F7\n" +
+      "- 用途：Hero 容器、规范板块、图表卡片衬底\n" +
+      "- 深色模式：#12201E，保持同一青绿色相\n\n" +
+      "    --c-surface-base: #EFF8F7;",
+
+    colorCoral: "### Coral\n\n" +
+      "- Token：--c-coral（语义别名 --c-danger）\n" +
+      "- Value：#EF6C4A\n" +
+      "- 深色变体：#FF8A6A\n" +
+      "- 用途：BOOM、危险操作、第三名、负向指标\n" +
+      "- 注意：整页只有这一种危险色，不额外引入红色\n\n" +
+      "    --c-coral: #EF6C4A;\n    --c-coral-dark: #D45233;\n    --c-danger: #EF6C4A;",
+
+    colorSky: "### Sky Blue\n\n" +
+      "- Token：--c-sky\n" +
+      "- Value：#5DADE2\n" +
+      "- 用途：信息提示、Flip7 奖励按钮、图表第三色\n" +
+      "- 深色变体：#6FB7E8\n\n" +
+      "    --c-sky: #5DADE2;",
+
+    colorCream: "### Cream\n\n" +
+      "- Token：--c-cream\n" +
+      "- Value：#FFF8E7\n" +
+      "- 用途：输入面、Logo 底板、复古纸感容器\n" +
+      "- 深色模式：#26261f\n\n" +
+      "    --c-cream: #FFF8E7;",
+
+    /* ---- 字体小样 ---- */
+    typeHeadline: "### Headline\n\n" +
+      "- 字体栈：\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif\n" +
+      "- 字号 / 行高：42px / 1.1\n" +
+      "- 字重：600\n" +
+      "- 字距：-0.02em\n" +
+      "- 用途：品牌展示、Hero 主标题，一屏不超过一处",
+
+    typeBody: "### Body\n\n" +
+      "- 字体栈：系统字体栈，与 Headline 一致\n" +
+      "- 字号 / 行高：26px / 1.5\n" +
+      "- 字重：400\n" +
+      "- 用途：展示级正文样例，用于规范页说明段落",
+
+    typeLabel: "### Label\n\n" +
+      "- 字体栈：系统字体栈\n" +
+      "- 字号 / 行高：17px / 1.4\n" +
+      "- 字重：500\n" +
+      "- 用途：控件文案、标签、图表图例",
+
+    /* ---- 字号体系 ---- */
+    typePageTitle: "### pageTitle\n\n" +
+      "- font-size：20px\n" +
+      "- font-weight：600\n" +
+      "- line-height：1.5\n" +
+      "- 用途：页面级标题，一屏只出现一次\n\n" +
+      "    .page-title {\n      font-size: 20px;\n      font-weight: 600;\n      line-height: 1.5;\n    }",
+
+    typeSectionTitle: "### sectionTitle\n\n" +
+      "- font-size：18px\n" +
+      "- font-weight：600\n" +
+      "- line-height：1.5\n" +
+      "- 用途：区块标题，负责切分长页面信息层级",
+
+    typeBodyLarge: "### bodyLarge\n\n" +
+      "- font-size：16px\n" +
+      "- font-weight：400\n" +
+      "- line-height：1.5\n" +
+      "- 用途：正文、表单内容、说明段落",
+
+    typeBody: "### body\n\n" +
+      "- font-size：14px\n" +
+      "- font-weight：400\n" +
+      "- line-height：1.5\n" +
+      "- 用途：菜单、标签、二级信息、常规控件",
+
+    typeCompact: "### compact\n\n" +
+      "- font-size：13px\n" +
+      "- font-weight：500\n" +
+      "- line-height：1.5\n" +
+      "- 用途：按钮文案、辅助标签、紧凑列表",
+
+    typeCaption: "### caption\n\n" +
+      "- font-size：12px\n" +
+      "- font-weight：400\n" +
+      "- line-height：1.5\n" +
+      "- 用途：注释、时间戳、图表刻度；不承担关键信息",
+
+    /* ---- 按钮 ---- */
+    compButtonPrimary: "### button · primary\n\n" +
+      "- 用于关键动作：保存、提交、创建、导出\n" +
+      "- 底色：--c-primary-strong（#1E8C86，保证白字对比度）\n" +
+      "- 圆角：4px（--radius）\n" +
+      "- 最小高度：34px，移动端 38px\n\n" +
+      "    .btn--primary {\n      min-height: 34px;\n      padding: 0 16px;\n      font-size: 14px;\n      font-weight: 500;\n      color: #fff;\n      background: var(--c-primary-strong);\n      border-radius: var(--radius);\n    }\n    .btn--primary:hover { background: color-mix(in srgb, var(--c-primary-strong) 86%, #fff); }\n    .btn--primary:active { transform: scale(0.97); }",
+
+    compButtonSecondary: "### button · secondary\n\n" +
+      "- 用于取消、返回、查看详情等辅助动作\n" +
+      "- 底色：--c-surface，描边：--c-border\n\n" +
+      "    .btn--secondary {\n      color: var(--c-text-2);\n      background: var(--c-surface);\n      border: 1px solid var(--c-border);\n      border-radius: var(--radius);\n    }\n    .btn--secondary:hover {\n      color: var(--c-primary);\n      border-color: var(--c-primary);\n    }",
+
+    compButtonDanger: "### button · danger\n\n" +
+      "- 只用于删除、清空、移除等高风险操作\n" +
+      "- 通过危险色描边与文字表达，避免整屏红色\n\n" +
+      "    .btn--danger {\n      color: var(--c-danger);\n      border-color: color-mix(in srgb, var(--c-danger) 45%, transparent);\n      background: var(--c-surface);\n    }\n    .btn--danger:hover {\n      color: #fff;\n      background: var(--c-danger);\n    }",
+
+    compButtonPill: "### button · pill（品牌胶囊）\n\n" +
+      "- 圆角：9999px；最小高度 32px；字重 500\n" +
+      "- 底色：--c-primary-strong，阴影：0 2px 8px rgb(30 140 134 / 35%)\n" +
+      "- 用于游戏流程动作，不替代主按钮\n\n" +
+      "    .btn--pill {\n      border-radius: var(--radius-pill);\n      background: var(--c-primary-strong);\n      color: #fff;\n      box-shadow: 0 2px 8px rgb(30 140 134 / 35%);\n    }",
+
+    compButtonBoom: "### button · boom\n\n" +
+      "- 语义：BOOM 出局 / 本轮归零\n" +
+      "- 底色：--c-coral；阴影：0 2px 8px rgb(239 108 74 / 35%)\n" +
+      "- 激活态叠加 2s 无限脉冲\n\n" +
+      "    .btn--boom {\n      border-radius: var(--radius-pill);\n      background: var(--c-coral);\n      color: #fff;\n      box-shadow: 0 2px 8px rgb(239 108 74 / 35%);\n    }",
+
+    compButtonFlip7: "### button · flip7\n\n" +
+      "- 语义：Flip7 奖励 / 信息态\n" +
+      "- 底色：--c-sky；阴影：0 2px 8px rgb(93 173 226 / 30%)\n\n" +
+      "    .btn--flip7 {\n      border-radius: var(--radius-pill);\n      background: var(--c-sky);\n      color: #fff;\n      box-shadow: 0 2px 8px rgb(93 173 226 / 30%);\n    }",
+
+    /* ---- 输入与图标 ---- */
+    compInput: "### input\n\n" +
+      "- 输入面：--c-cream（#FFF8E7）\n" +
+      "- 描边：--c-border；圆角：4px；高度：34px\n" +
+      "- 焦点：主色描边 + 0 0 0 3px rgb(43 168 162 / 22%)\n" +
+      "- 占位文字：--c-text-3\n\n" +
+      "    .input {\n      height: 34px;\n      padding: 0 12px;\n      background: var(--c-cream);\n      border: 1px solid var(--c-border);\n      border-radius: var(--radius);\n    }\n    .input:focus {\n      border-color: var(--c-primary);\n      box-shadow: var(--shadow-focus);\n    }",
+
+    compIconButton: "### icon button\n\n" +
+      "- 尺寸：28–30px 方形，圆角 4px\n" +
+      "- 默认：品牌浅底 + 深品牌色图标\n" +
+      "- 危险图标（删除）：珊瑚色文字 + 珊瑚色浅底\n\n" +
+      "    .icon-btn {\n      width: 30px;\n      height: 30px;\n      border-radius: var(--radius);\n      color: var(--c-primary-strong);\n      background: var(--c-primary-bg);\n    }\n    .icon-btn--danger {\n      color: var(--c-coral-dark);\n      background: var(--c-coral-bg);\n    }",
+
+    compNavIcon: "### nav icon\n\n" +
+      "- 圆形（9999px）图标按钮，用于底栏与顶栏导航\n" +
+      "- 未选中：--c-text-3；选中：--c-primary-bg + --c-primary-strong\n" +
+      "- 触控区域不小于 44 × 44px（移动端可加 padding）\n\n" +
+      "    .nav-icon {\n      width: 32px;\n      height: 32px;\n      border-radius: 50%;\n      color: var(--c-text-3);\n    }\n    .nav-icon.is-active {\n      color: var(--c-primary-strong);\n      background: var(--c-primary-bg);\n    }",
+
+    /* ---- 卡片 ---- */
+    compCardDefault: "### card · default\n\n" +
+      "- 表层：--c-surface；描边：--c-border-light\n" +
+      "- 圆角：6px；阴影：--shadow-subtle\n" +
+      "- 左侧 4px 强调条：--c-primary\n\n" +
+      "    .card {\n      padding: 16px 16px 16px 20px;\n      background: var(--c-surface);\n      border: 1px solid var(--c-border-light);\n      border-radius: var(--radius-md);\n      box-shadow: var(--shadow-subtle);\n    }\n    .card::before {\n      content: \"\";\n      position: absolute;\n      inset: 0 auto 0 0;\n      width: 4px;\n      background: var(--c-primary);\n    }",
+
+    compCardHighlight: "### card · highlight（领先 / 奖励）\n\n" +
+      "- 描边：--c-gold；强调条：--c-gold\n" +
+      "- 阴影：0 2px 10px rgb(255 210 63 / 35%)\n" +
+      "- 仅用于冠军、领先玩家与 Flip7 奖励态\n\n" +
+      "    .card--highlight {\n      border-color: var(--c-gold);\n      box-shadow: 0 2px 10px rgb(255 210 63 / 35%);\n    }\n    .card--highlight::before { background: var(--c-gold); }",
+
+    compCardBoom: "### card · boom\n\n" +
+      "- 描边：--c-coral；底色：--c-coral-bg\n" +
+      "- 强调条：--c-coral；标题文字：--c-coral-dark\n" +
+      "- 可叠加 2s 脉冲强调出局状态\n\n" +
+      "    .card--boom {\n      border-color: var(--c-coral);\n      background: var(--c-coral-bg);\n      box-shadow: 0 2px 10px rgb(239 108 74 / 30%);\n    }",
+
+    /* ---- 区块标题与 Logo ---- */
+    compSectionTitle: "### section title\n\n" +
+      "- 字号：16px / 600\n" +
+      "- Emoji 或序号放在独立图标容器中，保证基线对齐\n" +
+      "- 底部 1px 虚线分隔（--c-border）\n\n" +
+      "    .section-title {\n      display: flex;\n      align-items: center;\n      gap: 8px;\n      font-size: 16px;\n      font-weight: 600;\n      padding-bottom: 8px;\n      border-bottom: 1px dashed var(--c-border);\n    }\n    .section-title__icon {\n      width: 24px;\n      height: 24px;\n      display: grid;\n      place-items: center;\n      color: var(--c-primary-strong);\n      background: var(--c-primary-bg);\n      border-radius: var(--radius);\n    }",
+
+    compLogoFull: "### logo · default\n\n" +
+      "- 5 张卡背扇形排列，旋转角：-24deg / -12deg / 0 / 12deg / 24deg\n" +
+      "- 文字牌：奶油底 + 2px 深青绿描边，整体 skewX(-6deg) rotate(-3deg)\n" +
+      "- FLIP：12–15px / 800，--c-primary-strong\n" +
+      "- 7：20–26px / 800，--c-gold，旋转 5deg + 双层描边阴影\n\n" +
+      "    .logo__plate {\n      transform: skewX(-6deg) rotate(-3deg);\n      background: var(--c-cream);\n      border: 2px solid var(--c-primary-strong);\n    }\n    .logo__seven {\n      color: var(--c-gold);\n      transform: skewX(6deg) rotate(5deg);\n      text-shadow: 1px 1px 0 var(--c-coral-dark), 2px 2px 0 var(--c-primary-strong);\n    }",
+
+    compLogoMark: "### logo · 7_digit\n\n" +
+      "- 单字符图形标：34px 方形，圆角 6px，旋转 -6deg\n" +
+      "- 底色 --c-primary-strong，文字 --c-gold，2px 奶油色描边\n" +
+      "- 用于 favicon、移动端顶栏与紧凑场景\n\n" +
+      "    .logo-mark {\n      width: 34px;\n      height: 34px;\n      font-size: 17px;\n      font-weight: 800;\n      color: var(--c-gold);\n      background: var(--c-primary-strong);\n      border: 2px solid var(--c-cream);\n      border-radius: 6px;\n      transform: rotate(-6deg);\n    }",
+
+    compLogoRules: "### logo · 使用规则\n\n" +
+      "- 卡扇永远在左，文字牌在右，比例 1 : 2.4\n" +
+      "- 最小尺寸：完整版 96 × 34px，图形标 24 × 24px\n" +
+      "- 7 始终旋转 4–6deg 并保留双层描边阴影\n" +
+      "- 不要拉伸、不要更换金色、不要在花底上直接使用无底板版本\n" +
+      "- 深色模式下奶油底板保持 #FFF8E7，避免品牌失真",
+
+    /* ---- 阴影 ---- */
+    shadowSm: "### shadow-sm\n\n" +
+      "- value：0 1px 2px rgb(20 60 55 / 8%)\n" +
+      "- 用途：卡片、面板的静态层级\n" +
+      "- 深色模式需重新验证强度\n\n" +
+      "    --shadow-subtle: 0 1px 2px rgb(20 60 55 / 8%);",
+
+    shadowMd: "### shadow-md\n\n" +
+      "- value：0 2px 8px rgb(20 60 55 / 12%)\n" +
+      "- 用途：下拉、悬浮卡片\n\n" +
+      "    --shadow-md: 0 2px 8px rgb(20 60 55 / 12%);",
+
+    shadowLg: "### shadow-lg\n\n" +
+      "- value：0 4px 16px rgb(20 60 55 / 16%)\n" +
+      "- 用途：弹窗、抽屉\n" +
+      "- 注意：后台场景避免更重的投影\n\n" +
+      "    --shadow-lg: 0 4px 16px rgb(20 60 55 / 16%);",
+
+    shadowCard: "### shadow-card\n\n" +
+      "- value：0 2px 10px rgb(43 168 162 / 14%)\n" +
+      "- 用途：品牌卡片默认层级，替代纯黑阴影\n\n" +
+      "    --shadow-card: 0 2px 10px rgb(43 168 162 / 14%);",
+
+    shadowTealGlow: "### shadow-teal-glow\n\n" +
+      "- value：0 2px 10px rgb(43 168 162 / 30%)\n" +
+      "- 用途：胶囊主操作、选中态、进度条高光\n\n" +
+      "    --shadow-teal-glow: 0 2px 10px rgb(43 168 162 / 30%);",
+
+    shadowAccentGlow: "### shadow-accent-glow\n\n" +
+      "- value：0 2px 10px rgb(230 184 0 / 40%)\n" +
+      "- 用途：金色 CTA、冠军徽章、庆祝元素\n\n" +
+      "    --shadow-accent-glow: 0 2px 10px rgb(230 184 0 / 40%);",
+
+    shadowCoralGlow: "### shadow-coral-glow\n\n" +
+      "- value：0 2px 10px rgb(239 108 74 / 35%)\n" +
+      "- 用途：BOOM、危险操作、第三名\n\n" +
+      "    --shadow-coral-glow: 0 2px 10px rgb(239 108 74 / 35%);",
+
+    shadowSkyGlow: "### shadow-sky-glow\n\n" +
+      "- value：0 2px 10px rgb(93 173 226 / 30%)\n" +
+      "- 用途：信息提示、Flip7 奖励\n\n" +
+      "    --shadow-sky-glow: 0 2px 10px rgb(93 173 226 / 30%);",
+
+    shadowFocus: "### shadow-focus\n\n" +
+      "- value：0 0 0 3px rgb(43 168 162 / 22%)\n" +
+      "- 用途：键盘焦点环，必须与主色描边同时出现\n" +
+      "- 不得用状态色充当焦点色\n\n" +
+      "    --shadow-focus: 0 0 0 3px rgb(43 168 162 / 22%);",
+
+    /* ---- 动效 ---- */
+    animConfetti: "### Confetti（庆祝）\n\n" +
+      "- 10–32 片彩纸，尺寸 6–10px，颜色取品牌五色\n" +
+      "- 3.2–4.5s 下落 + 旋转，延迟随机\n" +
+      "- 只在达成目标时触发一次，不循环\n" +
+      "- prefers-reduced-motion 下直接跳过\n\n" +
+      "    @keyframes confetti-fall {\n      0%   { transform: translate3d(0, -10vh, 0) rotate(0deg); opacity: 1; }\n      100% { transform: translate3d(var(--drift), 110vh, 0) rotate(720deg); opacity: 0.9; }\n    }",
+
+    animCrown: "### Crown Bounce（冠军）\n\n" +
+      "- 1.5s 无限循环，4 段关键帧带旋转摆动\n" +
+      "- 位移幅度 4–12px，不可更大\n\n" +
+      "    @keyframes crown-bounce {\n      0%, 100% { transform: translateY(0) rotate(-4deg); }\n      35%      { transform: translateY(-12px) rotate(5deg); }\n      60%      { transform: translateY(-4px) rotate(-3deg); }\n      80%      { transform: translateY(-9px) rotate(2deg); }\n    }",
+
+    animGlow: "### Glow Pulse（获胜卡片）\n\n" +
+      "- 2s 无限循环，透明度 0.85–1，光环 0 → 6px 扩散\n" +
+      "- 只用于获胜或高亮卡片，避免页面内多处同时脉冲\n\n" +
+      "    @keyframes glow-pulse {\n      0%, 100% { box-shadow: 0 0 0 0 rgb(255 210 63 / 45%); opacity: 1; }\n      50%      { box-shadow: 0 0 0 6px rgb(255 210 63 / 0%); opacity: 0.85; }\n    }",
+
+    animBoom: "### BOOM Pulse（出局）\n\n" +
+      "- 2s 无限循环，描边与光晕同步振荡\n" +
+      "- 与珊瑚色状态标签同时出现，不能只靠动效表达状态\n\n" +
+      "    @keyframes boom-pulse {\n      0%, 100% { box-shadow: 0 0 0 0 rgb(239 108 74 / 45%); }\n      50%      { box-shadow: 0 0 0 6px rgb(239 108 74 / 0%); }\n    }",
+
+    /* ---- Do / Don't ---- */
+    principlesDo: "### Do\n\n" +
+      "- 为可交互元素使用带品牌色的柔和光晕\n" +
+      "- 胶囊按钮在全站保持一致\n" +
+      "- 输入面使用奶油色 #FFF8E7\n" +
+      "- 用左侧色条表达卡片状态\n" +
+      "- 用虚线分隔区块，保持轻松手感\n" +
+      "- 同时验证亮色与深色模式下的对比度",
+
+    principlesDont: "### Don't\n\n" +
+      "- 给交互元素使用纯黑重阴影\n" +
+      "- 用主色表示所有不同状态\n" +
+      "- 在 flex 子项的伪元素里写百分比高度\n" +
+      "- 把动效做到 500ms 以上\n" +
+      "- 为了填补留白而堆叠无关卡片"
   };
 
-  var uid = 0;
-  function nextId() {
-    uid += 1;
-    return "p" + uid + "-" + Math.random().toString(36).slice(2, 6);
-  }
+  var SPEC_ORDER = [
+    "preview", "overview",
+    "colorPrimary", "colorPrimaryLight", "colorGold", "colorSurface", "colorCoral", "colorSky", "colorCream",
+    "typeHeadline", "typeBody", "typeLabel",
+    "typePageTitle", "typeSectionTitle", "typeBodyLarge", "typeBody", "typeCompact", "typeCaption",
+    "compButtonPrimary", "compButtonSecondary", "compButtonDanger", "compButtonPill", "compButtonBoom", "compButtonFlip7",
+    "compInput", "compIconButton", "compNavIcon",
+    "compCardDefault", "compCardHighlight", "compCardBoom",
+    "compSectionTitle", "compLogoFull", "compLogoMark", "compLogoRules",
+    "shadowSm", "shadowMd", "shadowLg", "shadowCard", "shadowTealGlow", "shadowAccentGlow",
+    "shadowCoralGlow", "shadowSkyGlow", "shadowFocus",
+    "animConfetti", "animCrown", "animGlow", "animBoom",
+    "principlesDo", "principlesDont"
+  ];
 
-  function createPlayer(name) {
-    return { id: nextId(), name: name, rounds: [] };
-  }
+  var els = {
+    toast: document.getElementById("toast"),
+    visualView: document.getElementById("visualView"),
+    rawView: document.getElementById("rawView"),
+    rawContent: document.getElementById("rawContent"),
+    copyAll: document.getElementById("copyAll"),
+    copyRaw: document.getElementById("copyRaw"),
+    themeBtns: Array.prototype.slice.call(document.querySelectorAll("[data-theme-btn]")),
+    viewBtns: Array.prototype.slice.call(document.querySelectorAll("[data-view-btn]"))
+  };
 
-  function defaultState() {
-    return {
-      round: 1,
-      players: ["阿乐", "小满", "Nova", "大橘"].map(createPlayer),
-      history: []
-    };
-  }
-
-  var state = loadState();
-  var focusKey = null;
   var toastTimer = null;
 
-  /* ---------------- 状态读写 ---------------- */
-  function loadState() {
-    try {
-      var raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return defaultState();
-      var parsed = JSON.parse(raw);
-      if (!parsed || !Array.isArray(parsed.players) || parsed.players.length < MIN_PLAYERS) {
-        return defaultState();
-      }
-      parsed.round = Math.max(1, parseInt(parsed.round, 10) || 1);
-      parsed.history = Array.isArray(parsed.history) ? parsed.history : [];
-      parsed.players = parsed.players.map(function (p) {
-        var player = {
-          id: p.id || nextId(),
-          name: String(p.name || "玩家"),
-          rounds: Array.isArray(p.rounds)
-            ? p.rounds.filter(function (r) { return r && typeof r.score === "number"; })
-            : []
-        };
-        // 保留未结算的草稿分，刷新页面不丢失
-        if (p.draft !== null && p.draft !== undefined && isFinite(p.draft)) {
-          player.draft = Math.max(0, Math.min(999, Math.round(p.draft)));
-        }
-        return player;
+  function fullMarkdown() {
+    return "# Flip7 设计系统 · 视觉规范\n\n" +
+      "> 单色系规范：青绿主色、金色强调、珊瑚危险、天空蓝信息；单击任意区块可复制 Markdown 片段。\n\n" +
+      SPEC_ORDER.map(function (key) { return SPECS[key]; }).join("\n\n---\n\n") + "\n";
+  }
+
+  /* ---------------- 复制 ---------------- */
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).then(function () { return true; }).catch(function () {
+        return legacyCopy(text);
       });
-      return parsed;
+    }
+    return Promise.resolve(legacyCopy(text));
+  }
+
+  function legacyCopy(text) {
+    var area = document.createElement("textarea");
+    area.value = text;
+    area.setAttribute("readonly", "");
+    area.style.position = "fixed";
+    area.style.top = "-1000px";
+    area.style.opacity = "0";
+    document.body.appendChild(area);
+    var ok = false;
+    try {
+      area.select();
+      area.setSelectionRange(0, text.length);
+      ok = document.execCommand("copy");
     } catch (err) {
-      return defaultState();
+      ok = false;
     }
+    document.body.removeChild(area);
+    return ok;
   }
 
-  function saveState() {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (err) { /* 隐私模式忽略 */ }
-  }
-
-  function total(player) {
-    return player.rounds.reduce(function (sum, r) { return sum + r.score; }, 0);
-  }
-
-  function draftOf(player) {
-    var draft = player.draft;
-    return typeof draft === "number" && isFinite(draft) ? draft : null;
-  }
-
-  function leaderOf(players) {
-    var best = null;
-    players.forEach(function (p) {
-      var t = total(p);
-      if (!best || t > best.total) best = { player: p, total: t };
-    });
-    return best;
-  }
-
-  /* ---------------- 渲染 ---------------- */
-  function render() {
-    var players = state.players;
-    var best = leaderOf(players);
-    var settled = state.history.length;
-    var drafts = players.filter(function (p) { return draftOf(p) !== null; }).length;
-    var maxTotal = players.reduce(function (max, p) { return Math.max(max, total(p)); }, 0);
-
-    els.statRound.textContent = state.round;
-    els.statSettled.textContent = settled;
-    els.statPlayers.textContent = players.length;
-    els.statTarget.textContent = TARGET;
-    els.statProgress.textContent = "最高 " + maxTotal + " 分";
-    els.roundTag.textContent = "第 " + state.round + " 轮";
-    els.draftCounter.textContent = "待记分 " + drafts;
-    els.commitBtn.textContent = "结算本轮 · 第 " + state.round + " 轮";
-    els.undoBtn.disabled = state.round <= 1;
-    els.addPlayerBtn.disabled = players.length >= MAX_PLAYERS;
-    els.addPlayerBtn.title = players.length >= MAX_PLAYERS ? "最多 " + MAX_PLAYERS + " 位玩家" : "添加一位玩家";
-
-    if (best) {
-      els.statLeader.textContent = best.player.name;
-      els.statLeaderScore.textContent = best.total + " 分";
-    } else {
-      els.statLeader.textContent = "—";
-      els.statLeaderScore.textContent = "";
-    }
-
-    els.grid.innerHTML = players.map(function (p, i) {
-      return playerCardHtml(p, i, best && best.player.id === p.id && best.total > 0);
-    }).join("");
-
-    renderBoard(best);
-    renderHistory();
-    restoreFocus();
-  }
-
-  function playerCardHtml(player, index, isLeader) {
-    var t = total(player);
-    var draft = draftOf(player);
-    var boom = draft === 0;
-    var done = t >= TARGET;
-    var percent = Math.min(100, Math.round((t / TARGET) * 100));
-
-    var cls = "player-card";
-    if (isLeader) cls += " player-card--leader";
-    if (done) cls += " player-card--done";
-
-    var badges = "";
-    if (isLeader) badges += '<span class="tag tag--gold">领先</span>';
-    if (done) badges += '<span class="tag tag--teal">已达标</span>';
-    if (boom) badges += '<span class="tag tag--coral">BOOM</span>';
-
-    var chips = [2, 4, 6, 8, 10].map(function (n) {
-      return '<button class="chip" type="button" data-add="' + n + '">+' + n + "</button>";
-    }).join("") +
-      '<button class="chip" type="button" data-mult="2" title="数字牌翻倍">×2</button>' +
-      '<button class="chip chip--gold" type="button" data-add="15">Flip7 +15</button>' +
-      '<button class="chip chip--coral' + (boom ? " is-active" : "") + '" type="button" data-boom="1">BOOM</button>';
-
-    return '' +
-      '<article class="' + cls + '" data-player="' + player.id + '">' +
-        '<div class="player-card__top">' +
-          '<span class="avatar" aria-hidden="true">' + escapeHtml(initialOf(player.name, index)) + "</span>" +
-          '<input class="player-name" type="text" maxlength="12" value="' + escapeAttr(player.name) + '"' +
-            ' data-key="name-' + player.id + '" aria-label="第 ' + (index + 1) + ' 位玩家名称">' +
-          '<button class="icon-btn" type="button" data-remove="' + player.id + '" aria-label="移除玩家 ' + escapeAttr(player.name) + '" title="移除玩家">✕</button>' +
-        "</div>" +
-        '<div class="player-card__score">' +
-          '<div class="total">' +
-            '<span class="total__label">总分</span>' +
-            '<strong class="total__value">' + t + "<small>分</small></strong>" +
-          "</div>" +
-          '<div class="counter" role="group" aria-label="' + escapeAttr(player.name) + ' 本轮得分">' +
-            '<button class="counter__btn counter__btn--minus" type="button" data-step="-1" aria-label="本轮得分减 1">−</button>' +
-            '<input class="counter__input" type="number" min="0" max="999" inputmode="numeric" placeholder="本轮"' +
-              ' value="' + (draft === null ? "" : draft) + '" data-key="draft-' + player.id + '"' +
-              ' aria-label="' + escapeAttr(player.name) + ' 本轮得分">' +
-            '<button class="counter__btn counter__btn--plus" type="button" data-step="1" aria-label="本轮得分加 1">+</button>' +
-          "</div>" +
-        "</div>" +
-        '<div class="chips" role="group" aria-label="' + escapeAttr(player.name) + ' 快速记分">' + chips + "</div>" +
-        '<div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="' + TARGET + '"' +
-          ' aria-valuenow="' + Math.min(t, TARGET) + '" aria-label="' + escapeAttr(player.name) + ' 目标进度">' +
-          '<span class="progress__bar" style="width:' + percent + '%"></span>' +
-        "</div>" +
-        '<div class="player-card__meta">' +
-          "<span>已结算 " + player.rounds.length + " 轮</span>" +
-          badges +
-          '<span class="spacer"></span>' +
-          "<span>" + t + " / " + TARGET + "</span>" +
-        "</div>" +
-      "</article>";
-  }
-
-  function renderBoard(best) {
-    var ranked = state.players.slice().sort(function (a, b) {
-      var diff = total(b) - total(a);
-      return diff !== 0 ? diff : a.name.localeCompare(b.name, "zh-Hans-CN");
-    });
-
-    if (!ranked.length) {
-      els.board.innerHTML = '<li class="board__empty">还没有玩家，先添加一位吧。</li>';
-      return;
-    }
-
-    els.board.innerHTML = ranked.map(function (p, i) {
-      var rank = i + 1;
-      var cls = "board__item";
-      var medal = "";
-      if (rank === 1 && total(p) > 0) { cls += " board__item--gold"; medal = "👑"; }
-      else if (rank === 2 && total(p) > 0) { cls += " board__item--silver"; medal = "🥈"; }
-      else if (rank === 3 && total(p) > 0) { cls += " board__item--bronze"; medal = "🥉"; }
-
-      return '<li class="' + cls + '">' +
-        '<span class="board__rank">' + rank + "</span>" +
-        '<span class="board__avatar" aria-hidden="true">' + escapeHtml(initialOf(p.name, i)) + "</span>" +
-        '<span class="board__name">' + escapeHtml(p.name) + (medal ? " " + medal : "") + "</span>" +
-        '<span class="board__score">' + total(p) + "</span>" +
-      "</li>";
-    }).join("");
-  }
-
-  function renderHistory() {
-    if (!state.history.length) {
-      els.history.innerHTML = '<p class="history__detail">还没有结算记录。</p>';
-      return;
-    }
-
-    els.history.innerHTML = state.history.slice(0, 3).map(function (entry) {
-      var detail = entry.entries.map(function (e) {
-        return e.name + " " + (e.score === 0 ? "BOOM" : "+" + e.score);
-      }).join(" · ");
-      return '<div class="history__item">' +
-        '<div class="history__head">' +
-          "<strong>第 " + entry.round + " 轮</strong>" +
-          '<span class="spacer"></span>' +
-          "<span>" + entry.entries.length + " 人</span>" +
-        "</div>" +
-        '<p class="history__detail">' + escapeHtml(detail) + "</p>" +
-      "</div>";
-    }).join("");
-  }
-
-  function restoreFocus() {
-    if (!focusKey) return;
-    var target = document.querySelector('[data-key="' + focusKey + '"]');
-    if (!target) { focusKey = null; return; }
-    target.focus();
-    if (typeof target.setSelectionRange === "function" && target.type !== "number") {
-      var len = target.value.length;
-      try { target.setSelectionRange(len, len); } catch (err) { /* 忽略 */ }
-    }
-  }
-
-  /* ---------------- 工具函数 ---------------- */
-  function initialOf(name, index) {
-    var trimmed = String(name || "").trim();
-    if (!trimmed) return String(index + 1);
-    return trimmed.slice(0, 1).toUpperCase();
-  }
-
-  function escapeHtml(str) {
-    return String(str)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#39;");
-  }
-
-  function escapeAttr(str) {
-    return escapeHtml(str);
-  }
-
-  function showToast(message, tone) {
+  function showToast(message, isError) {
     els.toast.textContent = message;
-    els.toast.className = "toast is-visible" + (tone ? " toast--" + tone : "");
+    els.toast.className = "toast is-visible" + (isError ? " is-error" : "");
     window.clearTimeout(toastTimer);
     toastTimer = window.setTimeout(function () {
-      els.toast.className = "toast" + (tone ? " toast--" + tone : "");
-    }, 2600);
+      els.toast.className = "toast" + (isError ? " is-error" : "");
+    }, 2400);
   }
 
-  /* ---------------- 交互逻辑 ---------------- */
-  function setDraft(player, value) {
-    if (value === null) {
-      delete player.draft;
-    } else {
-      player.draft = Math.max(0, Math.min(999, Math.round(value)));
-    }
+  function flashCopied(el) {
+    el.classList.add("is-copied");
+    window.setTimeout(function () { el.classList.remove("is-copied"); }, 1400);
   }
 
-  function commitRound() {
-    var entries = state.players.filter(function (p) { return draftOf(p) !== null; });
-    if (!entries.length) {
-      showToast("请先填写至少一位玩家的本轮得分", "coral");
-      return;
-    }
-
-    var round = state.round;
-    var snapshot = [];
-    var winners = [];
-
-    entries.forEach(function (p) {
-      var score = draftOf(p);
-      p.rounds.push({ round: round, score: score });
-      snapshot.push({ name: p.name, score: score });
-      delete p.draft;
-      if (total(p) >= TARGET && total(p) - score < TARGET) winners.push(p.name);
+  function copySpec(el) {
+    var key = el.getAttribute("data-spec");
+    var label = el.getAttribute("data-label") || key;
+    var text = SPECS[key];
+    if (!text) return;
+    copyText(text).then(function (ok) {
+      if (ok) {
+        flashCopied(el);
+        showToast("已复制 · " + label, false);
+      } else {
+        showToast("复制失败，请手动选择文本", true);
+      }
     });
-
-    state.history.unshift({ round: round, entries: snapshot });
-    state.history = state.history.slice(0, 12);
-    state.round = round + 1;
-    saveState();
-    render();
-
-    if (winners.length) {
-      celebrate();
-      showToast("🎉 " + winners.join("、") + " 达成 " + TARGET + " 分！", "gold");
-    } else {
-      showToast("第 " + round + " 轮已结算，共 " + entries.length + " 人记分", "");
-    }
   }
 
-  function undoRound() {
-    if (state.round <= 1) {
-      showToast("已经是第一轮，无法撤销", "");
-      return;
-    }
-    var target = state.round - 1;
-    state.history = state.history.filter(function (h) { return h.round !== target; });
-    state.players.forEach(function (p) {
-      p.rounds = p.rounds.filter(function (r) { return r.round !== target; });
+  document.addEventListener("click", function (event) {
+    var el = event.target.closest("[data-spec]");
+    if (!el) return;
+    if (event.target.closest("a[href]")) event.preventDefault();
+    copySpec(el);
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    var el = event.target.closest("[data-spec]");
+    if (!el) return;
+    event.preventDefault();
+    copySpec(el);
+  });
+
+  els.copyAll.addEventListener("click", function () {
+    copyText(fullMarkdown()).then(function (ok) {
+      showToast(ok ? "已复制全部规范 · " + SPEC_ORDER.length + " 个片段" : "复制失败，请手动选择文本", !ok);
     });
-    state.round = target;
-    saveState();
-    render();
-    showToast("已撤销第 " + target + " 轮", "");
-  }
+  });
 
-  function celebrate() {
-    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
-
-    var colors = ["var(--game-teal)", "var(--game-gold)", "var(--game-coral)", "var(--game-sky)", "var(--game-teal-dark)"];
-    var pieces = [];
-    for (var i = 0; i < 32; i += 1) {
-      var left = Math.random() * 100;
-      var duration = 1.6 + Math.random() * 1.4;
-      var delay = Math.random() * 0.4;
-      var drift = (Math.random() * 80 - 40).toFixed(0) + "px";
-      var color = colors[i % colors.length];
-      var shape = Math.random() > 0.65 ? "50%" : "2px";
-      pieces.push(
-        '<i style="left:' + left.toFixed(2) + "%;background:" + color +
-        ";--fall-duration:" + duration.toFixed(2) + "s;--fall-delay:" + delay.toFixed(2) +
-        "s;--drift:" + drift + ";border-radius:" + shape + '"></i>'
-      );
-    }
-    els.confetti.innerHTML = pieces.join("");
-    window.setTimeout(function () { els.confetti.innerHTML = ""; }, 3600);
-  }
-
-  function addPlayer() {
-    if (state.players.length >= MAX_PLAYERS) {
-      showToast("最多支持 " + MAX_PLAYERS + " 位玩家", "coral");
-      return;
-    }
-    var index = state.players.length + 1;
-    var player = createPlayer("玩家 " + index);
-    state.players.push(player);
-    saveState();
-    focusKey = "name-" + player.id;
-    render();
-    showToast("已添加玩家，可直接改名", "");
-  }
-
-  function removePlayer(id) {
-    if (state.players.length <= MIN_PLAYERS) {
-      showToast("至少保留 " + MIN_PLAYERS + " 位玩家", "coral");
-      return;
-    }
-    var player = state.players.find(function (p) { return p.id === id; });
-    if (!player) return;
-    if (player.rounds.length && !window.confirm("移除「" + player.name + "」会丢失其已记分数，确定吗？")) {
-      return;
-    }
-    state.players = state.players.filter(function (p) { return p.id !== id; });
-    saveState();
-    render();
-    showToast("已移除「" + player.name + "」", "");
-  }
-
-  function resetGame() {
-    if (!window.confirm("清空当前对局？所有玩家与分数都会重置。")) return;
-    state = defaultState();
-    saveState();
-    render();
-    showToast("已开始新的对局", "");
-  }
+  els.copyRaw.addEventListener("click", function () {
+    copyText(fullMarkdown()).then(function (ok) {
+      showToast(ok ? "已复制完整 Markdown 规范" : "复制失败，请手动选择文本", !ok);
+    });
+  });
 
   /* ---------------- 主题 ---------------- */
   function applyTheme(theme) {
     var isDark = theme === "dark";
     document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
-    els.themeToggle.setAttribute("aria-pressed", isDark ? "true" : "false");
-    els.themeLabel.textContent = isDark ? "浅色模式" : "深色模式";
-    try { localStorage.setItem(THEME_KEY, isDark ? "dark" : "light"); } catch (err) { /* 忽略 */ }
+    els.themeBtns.forEach(function (btn) {
+      btn.setAttribute("aria-pressed", String(btn.getAttribute("data-theme-btn") === theme));
+    });
+    try { localStorage.setItem(THEME_KEY, theme); } catch (err) { /* 隐私模式忽略 */ }
   }
 
   function initTheme() {
@@ -1581,145 +2529,40 @@ button, input, select { font: inherit; color: inherit; }
     applyTheme(saved === "dark" ? "dark" : "light");
   }
 
-  /* ---------------- 事件绑定 ---------------- */
-  els.grid.addEventListener("input", function (event) {
-    var input = event.target;
-    var card = input.closest("[data-player]");
-    if (!card) return;
-    var player = state.players.find(function (p) { return p.id === card.dataset.player; });
-    if (!player) return;
-
-    if (input.classList.contains("player-name")) {
-      player.name = input.value.slice(0, 12);
-      focusKey = "name-" + player.id;
-      saveState();
-      // 名字变化只刷新局部内容，避免整卡重绘打断输入
-      var avatar = card.querySelector(".avatar");
-      if (avatar) avatar.textContent = initialOf(player.name, state.players.indexOf(player));
-      var best = leaderOf(state.players);
-      els.statLeader.textContent = best ? best.player.name : "—";
-      els.statLeaderScore.textContent = best ? best.total + " 分" : "";
-      renderBoard(best);
-      return;
-    }
-
-    if (input.classList.contains("counter__input")) {
-      var raw = input.value.trim();
-      focusKey = "draft-" + player.id;
-      if (raw === "") {
-        setDraft(player, null);
-      } else {
-        var num = parseInt(raw, 10);
-        if (isNaN(num)) setDraft(player, null);
-        else setDraft(player, num);
-      }
-      saveState();
-      updateCardQuickState(player);
-      var b = leaderOf(state.players);
-      renderBoard(b);
-      els.draftCounter.textContent = "待记分 " + state.players.filter(function (p) { return draftOf(p) !== null; }).length;
-    }
+  els.themeBtns.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      applyTheme(btn.getAttribute("data-theme-btn"));
+    });
   });
 
-  els.grid.addEventListener("focusin", function (event) {
-    if (event.target.dataset && event.target.dataset.key) focusKey = event.target.dataset.key;
-  });
-
-  els.grid.addEventListener("click", function (event) {
-    var btn = event.target.closest("button");
-    if (!btn) return;
-    var card = btn.closest("[data-player]");
-    if (!card) return;
-    var player = state.players.find(function (p) { return p.id === card.dataset.player; });
-    if (!player) return;
-
-    if (btn.dataset.remove) { removePlayer(btn.dataset.remove); return; }
-
-    if (btn.dataset.step) {
-      var step = parseInt(btn.dataset.step, 10);
-      var current = draftOf(player);
-      setDraft(player, (current === null ? 0 : current) + step);
-      focusKey = "draft-" + player.id;
-      saveState();
-      render();
-      return;
-    }
-
-    if (btn.dataset.add) {
-      var add = parseInt(btn.dataset.add, 10);
-      var base = draftOf(player);
-      setDraft(player, (base === null ? 0 : base) + add);
-      focusKey = "draft-" + player.id;
-      saveState();
-      render();
-      return;
-    }
-
-    if (btn.dataset.mult) {
-      var mult = parseInt(btn.dataset.mult, 10);
-      var value = draftOf(player);
-      if (value === null) {
-        showToast("先填写本轮数字牌点数，再使用 ×2", "sky");
-        return;
-      }
-      setDraft(player, value * mult);
-      focusKey = "draft-" + player.id;
-      saveState();
-      render();
-      return;
-    }
-
-    if (btn.dataset.boom) {
-      setDraft(player, 0);
-      focusKey = "draft-" + player.id;
-      saveState();
-      render();
-      return;
-    }
-  });
-
-  // 轻微更新单卡状态，避免整页重绘
-  function updateCardQuickState(player) {
-    var card = document.querySelector('[data-player="' + player.id + '"]');
-    if (!card) return;
-    var draft = draftOf(player);
-    var boomBtn = card.querySelector("[data-boom]");
-    var badges = card.querySelectorAll(".tag");
-    card.classList.toggle("player-card--boom", draft === 0);
-    if (boomBtn) boomBtn.classList.toggle("is-active", draft === 0);
-    var existing = card.querySelector(".tag--coral");
-    if (draft === 0 && !existing && badges) {
-      // 仅在 BOOM 时补一个状态标签
-      var meta = card.querySelector(".player-card__meta");
-      if (meta) {
-        var tag = document.createElement("span");
-        tag.className = "tag tag--coral";
-        tag.textContent = "BOOM";
-        meta.insertBefore(tag, meta.querySelector(".spacer"));
-      }
-    } else if (draft !== 0 && existing) {
-      existing.remove();
+  /* ---------------- 视图 ---------------- */
+  function applyView(view) {
+    var raw = view === "raw";
+    els.visualView.hidden = raw;
+    els.rawView.hidden = !raw;
+    els.viewBtns.forEach(function (btn) {
+      btn.setAttribute("aria-pressed", String(btn.getAttribute("data-view-btn") === view));
+    });
+    try { localStorage.setItem(VIEW_KEY, view); } catch (err) { /* 忽略 */ }
+    if (raw && !els.rawContent.textContent) {
+      els.rawContent.textContent = fullMarkdown();
     }
   }
 
-  els.commitBtn.addEventListener("click", commitRound);
-  els.undoBtn.addEventListener("click", undoRound);
-  els.addPlayerBtn.addEventListener("click", addPlayer);
-  els.resetBtn.addEventListener("click", resetGame);
-  els.themeToggle.addEventListener("click", function () {
-    var current = document.documentElement.getAttribute("data-theme");
-    applyTheme(current === "dark" ? "light" : "dark");
-  });
+  function initView() {
+    var saved = null;
+    try { saved = localStorage.getItem(VIEW_KEY); } catch (err) { /* 忽略 */ }
+    applyView(saved === "raw" ? "raw" : "visual");
+  }
 
-  document.addEventListener("keydown", function (event) {
-    if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
-      event.preventDefault();
-      commitRound();
-    }
+  els.viewBtns.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      applyView(btn.getAttribute("data-view-btn"));
+    });
   });
 
   initTheme();
-  render();
+  initView();
 })();
 </script>
 </body>
