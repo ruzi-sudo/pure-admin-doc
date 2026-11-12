@@ -2,9 +2,9 @@
 
 设计规范文档仓库：`DESIGN.md`（English）与 `DESIGN.zh-CN.md`（中文）整理 [pure-admin/vue-pure-admin](https://github.com/pure-admin/vue-pure-admin) 的视觉与令牌规范。
 
-## Flip7 设计系统 · 视觉规范页
+## 设计系统规范页
 
-`pages/index.html` 是一个可交互的设计规范浏览页，参考 [Flip7 设计系统](https://designmd.ai/yiujc/flip7-card-game) 的结构，并遵循 `DESIGN.zh-CN.md` 的字号、间距、圆角、阴影与动效档位。
+`pages/index.html` 是一个可交互的设计规范浏览页，采用常规设计系统文档站的页面结构（顶栏控制 → 示例界面 → 规范总览 → 字号 / 组件 / 阴影 / 动效 / 原则），内容为中后台通用规范。
 
 - Demo：https://ruzi-sudo.github.io/pure-admin-doc/
 - 页面源码：[`pages/index.html`](pages/index.html)
@@ -20,18 +20,20 @@
 
 ### 配色规则
 
-整页只使用 Flip7 一套色系，不混入其它主色：
+单一 sky blue 主色 + 中性色，页面内不引入第二套品牌色：
 
 | 角色 | 令牌 | 亮色 | 深色 |
 | --- | --- | --- | --- |
-| 主色 | `--c-primary` | `#2BA8A2` | `#3CC4BD` |
-| 主色实底 | `--c-primary-strong` | `#1E8C86` | `#1E8C86` |
-| 强调 / 奖励 | `--c-gold` | `#FFD23F` | `#FFD23F` |
-| 危险 / BOOM | `--c-coral` | `#EF6C4A` | `#FF8A6A` |
-| 信息 / Flip7 | `--c-sky` | `#5DADE2` | `#6FB7E8` |
-| 页面底色 | `--c-bg` | `#EFF8F7` | `#0F1A19` |
+| 主色 | `--c-primary` | `#3E9FDD` | `#6FC0EA` |
+| 主色实底（白字） | `--c-primary-strong` | `#1F7FB8` | `#1F7FB8` |
+| 主色提亮 | `--c-primary-light` | `#7FC6EC` | `#93D3F3` |
+| 主色浅底 | `--c-primary-bg` | `#EAF5FC` | `#12293A` |
+| 页面底 | `--c-bg` | `#F7FBFE` | `#0E1720` |
+| 面板衬底 | `--c-surface-base` | `#F1F8FD` | `#111F2B` |
+| 正文文字 | `--c-text` | `#1E2A33` | `#E6F0F7` |
 
-`--c-success`、`--c-warning`、`--c-danger`、`--c-info` 分别映射到青绿、金色、珊瑚、天空蓝，不额外引入第五种色相。
+- `--c-danger` / `--c-danger-bg` 仅用于删除等破坏性状态，不作为品牌色大面积使用。
+- 主色实底统一使用 `--c-primary-strong`，保证白字对比度 ≥ 4.5:1。
 
 ### 交互
 
@@ -50,15 +52,11 @@ python -m http.server 8080
 
 页面由 GitHub Actions 发布：推送 `main` 时把 `pages/` 目录打包为 Pages 站点（见 [`.github/workflows/pages.yml`](.github/workflows/pages.yml)）。
 
-- 启用 Pages（Source 需要为 `GitHub Actions`）：
+```bash
+# 首次启用（Source 需要为 GitHub Actions）
+gh api --method POST repos/ruzi-sudo/pure-admin-doc/pages -f build_type=workflow
 
-  ```bash
-  gh api --method POST repos/ruzi-sudo/pure-admin-doc/pages -f build_type=workflow
-  ```
-
-- 触发并查看部署：
-
-  ```bash
-  gh workflow run pages.yml --repo ruzi-sudo/pure-admin-doc
-  gh run list --repo ruzi-sudo/pure-admin-doc --workflow pages.yml --limit 3
-  ```
+# 触发并查看部署
+gh workflow run pages.yml --repo ruzi-sudo/pure-admin-doc
+gh run list --repo ruzi-sudo/pure-admin-doc --workflow pages.yml --limit 3
+```
