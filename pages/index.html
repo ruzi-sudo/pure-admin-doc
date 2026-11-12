@@ -1,44 +1,59 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="light">
+<html lang="zh-CN" data-theme="light" data-theme-color="blue">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pure Admin 设计系统 · 视觉规范</title>
-<meta name="description" content="通用后台设计系统的可视化规范示例页：颜色、字体、组件、阴影与动效，点击任意规范块即可复制 Markdown 片段。">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%233E9FDD'/%3E%3Ctext x='16' y='21' font-size='12' font-weight='700' text-anchor='middle' fill='%23fff'%3EPA%3C/text%3E%3C/svg%3E">
+<title>PureAdmin 设计系统 · 视觉规范</title>
+<meta name="description" content="按 vue-pure-admin 界面规则组织的设计规范示例：多主题色、亮暗模式、导航模式与点击复制规范。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 3c5 5.5 8 9.8 8 14a8 8 0 0 1-16 0c0-4.2 3-8.5 8-14z' fill='%23409EFF'/%3E%3C/svg%3E">
 <style>
 /* ==========================================================================
-   1. 令牌：单一一套 sky blue 主色 + 中性色；状态色只用于状态，不做第二套品牌色
+   1. 令牌
+   --------------------------------------------------------------------------
+   沿用 vue-pure-admin / Element Plus 规则：
+   - 主色可切换（8 套主题色），亮/暗模式与主题色解耦
+   - 语义状态色（success / warning / danger / info）只表达状态
+   - 布局尺寸：顶栏 48px、标签栏 34px、侧边栏 210px
    ========================================================================== */
 :root {
   color-scheme: light;
 
-  /* 主色 */
-  --c-primary: #3E9FDD;
-  --c-primary-light: #7FC6EC;
-  --c-primary-strong: #1F7FB8;
-  --c-primary-dark: #16638F;
-  --c-primary-bg: #EAF5FC;
-  --c-primary-line: #BEDFF2;
+  /* 主题色（由 data-theme-color 覆盖），并派生整套主色令牌 */
+  --theme-color: #409EFF;
+  --theme-strong: #2C6FB0;
+  --theme-dark: #1B5C96;
 
-  /* 状态色（仅用于状态表达） */
-  --c-danger: #C8503F;
-  --c-danger-bg: #FBEEEC;
+  --c-primary: var(--theme-color);
+  --c-primary-strong: var(--theme-strong);
+  --c-primary-dark: var(--theme-dark);
+  --c-primary-light: color-mix(in srgb, var(--theme-color) 62%, #fff);
+  --c-primary-bg: color-mix(in srgb, var(--theme-color) 9%, #fff);
+  --c-primary-line: color-mix(in srgb, var(--theme-color) 26%, #fff);
+
+  /* 状态色 */
+  --c-success: #67C23A;
+  --c-success-bg: #f0f9eb;
+  --c-warning: #E6A23C;
+  --c-warning-bg: #fdf6ec;
+  --c-danger: #F56C6C;
+  --c-danger-bg: #fef0f0;
+  --c-info: #909399;
+  --c-info-bg: #f4f4f5;
 
   /* 表层与文本 */
-  --c-bg: #F7FBFE;
-  --c-surface-base: #F1F8FD;
-  --c-surface: #FFFFFF;
-  --c-surface-soft: #F8FBFD;
-  --c-border: #D7E7F2;
-  --c-border-light: #E6F1F8;
-  --c-text: #1E2A33;
-  --c-text-2: #4B5B67;
-  --c-text-3: #6F818E;
+  --c-bg: #f0f2f5;
+  --c-surface: #ffffff;
+  --c-surface-soft: #f7f8fa;
+  --c-border: #dcdfe6;
+  --c-border-light: #ebeef5;
+  --c-text: #303133;
+  --c-text-2: #606266;
+  --c-text-3: #909399;
 
-  --shadow-subtle: 0 1px 2px rgb(16 42 60 / 8%);
-  --shadow-popover: 0 2px 10px rgb(16 42 60 / 16%);
-  --shadow-focus: 0 0 0 3px rgb(62 159 221 / 25%);
+  --shadow-subtle: 0 1px 2px rgb(0 0 0 / 6%);
+  --shadow-card: 0 2px 12px rgb(0 0 0 / 6%);
+  --shadow-popover: 0 2px 8px rgb(0 0 0 / 15%);
+  --shadow-focus: 0 0 0 3px color-mix(in srgb, var(--theme-color) 25%, transparent);
 
   --radius-sm: 3px;
   --radius: 4px;
@@ -52,6 +67,10 @@
   --space-6: 24px;
   --space-8: 32px;
 
+  --header-h: 48px;
+  --tagbar-h: 34px;
+  --sidebar-w: 210px;
+
   --motion-fast: 0.12s;
   --motion: 0.3s;
   --font-sans: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
@@ -59,32 +78,47 @@
   --font-num: "SF Mono", "JetBrains Mono", Consolas, "Courier New", monospace;
 }
 
+/* 8 套主题色 */
+[data-theme-color="purple"] { --theme-color: #693AC9; --theme-strong: #4E2A99; --theme-dark: #3B1F75; }
+[data-theme-color="pink"] { --theme-color: #D84493; --theme-strong: #A62F6E; --theme-dark: #7E2353; }
+[data-theme-color="dusk"] { --theme-color: #E13C39; --theme-strong: #A82A28; --theme-dark: #82201E; }
+[data-theme-color="volcano"] { --theme-color: #E85F33; --theme-strong: #B6411F; --theme-dark: #8A3117; }
+[data-theme-color="mingqing"] { --theme-color: #59BFC1; --theme-strong: #2C7274; --theme-dark: #1F5557; }
+[data-theme-color="aurora"] { --theme-color: #60AC80; --theme-strong: #3B7C57; --theme-dark: #2B5C41; }
+[data-theme-color="slate"] { --theme-color: #4C6A92; --theme-strong: #36506F; --theme-dark: #283C54; }
+
 [data-theme="dark"] {
   color-scheme: dark;
 
-  --c-primary: #6FC0EA;
-  --c-primary-light: #93D3F3;
-  --c-primary-strong: #1F7FB8;
-  --c-primary-dark: #9AD6F2;
-  --c-primary-bg: #12293A;
-  --c-primary-line: #23485F;
+  --c-primary: color-mix(in srgb, var(--theme-color) 72%, #fff);
+  --c-primary-dark: color-mix(in srgb, var(--theme-color) 58%, #fff);
+  --c-primary-light: color-mix(in srgb, var(--theme-color) 70%, #fff);
+  --c-primary-bg: color-mix(in srgb, var(--theme-color) 16%, #141414);
+  --c-primary-line: color-mix(in srgb, var(--theme-color) 34%, #141414);
+  /* 实底按钮保持深色，保证白字对比度 */
+  --c-primary-strong: var(--theme-strong);
 
-  --c-danger: #E5796A;
-  --c-danger-bg: #33201D;
+  --c-success: #85ce61;
+  --c-success-bg: #1e2b18;
+  --c-warning: #ebb563;
+  --c-warning-bg: #2b2318;
+  --c-danger: #f78989;
+  --c-danger-bg: #2b1919;
+  --c-info: #a3a6ad;
+  --c-info-bg: #222324;
 
-  --c-bg: #0E1720;
-  --c-surface-base: #111F2B;
-  --c-surface: #15222E;
-  --c-surface-soft: #192935;
-  --c-border: #293D4C;
-  --c-border-light: #20323F;
-  --c-text: #E6F0F7;
-  --c-text-2: #C2D3DE;
-  --c-text-3: #93A7B4;
+  --c-bg: #141414;
+  --c-surface: #1d1e1f;
+  --c-surface-soft: #262727;
+  --c-border: #4c4d4f;
+  --c-border-light: #363637;
+  --c-text: #e5eaf3;
+  --c-text-2: #cfd3dc;
+  --c-text-3: #a3a6ad;
 
   --shadow-subtle: 0 1px 2px rgb(0 0 0 / 45%);
-  --shadow-popover: 0 2px 10px rgb(0 0 0 / 55%);
-  --shadow-focus: 0 0 0 3px rgb(111 192 234 / 28%);
+  --shadow-card: 0 2px 12px rgb(0 0 0 / 50%);
+  --shadow-popover: 0 2px 8px rgb(0 0 0 / 55%);
 }
 
 /* ==========================================================================
@@ -103,7 +137,10 @@ body {
   transition: background-color var(--motion) ease, color var(--motion) ease;
 }
 
-h1, h2, h3, h4, p, ul, ol, figure { margin: 0; }
+body.mode-gray { filter: grayscale(1); }
+body.mode-weak { filter: invert(80%); }
+
+h1, h2, h3, h4, p, ul, ol { margin: 0; }
 ul, ol { padding: 0; list-style: none; }
 button, input, select { font: inherit; color: inherit; }
 code { font-family: var(--font-num); }
@@ -124,8 +161,8 @@ code { font-family: var(--font-num); }
 }
 
 .i {
-  width: 14px;
-  height: 14px;
+  width: 15px;
+  height: 15px;
   flex: 0 0 auto;
   fill: none;
   stroke: currentColor;
@@ -135,178 +172,608 @@ code { font-family: var(--font-num); }
 }
 
 /* ==========================================================================
-   3. 顶栏
+   3. 顶栏（48px）
    ========================================================================== */
-.site-header {
+.app-header {
   position: sticky;
   top: 0;
-  z-index: 40;
-  background: color-mix(in srgb, var(--c-bg) 88%, transparent);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--c-border);
+  z-index: 30;
+  height: var(--header-h);
+  background: var(--c-surface);
+  border-bottom: 1px solid var(--c-border-light);
 }
 
-.site-header__inner {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: var(--space-3) var(--space-6);
+.app-header__inner {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  flex-wrap: wrap;
+  height: 100%;
+  padding: 0 var(--space-4);
 }
 
-.site-title {
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--c-text);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.brand__logo {
+  width: 22px;
+  height: 22px;
+  color: var(--c-primary);
+}
+.brand__name { font-size: 15px; font-weight: 600; letter-spacing: 0.2px; }
+.brand__tag {
+  font-size: 11px;
+  color: var(--c-text-3);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-pill);
+  padding: 0 6px;
+  line-height: 16px;
+}
+
+.nav-horizontal { display: flex; align-items: stretch; height: var(--header-h); margin-left: var(--space-2); }
+
+.nav-horizontal a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 var(--space-3);
+  font-size: 14px;
+  color: var(--c-text-2);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: color var(--motion-fast) ease, border-color var(--motion-fast) ease;
+}
+.nav-horizontal a .i { width: 14px; height: 14px; }
+.nav-horizontal a:hover { color: var(--c-primary-dark); }
+.nav-horizontal a.is-active {
+  color: var(--c-primary-dark);
+  border-bottom-color: var(--c-primary);
+  font-weight: 500;
+}
+
+body[data-nav="vertical"] .nav-horizontal { display: none; }
+
+.header-actions { display: flex; align-items: center; gap: 2px; margin-left: auto; }
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  color: var(--c-text-2);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background-color var(--motion-fast) ease, color var(--motion-fast) ease;
+}
+.icon-btn:hover { color: var(--c-primary-dark); background: var(--c-surface-soft); }
+.icon-btn--badge { position: relative; }
+.icon-btn--badge::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  right: 7px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--c-danger);
+}
+
+.user-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  margin-left: 4px;
+  padding: 0 8px 0 2px;
+  font-size: 13px;
+  color: var(--c-text-2);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+}
+.user-chip:hover { background: var(--c-surface-soft); }
+.user-chip__avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--c-primary-strong);
+  border-radius: 50%;
+}
+
+/* 标签栏（34px） */
+.tag-bar {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
-  flex-wrap: wrap;
+  gap: var(--space-1);
+  height: var(--tagbar-h);
+  padding: 0 var(--space-3);
+  background: var(--c-surface);
+  border-bottom: 1px solid var(--c-border-light);
+  overflow-x: auto;
 }
 
-.site-title h1 {
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: 0.2px;
+.tag-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 10px;
+  font-size: 12px;
+  color: var(--c-text-2);
+  text-decoration: none;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border-light);
+  border-radius: 2px;
+  white-space: nowrap;
+}
+.tag-tab:hover { color: var(--c-primary-dark); border-color: var(--c-primary-line); }
+.tag-tab.is-active {
+  color: var(--c-primary-dark);
+  background: var(--c-primary-bg);
+  border-color: var(--c-primary-line);
+}
+.tag-tab.is-active::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
 }
 
-.format-badge {
+.tag-bar__right { margin-left: auto; display: flex; align-items: center; gap: 6px; }
+
+/* ==========================================================================
+   4. 主体：侧边栏 + 内容区
+   ========================================================================== */
+.layout { display: flex; align-items: flex-start; }
+
+.sidebar {
+  display: none;
+  position: sticky;
+  top: calc(var(--header-h) + var(--tagbar-h));
+  flex: 0 0 var(--sidebar-w);
+  width: var(--sidebar-w);
+  height: calc(100vh - var(--header-h) - var(--tagbar-h));
+  padding: var(--space-2) var(--space-2) var(--space-4);
+  overflow-y: auto;
+  background: var(--c-surface);
+  border-right: 1px solid var(--c-border-light);
+}
+body[data-nav="vertical"] .sidebar { display: block; }
+
+.sidebar__group { margin-bottom: var(--space-3); }
+.sidebar__label {
+  padding: var(--space-2) var(--space-2) var(--space-1);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--c-text-3);
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius-pill);
-  padding: 2px 8px;
-  white-space: nowrap;
 }
 
-.header-actions {
+.sidebar a {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  margin-left: auto;
-  flex-wrap: wrap;
+  height: 40px;
+  padding: 0 var(--space-2);
+  font-size: 14px;
+  color: var(--c-text-2);
+  text-decoration: none;
+  border-radius: var(--radius);
+  transition: background-color var(--motion-fast) ease, color var(--motion-fast) ease;
 }
+.sidebar a .i { width: 16px; height: 16px; color: var(--c-text-3); }
+.sidebar a:hover { color: var(--c-primary-dark); background: var(--c-surface-soft); }
+.sidebar a.is-active {
+  color: #fff;
+  background: var(--c-primary-strong);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--theme-color) 30%, transparent);
+}
+.sidebar a.is-active .i { color: #fff; }
+
+.content {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: var(--space-4);
+}
+.content__inner { max-width: 1360px; margin: 0 auto; }
+
+/* ==========================================================================
+   5. 页面标题与操作
+   ========================================================================== */
+.page-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-4);
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: var(--space-1);
+  font-size: 12px;
+  color: var(--c-text-3);
+}
+.breadcrumb a { color: var(--c-text-3); text-decoration: none; }
+.breadcrumb a:hover { color: var(--c-primary-dark); }
+.breadcrumb span:last-child { color: var(--c-text-2); }
+
+.page-head h1 {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.page-head__desc {
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--c-text-3);
+}
+
+.page-head__actions { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
 
 .segmented {
   display: inline-flex;
   gap: 2px;
   padding: 2px;
   background: var(--c-surface-soft);
-  border: 1px solid var(--c-border);
+  border: 1px solid var(--c-border-light);
   border-radius: var(--radius-md);
 }
-
 .segmented button {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 28px;
-  padding: 0 12px;
-  font-size: 13px;
+  height: 26px;
+  padding: 0 10px;
+  font-size: 12px;
   color: var(--c-text-2);
   background: transparent;
   border: 0;
   border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: background-color var(--motion-fast) ease, color var(--motion-fast) ease;
 }
-
-.segmented button:hover { color: var(--c-text); }
-
 .segmented button[aria-pressed="true"] {
+  color: var(--c-primary-dark);
   background: var(--c-surface);
-  color: var(--c-text);
   font-weight: 500;
   box-shadow: var(--shadow-subtle);
 }
 
+/* ==========================================================================
+   6. 按钮 / 标签 / 开关
+   ========================================================================== */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
-  min-height: 32px;
-  padding: 0 var(--space-4);
+  gap: 6px;
+  height: 32px;
+  padding: 0 var(--space-3);
   font-size: 13px;
   font-weight: 500;
+  color: var(--c-text-2);
+  background: var(--c-surface);
   border: 1px solid var(--c-border);
   border-radius: var(--radius);
-  background: var(--c-surface);
-  color: var(--c-text-2);
   cursor: pointer;
   transition: color var(--motion-fast) ease, border-color var(--motion-fast) ease,
     background-color var(--motion-fast) ease, transform var(--motion-fast) ease;
 }
-.btn:hover { color: var(--c-primary-dark); border-color: var(--c-primary); }
-.btn:active { transform: scale(0.97); }
+.btn:hover { color: var(--c-primary); border-color: var(--c-primary-line); background: var(--c-primary-bg); }
+.btn:active { transform: scale(0.98); }
 .btn--primary {
+  color: #fff;
   background: var(--c-primary-strong);
   border-color: var(--c-primary-strong);
-  color: #fff;
 }
 .btn--primary:hover {
-  background: color-mix(in srgb, var(--c-primary-strong) 86%, #fff);
-  border-color: transparent;
   color: #fff;
+  background: color-mix(in srgb, var(--c-primary-strong) 86%, #000);
+  border-color: transparent;
 }
+.btn--ghost { background: transparent; border-color: transparent; }
+.btn--ghost:hover { background: var(--c-primary-bg); }
+.btn .i { width: 14px; height: 14px; }
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 22px;
+  padding: 0 8px;
+  font-size: 12px;
+  color: var(--c-primary-dark);
+  background: var(--c-primary-bg);
+  border: 1px solid var(--c-primary-line);
+  border-radius: var(--radius);
+  white-space: nowrap;
+}
+.tag--success { color: var(--c-success); background: var(--c-success-bg); border-color: color-mix(in srgb, var(--c-success) 30%, transparent); }
+.tag--warning { color: var(--c-warning); background: var(--c-warning-bg); border-color: color-mix(in srgb, var(--c-warning) 30%, transparent); }
+.tag--danger { color: var(--c-danger); background: var(--c-danger-bg); border-color: color-mix(in srgb, var(--c-danger) 30%, transparent); }
+.tag--info { color: var(--c-info); background: var(--c-info-bg); border-color: var(--c-border); }
+
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0;
+  font-size: 13px;
+  color: var(--c-text-2);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.switch__track {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  background: var(--c-border);
+  border-radius: var(--radius-pill);
+  transition: background-color var(--motion) ease;
+}
+.switch__track::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 20%);
+  transition: transform var(--motion) ease;
+}
+.switch[aria-checked="true"] .switch__track { background: var(--c-primary-strong); }
+.switch[aria-checked="true"] .switch__track::after { transform: translateX(16px); }
 
 /* ==========================================================================
-   4. 页面容器与章节标题
+   7. 统计卡（参考仪表盘）
    ========================================================================== */
-.page {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: var(--space-6) var(--space-6) var(--space-8);
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
 }
 
-.section { margin-top: var(--space-8); }
+.stat-card {
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-4);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-subtle);
+}
 
-.section__title {
+.stat-card__top { position: absolute; top: var(--space-3); right: var(--space-3); }
+.stat-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius);
+  color: var(--c-primary);
+  background: var(--c-primary-bg);
+}
+.stat-card__icon .i { width: 15px; height: 15px; }
+.stat-card--purple .stat-card__icon { color: #693AC9; background: color-mix(in srgb, #693AC9 10%, #fff); }
+.stat-card--green .stat-card__icon { color: var(--c-success); background: var(--c-success-bg); }
+.stat-card--orange .stat-card__icon { color: var(--c-warning); background: var(--c-warning-bg); }
+
+.stat-card__label { font-size: 13px; color: var(--c-text-3); }
+.stat-card__value { margin-top: 2px; font-size: 24px; font-weight: 600; letter-spacing: 0.4px; line-height: 1.25; }
+.stat-card__delta { margin-top: 2px; font-size: 12px; color: var(--c-success); }
+.stat-card__delta.is-down { color: var(--c-danger); }
+.stat-card__spark { position: absolute; right: var(--space-4); bottom: var(--space-3); width: 72px; height: 28px; opacity: 0.9; }
+
+/* ==========================================================================
+   8. 仪表盘组合示例
+   ========================================================================== */
+.dash-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.dash-col { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+
+.panel {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-subtle);
+}
+
+.panel__head {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  margin-bottom: var(--space-3);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--c-text-3);
+  flex-wrap: wrap;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--c-border-light);
 }
-
-.section__title::before {
+.panel__head h2 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 14px;
+  font-weight: 600;
+}
+.panel__head h2::before {
   content: "";
   width: 3px;
   height: 12px;
   border-radius: var(--radius-pill);
   background: var(--c-primary);
 }
+.panel__head .spacer { margin-left: auto; }
+.panel__body { padding: var(--space-4); }
 
-.section__note {
-  margin-bottom: var(--space-3);
-  font-size: 13px;
+/* 柱状图 */
+.chart {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-3);
+  height: 190px;
+  padding: var(--space-2) var(--space-2) 0;
+}
+.chart__group {
+  flex: 1 1 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 3px;
+  height: 100%;
+}
+.chart__bar {
+  width: 14px;
+  border-radius: 2px 2px 0 0;
+  background: var(--c-primary);
+  transition: height var(--motion) ease;
+}
+.chart__bar--alt { background: var(--c-warning); }
+.chart__axis {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-2) 0;
+  font-size: 11px;
   color: var(--c-text-3);
 }
+.chart__axis span { flex: 1 1 0; text-align: center; }
+.chart__legend {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-2) var(--space-2) 0;
+  font-size: 11px;
+  color: var(--c-text-3);
+}
+.chart__legend i { display: inline-block; width: 8px; height: 8px; margin-right: 4px; border-radius: 2px; background: var(--c-primary); }
+.chart__legend i + span + i { background: var(--c-warning); }
+
+/* 覆盖度进度 */
+.coverage { display: flex; flex-direction: column; gap: var(--space-3); }
+.coverage__row { display: flex; align-items: center; gap: var(--space-2); font-size: 12px; color: var(--c-text-2); }
+.coverage__label { flex: 0 0 64px; }
+.coverage__track {
+  flex: 1 1 auto;
+  height: 14px;
+  background: var(--c-surface-soft);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+.coverage__bar {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--c-primary) 70%, #fff), var(--c-primary));
+}
+.coverage__bar--green { background: linear-gradient(90deg, #a9dc8b, var(--c-success)); }
+.coverage__value {
+  flex: 0 0 40px;
+  text-align: right;
+  font-family: var(--font-num);
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--c-primary-strong);
+  border-radius: var(--radius-sm);
+  padding: 1px 4px;
+}
+.coverage__value--green { background: #4c9a2a; }
+
+/* 表格 */
+.table-wrap { overflow-x: auto; }
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.table th {
+  padding: 10px 12px;
+  font-weight: 500;
+  font-size: 12px;
+  text-align: left;
+  color: var(--c-text-2);
+  background: var(--c-surface-soft);
+  border-bottom: 1px solid var(--c-border-light);
+  white-space: nowrap;
+}
+.table td {
+  padding: 10px 12px;
+  color: var(--c-text-2);
+  border-bottom: 1px solid var(--c-border-light);
+  white-space: nowrap;
+}
+.table tbody tr:last-child td { border-bottom: 0; }
+.table tbody tr:hover td { background: color-mix(in srgb, var(--theme-color) 5%, var(--c-surface)); }
+.table td:first-child, .table th:first-child { padding-left: var(--space-4); }
+.table td:last-child, .table th:last-child { padding-right: var(--space-4); }
+.table__num { font-family: var(--font-num); color: var(--c-text); }
+.table__action { color: var(--c-primary-dark); cursor: pointer; }
+
+/* 动态列表 */
+.activity { display: flex; flex-direction: column; gap: var(--space-3); }
+.activity__day { font-size: 12px; color: var(--c-text-3); }
+.activity__item {
+  position: relative;
+  padding-left: 16px;
+  margin-top: var(--space-2);
+  font-size: 12.5px;
+  color: var(--c-text-2);
+}
+.activity__item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--c-primary);
+}
+.activity__item--green::before { background: var(--c-success); }
+.activity__item--orange::before { background: var(--c-warning); }
+.activity__item--gray::before { background: var(--c-info); }
+.activity__item em { font-style: normal; color: var(--c-primary-dark); font-weight: 500; }
 
 /* ==========================================================================
-   5. 可复制块
+   9. 可复制块
    ========================================================================== */
 .copyable {
   position: relative;
   cursor: pointer;
   transition: box-shadow var(--motion-fast) ease;
 }
-
 .copyable::after {
   content: "⧉ 复制规范";
   position: absolute;
   top: 6px;
   right: 6px;
   z-index: 5;
-  padding: 2px 8px;
+  padding: 1px 8px;
   font-size: 11px;
-  font-weight: 500;
   color: var(--c-text-2);
   background: var(--c-surface);
   border: 1px solid var(--c-border);
@@ -316,610 +783,128 @@ code { font-family: var(--font-num); }
   pointer-events: none;
   transition: opacity var(--motion-fast) ease;
 }
-
 .copyable:hover::after,
 .copyable:focus-visible::after { opacity: 1; }
-
-.copyable:hover {
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--c-primary) 40%, transparent);
-}
-
+.copyable:hover { box-shadow: var(--shadow-focus); }
+.copyable.is-copied { box-shadow: 0 0 0 2px color-mix(in srgb, var(--c-success) 55%, transparent); }
 .copyable.is-copied::after {
   content: "✓ 已复制";
   opacity: 1;
-  color: var(--c-primary-dark);
-  border-color: var(--c-primary-line);
-}
-
-.copyable.is-copied {
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--c-primary) 55%, transparent);
+  color: var(--c-success);
+  border-color: color-mix(in srgb, var(--c-success) 45%, transparent);
 }
 
 /* ==========================================================================
-   6. Hero：示例界面
+   10. 颜色规范
    ========================================================================== */
-.hero {
-  margin-top: var(--space-6);
-  padding: var(--space-4);
-  background: var(--c-surface-base);
-  border: 1px solid var(--c-border-light);
-  border-radius: 10px;
-}
+.section { margin-bottom: var(--space-4); }
 
-.mock {
+.palette-grid {
   display: grid;
-  grid-template-columns: 152px minmax(0, 1fr) 190px;
-  overflow: hidden;
-  font-size: 10px;
-  line-height: 1.35;
-  color: var(--c-text-2);
-  background: var(--c-surface);
-  border: 1px solid var(--c-border-light);
-  border-radius: 8px;
-  box-shadow: var(--shadow-subtle);
+  grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+  gap: var(--space-3);
 }
 
-.mock__side {
+.theme-tile {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  padding: 14px 10px;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+  text-align: left;
   background: var(--c-surface);
-  border-right: 1px solid var(--c-border-light);
+  border: 1px solid var(--c-border-light);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: border-color var(--motion-fast) ease, box-shadow var(--motion-fast) ease;
 }
-
-.mock__brand {
-  padding-left: 4px;
+.theme-tile:hover { border-color: var(--tile-color); box-shadow: 0 2px 10px color-mix(in srgb, var(--tile-color) 30%, transparent); }
+.theme-tile.is-active {
+  border-color: var(--tile-color);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--tile-color) 25%, transparent);
+}
+.theme-tile__swatch {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 56px;
+  padding: var(--space-2);
+  background: var(--tile-color);
+  color: var(--tile-on, #fff);
   font-size: 11px;
-  font-weight: 700;
-  color: var(--c-text);
-  line-height: 1.2;
+  font-family: var(--font-num);
 }
-.mock__brand small {
-  display: block;
-  margin-top: 3px;
-  font-size: 6.5px;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  color: var(--c-text-3);
-}
-
-.mock__nav { display: flex; flex-direction: column; gap: 2px; }
-
-.mock__nav-item {
+.theme-tile__swatch .i { width: 13px; height: 13px; }
+.theme-tile__meta {
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: space-between;
+  gap: var(--space-1);
   padding: 6px 8px;
-  font-size: 9px;
-  border-radius: var(--radius);
-  color: var(--c-text-2);
-}
-.mock__nav-item .i { width: 10px; height: 10px; }
-.mock__nav-item.is-active {
-  background: var(--c-primary-strong);
-  color: #fff;
-  font-weight: 600;
-  box-shadow: 0 2px 6px color-mix(in srgb, var(--c-primary) 40%, transparent);
-}
-
-.mock__upgrade {
-  margin-top: auto;
-  padding: 7px 8px;
-  font-size: 8.5px;
-  font-weight: 600;
-  text-align: center;
-  color: #fff;
-  background: var(--c-primary-strong);
-  border-radius: var(--radius);
-}
-
-.mock__main {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  background: var(--c-surface);
-}
-
-.mock__top {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--c-border-light);
-}
-
-.mock__search {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  flex: 1 1 auto;
-  min-width: 0;
-  padding: 5px 9px;
-  font-size: 8.5px;
-  color: var(--c-text-3);
-  background: var(--c-surface-soft);
-  border-radius: var(--radius-pill);
-}
-.mock__search .i { width: 9px; height: 9px; }
-
-.mock__icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  color: var(--c-text-3);
-  border-radius: 50%;
-}
-.mock__icon .i { width: 11px; height: 11px; }
-
-.mock__avatar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  font-size: 8px;
-  font-weight: 600;
-  color: #fff;
-  background: var(--c-primary-strong);
-  border-radius: 50%;
-}
-
-.mock__body {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 12px;
-  background: var(--c-surface-base);
-}
-
-.mock__heading {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.mock__eyebrow {
-  font-size: 6.5px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  color: var(--c-primary-dark);
-}
-
-.mock__title {
-  margin-top: 3px;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--c-text);
-}
-
-.mock__heading-actions { display: flex; align-items: center; gap: 6px; }
-
-.mock__range {
-  padding: 4px 8px;
-  font-size: 8px;
-  color: var(--c-text-2);
-  background: var(--c-surface);
-  border: 1px solid var(--c-border-light);
-  border-radius: var(--radius);
-}
-
-.mock__cta {
-  padding: 4px 10px;
-  font-size: 8px;
-  font-weight: 600;
-  color: #fff;
-  background: var(--c-primary-strong);
-  border-radius: var(--radius-pill);
-  box-shadow: 0 2px 6px color-mix(in srgb, var(--c-primary) 40%, transparent);
-}
-
-.mock__stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
-
-.mock__stat {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 7px 8px;
-  background: var(--c-surface);
-  border: 1px solid var(--c-border-light);
-  border-radius: var(--radius-md);
-}
-
-.mock__stat-top { display: flex; align-items: center; justify-content: space-between; gap: 4px; }
-.mock__stat-top .i { width: 11px; height: 11px; color: var(--c-primary); }
-.mock__stat-label { font-size: 6.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-text-3); }
-.mock__stat-value { font-size: 11px; font-weight: 700; color: var(--c-text); letter-spacing: -0.01em; }
-
-.mock__delta {
-  font-size: 6.5px;
-  font-weight: 600;
-  padding: 1px 4px;
-  border-radius: var(--radius-pill);
-  white-space: nowrap;
-}
-.mock__delta.is-up { color: var(--c-primary-dark); background: var(--c-primary-bg); }
-.mock__delta.is-down { color: var(--c-danger); background: var(--c-danger-bg); }
-
-.mock__charts { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 8px; }
-
-.mock__card {
-  padding: 8px;
-  background: var(--c-surface);
-  border: 1px solid var(--c-border-light);
-  border-radius: var(--radius-md);
-}
-
-.mock__card-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 6px;
-  font-size: 9px;
-  color: var(--c-text);
-}
-.mock__card-sub { margin-top: 2px; font-size: 6.5px; color: var(--c-text-3); }
-
-.mock__legend { display: inline-flex; align-items: center; gap: 4px; font-size: 6.5px; color: var(--c-text-3); }
-.mock__legend i { width: 5px; height: 5px; border-radius: 50%; background: var(--c-primary); }
-.mock__legend i:nth-of-type(2) { background: var(--c-text-3); opacity: 0.6; }
-
-.mock__line { display: block; width: 100%; height: 74px; margin-top: 4px; color: var(--c-text-3); }
-
-.mock__axis {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 2px;
-  font-size: 6px;
-  color: var(--c-text-3);
-}
-.mock__axis--tiny { font-size: 5.5px; }
-
-.mock__donut {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 68px;
-  height: 68px;
-  margin: 6px auto;
-  font-size: 9px;
-  font-weight: 700;
-  color: var(--c-text);
-  background: conic-gradient(
-    var(--c-primary) 0 62%,
-    var(--c-primary-light) 62% 86%,
-    var(--c-text-3) 86% 100%
-  );
-  border-radius: 50%;
-}
-.mock__donut::before {
-  content: "";
-  position: absolute;
-  inset: 16%;
-  background: var(--c-surface);
-  border-radius: 50%;
-}
-.mock__donut span { position: relative; z-index: 1; text-align: center; line-height: 1.1; }
-.mock__donut small { display: block; font-size: 5.5px; font-weight: 500; letter-spacing: 0.1em; color: var(--c-text-3); }
-.mock__donut--sm { width: 48px; height: 48px; margin: 0; font-size: 8px; }
-
-.mock__legend-list { display: flex; flex-direction: column; gap: 3px; font-size: 6.5px; color: var(--c-text-2); }
-.mock__legend-list li { display: flex; align-items: center; gap: 4px; }
-.mock__legend-list i { width: 5px; height: 5px; border-radius: 50%; flex: 0 0 auto; }
-
-/* 右侧洞察栏 */
-.mock__rail {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 10px;
-  background: var(--c-surface);
-  border-left: 1px solid var(--c-border-light);
-}
-
-.mock__rail-head { display: flex; align-items: center; justify-content: space-between; font-size: 8.5px; color: var(--c-text); }
-.mock__rail-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 4px;
-  font-size: 9.5px;
-  font-weight: 700;
-  color: var(--c-text);
-}
-.mock__pill {
-  font-size: 5.5px;
-  font-weight: 500;
-  padding: 1px 4px;
-  border: 1px solid var(--c-border-light);
-  border-radius: var(--radius-pill);
-  color: var(--c-text-3);
-  white-space: nowrap;
-}
-
-.mock__mini { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
-.mock__mini > div {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  padding: 5px 6px;
-  background: var(--c-surface-soft);
-  border-radius: var(--radius);
-  font-size: 6px;
-  color: var(--c-text-3);
-}
-.mock__mini strong { font-size: 9px; color: var(--c-text); }
-
-.mock__rail-label {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 6px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--c-text-3);
-}
-.mock__rail-label span { text-transform: none; color: var(--c-primary-dark); letter-spacing: 0; }
-
-.mock__bars { display: flex; align-items: flex-end; gap: 3px; height: 46px; margin-top: 5px; }
-.mock__bars i {
-  flex: 1 1 auto;
-  background: color-mix(in srgb, var(--c-primary) 45%, var(--c-surface));
-  border-radius: 2px 2px 0 0;
-}
-.mock__bars i:nth-child(5),
-.mock__bars i:nth-child(6) { background: var(--c-primary); }
-
-.mock__seg-row { display: flex; align-items: center; gap: 8px; margin-top: 5px; }
-
-.mock__activity ul { display: flex; flex-direction: column; gap: 5px; margin-top: 6px; }
-.mock__activity li { display: flex; align-items: center; gap: 5px; font-size: 6.5px; color: var(--c-text-2); }
-.mock__activity .mock__avatar { width: 14px; height: 14px; font-size: 6px; background: var(--c-primary); color: #fff; }
-.mock__activity li:nth-child(2) .mock__avatar { background: var(--c-primary-dark); color: var(--c-surface); }
-.mock__activity li:nth-child(3) .mock__avatar { background: var(--c-primary-strong); color: #fff; }
-.mock__activity time { margin-left: auto; color: var(--c-text-3); }
-
-/* ==========================================================================
-   7. 概览描述
-   ========================================================================== */
-.overview {
-  display: flex;
-  gap: var(--space-6);
-  align-items: flex-start;
-  flex-wrap: wrap;
-  margin-top: var(--space-6);
-  padding: var(--space-5);
-  background: var(--c-surface);
-  border: 1px solid var(--c-border-light);
-  border-radius: var(--radius-md);
-}
-
-.overview p {
-  flex: 1 1 420px;
-  font-size: 16px;
-  line-height: 1.7;
-  color: var(--c-text-2);
-}
-
-.overview__points {
-  flex: 0 1 320px;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.overview__points li {
-  display: flex;
-  gap: var(--space-2);
-  font-size: 13px;
-  color: var(--c-text-2);
-}
-
-.overview__points li::before {
-  content: "";
-  flex: 0 0 auto;
-  width: 6px;
-  height: 6px;
-  margin-top: 7px;
-  border-radius: 50%;
-  background: var(--c-primary);
-}
-
-/* ==========================================================================
-   8. 规范总览板
-   ========================================================================== */
-.board {
-  display: grid;
-  grid-template-columns: 228px minmax(0, 1fr) minmax(0, 1.15fr);
-  gap: var(--space-4);
-  align-items: start;
-  margin-top: var(--space-4);
-}
-
-.board__col { display: flex; flex-direction: column; gap: var(--space-4); }
-
-.board__cell {
-  padding: var(--space-4);
-  background: var(--c-surface-base);
-  border: 1px solid var(--c-border-light);
-  border-radius: var(--radius-md);
-}
-
-.board__cell-title {
-  margin-bottom: var(--space-3);
   font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--c-text-3);
+  color: var(--c-text-2);
+}
+.theme-tile.is-active .theme-tile__meta { color: var(--c-primary-dark); font-weight: 500; }
+
+.token-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-3);
 }
 
-/* 色卡 */
-.color-card {
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  box-shadow: var(--shadow-subtle);
-}
-.color-card + .color-card { margin-top: var(--space-2); }
-
-.color-card__head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2);
-  padding: 8px 10px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--on-swatch, #fff);
-  background: var(--swatch, var(--c-primary));
-}
-.color-card__head code { font-size: 10px; font-weight: 500; opacity: 0.85; }
-
-.color-card__ramp {
-  height: 26px;
-  background: linear-gradient(to right,
-    color-mix(in srgb, var(--swatch) 45%, #000) 0 16.6%,
-    color-mix(in srgb, var(--swatch) 70%, #000) 16.6% 33.3%,
-    var(--swatch) 33.3% 50%,
-    color-mix(in srgb, var(--swatch) 65%, #fff) 50% 66.6%,
-    color-mix(in srgb, var(--swatch) 35%, #fff) 66.6% 83.3%,
-    color-mix(in srgb, var(--swatch) 15%, #fff) 83.3% 100%);
-}
-
-/* 字体样例 */
-.sample { padding: var(--space-3) 0; }
-.sample + .sample { border-top: 1px dashed var(--c-border); }
-.sample__meta { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); font-size: 11px; color: var(--c-text-3); }
-.sample__meta code { font-size: 10px; }
-.sample__aa {
-  margin-top: var(--space-1);
-  font-size: 42px;
-  font-weight: 600;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  color: var(--c-text);
-}
-.sample--body .sample__aa { font-size: 26px; font-weight: 400; }
-.sample--label .sample__aa { font-size: 17px; font-weight: 500; letter-spacing: 0.02em; }
-
-/* 组件小样网格 */
-.sample-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
-
-.sample-tile {
+.token-card {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  min-height: 92px;
+  gap: var(--space-1);
   padding: var(--space-3);
-  background: var(--c-surface);
+  background: var(--c-surface-soft);
   border: 1px solid var(--c-border-light);
   border-radius: var(--radius-md);
 }
-
-.sample-tile--wide { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; }
-
-.mini-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 26px;
-  padding: 0 10px;
-  font-size: 11px;
-  font-weight: 500;
-  border-radius: var(--radius);
-  border: 1px solid transparent;
-  cursor: inherit;
-}
-.mini-btn--primary { background: var(--c-primary-strong); color: #fff; }
-.mini-btn--secondary { background: var(--c-surface); border-color: var(--c-border); color: var(--c-text-2); }
-.mini-btn--danger { background: var(--c-surface); border-color: color-mix(in srgb, var(--c-danger) 45%, transparent); color: var(--c-danger); }
-.mini-btn--outline { background: transparent; border-color: var(--c-primary); color: var(--c-primary-dark); }
-
-.mini-input {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  width: 100%;
-  padding: 6px 9px;
-  font-size: 11px;
-  color: var(--c-text-3);
-  background: var(--c-surface);
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius);
-}
-
-.icon-row { display: flex; align-items: center; gap: 8px; }
-.icon-tile {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  color: var(--c-primary-dark);
-  background: var(--c-primary-bg);
-  border-radius: var(--radius);
-}
-.icon-tile--round { border-radius: 50%; }
-.icon-tile--soft { color: var(--c-text-3); background: var(--c-surface-soft); }
-.icon-tile--danger { color: var(--c-danger); background: var(--c-danger-bg); }
+.token-card__chip { height: 44px; border-radius: var(--radius); border: 1px solid var(--c-border-light); background: var(--chip); }
+.token-card__name { font-size: 13px; font-weight: 500; }
+.token-card__meta { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); font-size: 11px; color: var(--c-text-3); }
+.token-card__meta code { font-size: 11px; }
 
 /* ==========================================================================
-   9. 字体规范
+   11. 字体规范
    ========================================================================== */
 .type-row {
-  margin-bottom: var(--space-2);
   padding: var(--space-3) var(--space-4);
-  background: var(--c-surface-soft);
-  border: 1px solid var(--c-border-light);
-  border-radius: var(--radius-md);
+  border-bottom: 1px dashed var(--c-border-light);
   overflow: hidden;
 }
-
-.type-row__head {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  flex-wrap: wrap;
-  margin-bottom: 6px;
-}
-
+.type-row:last-child { border-bottom: 0; }
+.type-row__head { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; margin-bottom: 4px; }
 .chip-label {
-  padding: 1px 8px;
+  padding: 0 6px;
   font-family: var(--font-num);
   font-size: 11px;
+  line-height: 18px;
   color: var(--c-text-2);
-  background: var(--c-surface);
-  border: 1px solid var(--c-border);
+  background: var(--c-surface-soft);
+  border: 1px solid var(--c-border-light);
   border-radius: var(--radius-sm);
 }
-
 .type-row__meta { font-family: var(--font-num); font-size: 11px; color: var(--c-text-3); }
-
 .type-row__sample {
   font-size: var(--sample-size);
   font-weight: var(--sample-weight);
-  line-height: 1.3;
+  line-height: 1.35;
   letter-spacing: var(--sample-tracking, 0);
   white-space: nowrap;
   overflow: hidden;
   color: var(--c-text);
-  -webkit-mask-image: linear-gradient(to right, #000 82%, transparent 99%);
-  mask-image: linear-gradient(to right, #000 82%, transparent 99%);
+  -webkit-mask-image: linear-gradient(to right, #000 88%, transparent 100%);
+  mask-image: linear-gradient(to right, #000 88%, transparent 100%);
 }
 
 /* ==========================================================================
-   10. 组件规范
+   12. 组件规范
    ========================================================================== */
 .specimen-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
   gap: var(--space-3);
 }
 
@@ -929,27 +914,21 @@ code { font-family: var(--font-num); }
   align-items: center;
   justify-content: center;
   gap: var(--space-3);
-  min-height: 108px;
+  min-height: 104px;
   padding: var(--space-3);
   background: var(--c-surface-soft);
   border: 1px solid var(--c-border-light);
   border-radius: var(--radius-md);
   text-align: center;
 }
-
-.specimen__label {
-  order: -1;
-  font-family: var(--font-num);
-  font-size: 11px;
-  color: var(--c-text-3);
-}
+.specimen__label { order: -1; font-family: var(--font-num); font-size: 11px; color: var(--c-text-3); }
 
 .sw-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  min-height: 32px;
+  height: 32px;
   padding: 0 14px;
   font-size: 13px;
   font-weight: 500;
@@ -957,35 +936,29 @@ code { font-family: var(--font-num); }
   border: 1px solid transparent;
   border-radius: var(--radius);
   cursor: inherit;
-  transition: background-color var(--motion-fast) ease, color var(--motion-fast) ease,
-    border-color var(--motion-fast) ease, transform var(--motion-fast) ease;
 }
-.sw-btn:active { transform: scale(0.97); }
-.sw-btn--primary { background: var(--c-primary-strong); color: #fff; box-shadow: var(--shadow-subtle); }
-.sw-btn--secondary { background: var(--c-surface); border-color: var(--c-border); color: var(--c-text-2); }
-.sw-btn--danger {
-  background: var(--c-surface);
-  border-color: color-mix(in srgb, var(--c-danger) 45%, transparent);
-  color: var(--c-danger);
-}
-.sw-btn--outline { background: transparent; border-color: var(--c-primary); color: var(--c-primary-dark); }
-.sw-btn--ghost { background: transparent; color: var(--c-primary-dark); }
+.sw-btn--primary { color: #fff; background: var(--c-primary-strong); }
+.sw-btn--secondary { color: var(--c-text-2); background: var(--c-surface); border-color: var(--c-border); }
+.sw-btn--danger { color: var(--c-danger); background: var(--c-danger-bg); border-color: color-mix(in srgb, var(--c-danger) 30%, transparent); }
+.sw-btn--outline { color: var(--c-primary); background: transparent; border-color: var(--c-primary); }
+.sw-btn--ghost { color: var(--c-primary); background: transparent; }
 .sw-btn--pill {
-  border-radius: var(--radius-pill);
-  background: var(--c-primary-strong);
   color: #fff;
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--c-primary) 35%, transparent);
+  background: var(--c-primary-strong);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--theme-color) 32%, transparent);
 }
 
 .demo-card {
+  position: relative;
   width: 100%;
   padding: var(--space-3);
   padding-left: calc(var(--space-3) + 4px);
+  text-align: left;
   background: var(--c-surface);
   border: 1px solid var(--c-border-light);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-subtle);
-  text-align: left;
 }
 .demo-card::before {
   content: "";
@@ -997,28 +970,21 @@ code { font-family: var(--font-num); }
 }
 .demo-card strong { display: block; font-size: 13px; font-weight: 600; }
 .demo-card p { margin-top: 2px; font-size: 11px; color: var(--c-text-3); }
-
 .demo-card--selected {
   border-color: var(--c-primary);
   background: var(--c-primary-bg);
-  box-shadow: 0 2px 10px color-mix(in srgb, var(--c-primary) 25%, transparent);
+  box-shadow: 0 2px 10px color-mix(in srgb, var(--theme-color) 22%, transparent);
 }
 .demo-card--selected::before { background: var(--c-primary-strong); }
 .demo-card--selected strong { color: var(--c-primary-dark); }
-
-.demo-card--muted {
-  border-color: var(--c-border);
-  background: var(--c-surface-soft);
-  box-shadow: none;
-  opacity: 0.75;
-}
+.demo-card--muted { background: var(--c-surface-soft); box-shadow: none; opacity: 0.75; }
 .demo-card--muted::before { background: var(--c-border); }
 
 .section-title-demo {
   width: 100%;
   padding: var(--space-2) 0;
-  border-bottom: 1px dashed var(--c-border);
   text-align: left;
+  border-bottom: 1px dashed var(--c-border);
 }
 .section-title-demo span {
   display: inline-flex;
@@ -1035,7 +1001,7 @@ code { font-family: var(--font-num); }
   height: 24px;
   font-style: normal;
   font-size: 12px;
-  color: var(--c-primary-dark);
+  color: var(--c-primary);
   background: var(--c-primary-bg);
   border-radius: var(--radius);
 }
@@ -1050,7 +1016,6 @@ code { font-family: var(--font-num); }
   border: 1px solid var(--c-border-light);
   border-radius: var(--radius-md);
 }
-
 .lockup { display: inline-flex; align-items: center; gap: var(--space-2); }
 .lockup__mark {
   display: inline-flex;
@@ -1058,186 +1023,123 @@ code { font-family: var(--font-num); }
   justify-content: center;
   width: 32px;
   height: 32px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: #fff;
-  background: linear-gradient(135deg, var(--c-primary), var(--c-primary-strong));
   border-radius: 8px;
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--c-primary) 35%, transparent);
+  color: #fff;
+  background: linear-gradient(135deg, var(--theme-color), var(--theme-strong));
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--theme-color) 30%, transparent);
 }
-.lockup__text {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  line-height: 1.15;
-}
-.lockup__text strong { font-size: 14px; font-weight: 700; color: var(--c-text); }
+.lockup__mark .i { width: 17px; height: 17px; }
+.lockup__text { display: flex; flex-direction: column; line-height: 1.15; text-align: left; }
+.lockup__text strong { font-size: 14px; font-weight: 600; }
 .lockup__text small { font-size: 7px; font-weight: 500; letter-spacing: 0.14em; color: var(--c-text-3); }
-
 .logo-mark {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 34px;
   height: 34px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #fff;
-  background: linear-gradient(135deg, var(--c-primary), var(--c-primary-strong));
   border-radius: 8px;
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--c-primary) 35%, transparent);
+  color: #fff;
+  background: linear-gradient(135deg, var(--theme-color), var(--theme-strong));
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--theme-color) 30%, transparent);
 }
 
-/* 阴影 */
-.elev-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
-  gap: var(--space-4) var(--space-3);
-  padding: var(--space-5);
-  background: var(--c-surface-soft);
-  border: 1px solid var(--c-border-light);
-  border-radius: var(--radius-md);
-}
-
-.elev {
-  display: flex;
-  flex-direction: column;
+.pagination { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; }
+.pagination span {
+  display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-1);
-}
-
-.elev__box {
-  width: 78px;
-  height: 78px;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  color: var(--c-text-2);
   background: var(--c-surface);
-  border-radius: var(--radius-md);
-  box-shadow: var(--elev);
+  border: 1px solid var(--c-border-light);
+  border-radius: var(--radius);
 }
+.pagination span.is-current { color: #fff; background: var(--c-primary-strong); border-color: var(--c-primary-strong); }
 
-.elev__label {
-  font-family: var(--font-num);
-  font-size: 11px;
+.input-demo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  height: 32px;
+  padding: 0 10px;
+  font-size: 12px;
   color: var(--c-text-3);
-  text-align: center;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
 }
 
 /* ==========================================================================
-   11. Do / Don't 与动效
+   13. 阴影
    ========================================================================== */
-.principles { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
-
-.principle {
-  padding: var(--space-4);
-  border: 1px solid;
-  border-radius: var(--radius-md);
-}
-.principle--do {
-  background: var(--c-primary-bg);
-  border-color: var(--c-primary-line);
-}
-.principle--dont {
-  background: var(--c-surface-soft);
-  border-color: var(--c-border);
-}
-
-.principle__head {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  margin-bottom: var(--space-3);
-  font-size: 13px;
-  font-weight: 600;
-}
-.principle--do .principle__head { color: var(--c-primary-dark); }
-.principle--dont .principle__head { color: var(--c-text-2); }
-.principle__head .i { width: 15px; height: 15px; stroke-width: 2.2; }
-
-.principle ul { display: flex; flex-direction: column; gap: var(--space-2); }
-.principle li {
-  position: relative;
-  padding-left: var(--space-4);
-  font-size: 13px;
-  line-height: 1.6;
-  color: var(--c-text-2);
-}
-.principle li::before {
-  content: "";
-  position: absolute;
-  left: 2px;
-  top: 8px;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--c-primary);
-}
-.principle--dont li::before { background: var(--c-text-3); }
-
-/* 动效展示 */
-.anim-grid {
+.elev-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+  gap: var(--space-4) var(--space-3);
 }
+.elev { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-1); }
+.elev__box { width: 72px; height: 72px; background: var(--c-surface); border-radius: var(--radius-md); box-shadow: var(--elev); }
+.elev__label { font-family: var(--font-num); font-size: 11px; color: var(--c-text-3); text-align: center; }
 
+/* ==========================================================================
+   14. 动效
+   ========================================================================== */
+.anim-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: var(--space-3); }
 .anim-card {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
   align-items: flex-start;
-  padding: var(--space-4);
+  gap: var(--space-2);
+  padding: var(--space-3);
   background: var(--c-surface-soft);
   border: 1px solid var(--c-border-light);
   border-radius: var(--radius-md);
 }
-
 .anim-card__stage {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 68px;
+  height: 64px;
+  overflow: hidden;
   background: var(--c-surface);
   border-radius: var(--radius);
-  overflow: hidden;
 }
-
-.anim-card__name { font-size: 13px; font-weight: 600; }
+.anim-card__name { font-size: 13px; font-weight: 500; }
 .anim-card__meta { font-family: var(--font-num); font-size: 11px; color: var(--c-text-3); }
 
 .anim-demo--fade {
-  padding: 7px 14px;
+  padding: 6px 12px;
   font-size: 11px;
-  font-weight: 500;
   color: var(--c-primary-dark);
   background: var(--c-primary-bg);
   border: 1px solid var(--c-primary-line);
   border-radius: var(--radius);
   animation: fade-up 2.4s ease-in-out infinite;
 }
-
 .anim-demo--spinner {
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   border: 3px solid var(--c-primary-bg);
   border-top-color: var(--c-primary-strong);
   border-radius: 50%;
   animation: spinner 0.9s linear infinite;
 }
-
 .anim-demo--skeleton {
   width: 120px;
   height: 10px;
   border-radius: var(--radius-pill);
   background: linear-gradient(90deg,
     var(--c-primary-bg) 0%,
-    color-mix(in srgb, var(--c-primary) 35%, var(--c-surface)) 50%,
+    color-mix(in srgb, var(--theme-color) 35%, var(--c-surface)) 50%,
     var(--c-primary-bg) 100%);
   background-size: 200% 100%;
   animation: shimmer 1.6s linear infinite;
 }
-
 .anim-demo--pulse {
   width: 12px;
   height: 12px;
@@ -1250,87 +1152,187 @@ code { font-family: var(--font-num); }
   0% { opacity: 0; transform: translateY(10px); }
   40%, 100% { opacity: 1; transform: translateY(0); }
 }
-
-@keyframes spinner {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-@keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
+@keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 @keyframes ping {
-  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--c-primary) 45%, transparent); }
-  70%, 100% { box-shadow: 0 0 0 10px color-mix(in srgb, var(--c-primary) 0%, transparent); }
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--theme-color) 45%, transparent); }
+  70%, 100% { box-shadow: 0 0 0 10px color-mix(in srgb, var(--theme-color) 0%, transparent); }
 }
 
 /* ==========================================================================
-   12. 源码视图
+   15. Do / Don't
    ========================================================================== */
-.raw { margin-top: var(--space-6); }
-
-.raw__head {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-  margin-bottom: var(--space-3);
-}
-
-.raw__head h2 {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--c-text-3);
-}
-.raw__head h2::before {
+.principles { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+.principle { padding: var(--space-4); border: 1px solid; border-radius: var(--radius-md); }
+.principle--do { background: var(--c-primary-bg); border-color: var(--c-primary-line); }
+.principle--dont { background: var(--c-surface-soft); border-color: var(--c-border-light); }
+.principle__head { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-3); font-size: 13px; font-weight: 600; }
+.principle--do .principle__head { color: var(--c-primary-dark); }
+.principle--dont .principle__head { color: var(--c-text-2); }
+.principle__head .i { width: 15px; height: 15px; stroke-width: 2.2; }
+.principle ul { display: flex; flex-direction: column; gap: var(--space-2); }
+.principle li { position: relative; padding-left: var(--space-4); font-size: 13px; line-height: 1.6; color: var(--c-text-2); }
+.principle li::before {
   content: "";
-  width: 3px;
-  height: 12px;
-  border-radius: var(--radius-pill);
+  position: absolute;
+  left: 2px;
+  top: 8px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
   background: var(--c-primary);
 }
+.principle--dont li::before { background: var(--c-text-3); }
 
+/* ==========================================================================
+   16. 源码视图
+   ========================================================================== */
+.raw { padding: var(--space-4); }
+.raw__head { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; margin-bottom: var(--space-3); }
+.raw__head h2 { display: flex; align-items: center; gap: var(--space-2); font-size: 14px; font-weight: 600; }
+.raw__head h2::before { content: ""; width: 3px; height: 12px; border-radius: var(--radius-pill); background: var(--c-primary); }
 .raw pre {
   margin: 0;
-  padding: var(--space-6);
+  padding: var(--space-5);
   font-family: var(--font-num);
   font-size: 12.5px;
   line-height: 1.8;
   color: var(--c-text-2);
-  background: var(--c-surface);
+  background: var(--c-surface-soft);
   border: 1px solid var(--c-border-light);
   border-radius: var(--radius-md);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
 
-.raw pre::selection { background: color-mix(in srgb, var(--c-primary) 30%, transparent); }
+/* ==========================================================================
+   17. 配置抽屉（项目配置）
+   ========================================================================== */
+.drawer-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgb(0 0 0 / 35%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--motion) ease;
+}
+.drawer-mask.is-open { opacity: 1; pointer-events: auto; }
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  max-width: 88vw;
+  height: 100vh;
+  background: var(--c-surface);
+  border-left: 1px solid var(--c-border-light);
+  box-shadow: -2px 0 12px rgb(0 0 0 / 10%);
+  transform: translateX(100%);
+  transition: transform var(--motion) ease;
+}
+.drawer.is-open { transform: translateX(0); }
+
+.drawer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  height: 48px;
+  padding: 0 var(--space-4);
+  border-bottom: 1px solid var(--c-border-light);
+}
+.drawer__head h2 { font-size: 14px; font-weight: 600; }
+.drawer__body { flex: 1 1 auto; overflow-y: auto; padding: var(--space-4); }
+
+.setting { margin-bottom: var(--space-5); }
+.setting__title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-2);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--c-text-3);
+}
+.setting__hint { font-size: 11px; font-weight: 400; }
+
+.option-row { display: flex; gap: var(--space-2); }
+
+.option {
+  flex: 1 1 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 32px;
+  font-size: 12px;
+  color: var(--c-text-2);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: color var(--motion-fast) ease, border-color var(--motion-fast) ease, background-color var(--motion-fast) ease;
+}
+.option:hover { color: var(--c-primary-dark); border-color: var(--c-primary-line); }
+.option[aria-pressed="true"] {
+  color: var(--c-primary-dark);
+  background: var(--c-primary-bg);
+  border-color: var(--c-primary);
+  font-weight: 500;
+}
+.option .i { width: 13px; height: 13px; }
+
+.color-options { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; }
+.color-dot {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--dot);
+  cursor: pointer;
+  transition: transform var(--motion-fast) ease;
+}
+.color-dot:hover { transform: translateY(-1px); }
+.color-dot[aria-checked="true"] { box-shadow: 0 0 0 2px var(--c-surface), 0 0 0 4px var(--dot); }
+.color-dot[aria-checked="true"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='m4.5 10.5 3.6 3.6 7.4-8' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 64% no-repeat;
+}
+
+.switch-list { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.drawer__foot {
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--c-border-light);
+}
+.drawer__foot .btn { flex: 1 1 0; }
 
 /* ==========================================================================
-   13. 提示条与页脚
+   18. 提示条与页脚
    ========================================================================== */
 .toast {
   position: fixed;
   left: 50%;
   bottom: var(--space-6);
-  z-index: 60;
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
+  z-index: 80;
   max-width: calc(100vw - 32px);
   padding: var(--space-3) var(--space-4);
   font-size: 13px;
   color: var(--c-text);
   background: var(--c-surface);
   border: 1px solid var(--c-border);
-  border-left: 3px solid var(--c-primary);
+  border-left: 3px solid var(--c-success);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-popover);
   opacity: 0;
@@ -1342,9 +1344,9 @@ code { font-family: var(--font-num); }
 .toast.is-error { border-left-color: var(--c-danger); }
 
 .page-foot {
-  margin-top: var(--space-8);
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--c-border);
+  margin-top: var(--space-6);
+  padding: var(--space-4) 0 var(--space-2);
+  border-top: 1px solid var(--c-border-light);
   font-size: 12px;
   line-height: 1.7;
   color: var(--c-text-3);
@@ -1354,39 +1356,31 @@ code { font-family: var(--font-num); }
 .page-foot a:hover { text-decoration: underline; }
 
 /* ==========================================================================
-   14. 响应式与无障碍
+   19. 响应式与无障碍
    ========================================================================== */
-@media (max-width: 1080px) {
-  .board { grid-template-columns: 200px minmax(0, 1fr); }
-  .board__col:last-child { grid-column: 1 / -1; }
-  .sample-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .sample-tile--wide { grid-column: auto; }
+@media (max-width: 1100px) {
+  .dash-grid { grid-template-columns: minmax(0, 1fr); }
+  .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 900px) {
-  .mock { grid-template-columns: 128px minmax(0, 1fr); }
-  .mock__rail { display: none; }
-  .mock__charts { grid-template-columns: minmax(0, 1fr); }
-  .mock__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body[data-nav="vertical"] .sidebar { display: none; }
+  .nav-horizontal { display: none; }
   .principles { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (max-width: 720px) {
-  .page { padding: var(--space-4) var(--space-4) var(--space-6); }
-  .site-header__inner { padding: var(--space-3) var(--space-4); }
-  .header-actions { width: 100%; margin-left: 0; }
-  .board { grid-template-columns: minmax(0, 1fr); }
-  .board__col:last-child { grid-column: auto; }
-  .sample-grid { grid-template-columns: 1fr 1fr; }
-  .sample-tile--wide { grid-column: 1 / -1; }
-  .overview { padding: var(--space-4); }
-  .overview p { font-size: 15px; }
-  .hero { padding: var(--space-2); }
-  .mock { grid-template-columns: minmax(0, 1fr); }
-  .mock__side { display: none; }
-  .mock__title { font-size: 14px; }
+  .content { padding: var(--space-3); }
+  .stat-grid { gap: var(--space-2); }
+  .stat-card { padding: var(--space-3); }
+  .stat-card__spark { width: 60px; height: 24px; }
+  .stat-card__value { font-size: 20px; }
+  .page-head h1 { font-size: 18px; }
   .specimen-grid { grid-template-columns: 1fr 1fr; }
-  .segmented button { padding: 0 9px; }
+  .color-options { grid-template-columns: repeat(8, 1fr); }
+  .chart { height: 150px; gap: var(--space-2); }
+  .chart__bar { width: 6px; }
+  .brand__tag { display: none; }
   .toast { left: var(--space-4); right: var(--space-4); transform: translateY(12px); max-width: none; }
   .toast.is-visible { transform: translateY(0); }
 }
@@ -1400,592 +1394,674 @@ code { font-family: var(--font-num); }
 }
 </style>
 </head>
-<body>
+<body data-nav="horizontal">
 
 <!-- 图标库 -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-logo" viewBox="0 0 24 24"><path d="M12 2.5c3.8 4.3 6.2 7.6 6.2 10.9a6.2 6.2 0 0 1-12.4 0c0-3.3 2.4-6.6 6.2-10.9z"/><path d="M12 9.5v8"/></symbol>
   <symbol id="i-home" viewBox="0 0 20 20"><path d="M3 9.2 10 3l7 6.2V16a1 1 0 0 1-1 1h-4.2v-5.2H8.2V17H4a1 1 0 0 1-1-1z"/></symbol>
   <symbol id="i-chart" viewBox="0 0 20 20"><path d="M3 17h14"/><path d="M5.5 17v-5.5M10 17V6.5M14.5 17v-8.5"/></symbol>
-  <symbol id="i-doc" viewBox="0 0 20 20"><path d="M5 3h7l3 3v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M8 11h5M8 14h4M8 8h3"/></symbol>
-  <symbol id="i-cog" viewBox="0 0 20 20"><circle cx="10" cy="10" r="2.6"/><path d="M10 3v2M10 15v2M3 10h2M15 10h2M5.1 5.1l1.4 1.4M13.5 13.5l1.4 1.4M14.9 5.1l-1.4 1.4M6.5 13.5l-1.4 1.4"/></symbol>
-  <symbol id="i-search" viewBox="0 0 20 20"><circle cx="9" cy="9" r="5.2"/><path d="m13 13 4 4"/></symbol>
-  <symbol id="i-bell" viewBox="0 0 20 20"><path d="M6 14V9a4 4 0 0 1 8 0v5l1.5 2h-11z"/><path d="M8.5 17.5a1.5 1.5 0 0 0 3 0"/></symbol>
-  <symbol id="i-help" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7"/><path d="M8.2 7.6A1.9 1.9 0 0 1 12 8.4c0 1.3-1.9 1.5-1.9 3"/><circle cx="10" cy="14" r=".6" fill="currentColor" stroke="none"/></symbol>
-  <symbol id="i-user" viewBox="0 0 20 20"><circle cx="10" cy="7" r="3"/><path d="M4.5 17a5.5 5.5 0 0 1 11 0"/></symbol>
-  <symbol id="i-users" viewBox="0 0 20 20"><circle cx="7.5" cy="7.5" r="2.6"/><path d="M3 16a4.5 4.5 0 0 1 9 0"/><path d="M13.2 5.2a2.4 2.4 0 0 1 0 4.6M14.5 16a4.6 4.6 0 0 0-1.9-3.7"/></symbol>
-  <symbol id="i-moon" viewBox="0 0 20 20"><path d="M16 12.4A6.5 6.5 0 0 1 7.6 4a6.5 6.5 0 1 0 8.4 8.4z"/></symbol>
-  <symbol id="i-sun" viewBox="0 0 20 20"><circle cx="10" cy="10" r="3.4"/><path d="M10 2.4v2M10 15.6v2M2.4 10h2M15.6 10h2M4.6 4.6l1.4 1.4M14 14l1.4 1.4M15.4 4.6 14 6M6 14l-1.4 1.4"/></symbol>
-  <symbol id="i-tag" viewBox="0 0 20 20"><path d="M3.5 9.2V4.5a1 1 0 0 1 1-1h4.7l7 7-5.7 5.7z"/><circle cx="7.2" cy="7.2" r="1"/></symbol>
-  <symbol id="i-trash" viewBox="0 0 20 20"><path d="M4 6h12M8 6V4h4v2M6 6l.8 10.2a1 1 0 0 0 1 .8h4.4a1 1 0 0 0 1-.8L14 6"/><path d="M8.5 9v5M11.5 9v5"/></symbol>
+  <symbol id="i-palette" viewBox="0 0 20 20"><path d="M10 3a7 7 0 0 0 0 14c1.3 0 1.6-1 1.1-1.8-.5-.9.1-1.9 1.1-1.9h1.4A3.4 3.4 0 0 0 17 10 7 7 0 0 0 10 3z"/><circle cx="7" cy="8" r="1" fill="currentColor" stroke="none"/><circle cx="10" cy="6.4" r="1" fill="currentColor" stroke="none"/><circle cx="13" cy="8" r="1" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-type" viewBox="0 0 20 20"><path d="M4 5h12M10 5v11M7.5 16h5"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 20 20"><rect x="3" y="3" width="6" height="6" rx="1.2"/><rect x="11" y="3" width="6" height="6" rx="1.2"/><rect x="3" y="11" width="6" height="6" rx="1.2"/><rect x="11" y="11" width="6" height="6" rx="1.2"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 20 20"><path d="m10 3 7 3.5-7 3.5L3 6.5z"/><path d="m3 10 7 3.5 7-3.5M3 13.5 10 17l7-3.5"/></symbol>
+  <symbol id="i-play" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7"/><path d="m8 7 5 3-5 3z"/></symbol>
   <symbol id="i-check" viewBox="0 0 20 20"><path d="m4.5 10.5 3.6 3.6 7.4-8"/></symbol>
   <symbol id="i-x" viewBox="0 0 20 20"><path d="m5.5 5.5 9 9M14.5 5.5l-9 9"/></symbol>
   <symbol id="i-copy" viewBox="0 0 20 20"><rect x="7" y="7" width="9" height="10" rx="1.4"/><path d="M13 7V4.4A1.4 1.4 0 0 0 11.6 3H5.4A1.4 1.4 0 0 0 4 4.4v8.2A1.4 1.4 0 0 0 5.4 14H7"/></symbol>
-  <symbol id="i-coins" viewBox="0 0 20 20"><ellipse cx="10" cy="5.5" rx="6" ry="2.5"/><path d="M4 5.5v4c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5v-4"/><path d="M4 9.5v4c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5v-4"/></symbol>
+  <symbol id="i-search" viewBox="0 0 20 20"><circle cx="9" cy="9" r="5.2"/><path d="m13 13 4 4"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 20 20"><path d="M6 14V9a4 4 0 0 1 8 0v5l1.5 2h-11z"/><path d="M8.5 17.5a1.5 1.5 0 0 0 3 0"/></symbol>
+  <symbol id="i-cog" viewBox="0 0 20 20"><circle cx="10" cy="10" r="2.6"/><path d="M10 3v2M10 15v2M3 10h2M15 10h2M5.1 5.1l1.4 1.4M13.5 13.5l1.4 1.4M14.9 5.1l-1.4 1.4M6.5 13.5l-1.4 1.4"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 20 20"><circle cx="10" cy="10" r="3.4"/><path d="M10 2.4v2M10 15.6v2M2.4 10h2M15.6 10h2M4.6 4.6l1.4 1.4M14 14l1.4 1.4M15.4 4.6 14 6M6 14l-1.4 1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 20 20"><path d="M16 12.4A6.5 6.5 0 0 1 7.6 4a6.5 6.5 0 1 0 8.4 8.4z"/></symbol>
+  <symbol id="i-auto" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7"/><path d="M10 3v14"/><path d="M10 3a7 7 0 0 1 0 14" fill="currentColor" stroke="none" opacity=".35"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 20 20"><path d="M3 5h14M3 10h14M3 15h14"/></symbol>
+  <symbol id="i-column" viewBox="0 0 20 20"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M8 3v14"/></symbol>
+  <symbol id="i-user" viewBox="0 0 20 20"><circle cx="10" cy="7" r="3"/><path d="M4.5 17a5.5 5.5 0 0 1 11 0"/></symbol>
+  <symbol id="i-users" viewBox="0 0 20 20"><circle cx="7.5" cy="7.5" r="2.6"/><path d="M3 16a4.5 4.5 0 0 1 9 0"/><path d="M13.2 5.2a2.4 2.4 0 0 1 0 4.6M14.5 16a4.6 4.6 0 0 0-1.9-3.7"/></symbol>
   <symbol id="i-bolt" viewBox="0 0 20 20"><path d="M11 2.5 4.5 11H9l-1 6.5L15 8.5h-4.5z"/></symbol>
   <symbol id="i-target" viewBox="0 0 20 20"><circle cx="10" cy="10" r="6.5"/><circle cx="10" cy="10" r="2.6"/></symbol>
+  <symbol id="i-more" viewBox="0 0 20 20"><circle cx="5" cy="10" r=".9" fill="currentColor" stroke="none"/><circle cx="10" cy="10" r=".9" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r=".9" fill="currentColor" stroke="none"/></symbol>
 </svg>
 
-<header class="site-header">
-  <div class="site-header__inner">
-    <div class="site-title">
-      <h1>Pure Admin 设计系统</h1>
-      <span class="format-badge">Alpha · Visual Spec</span>
-    </div>
+<!-- 顶栏 -->
+<header class="app-header">
+  <div class="app-header__inner">
+    <a class="brand" href="#top">
+      <svg class="i brand__logo" aria-hidden="true"><use href="#i-logo"/></svg>
+      <span class="brand__name">PureAdmin</span>
+      <span class="brand__tag">设计系统</span>
+    </a>
+
+    <nav class="nav-horizontal" aria-label="主导航">
+      <a href="#top" class="is-active"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg>首页</a>
+      <a href="#colors"><svg class="i" aria-hidden="true"><use href="#i-palette"/></svg>颜色</a>
+      <a href="#type"><svg class="i" aria-hidden="true"><use href="#i-type"/></svg>字体</a>
+      <a href="#components"><svg class="i" aria-hidden="true"><use href="#i-grid"/></svg>组件</a>
+      <a href="#shadow"><svg class="i" aria-hidden="true"><use href="#i-layers"/></svg>阴影</a>
+      <a href="#motion"><svg class="i" aria-hidden="true"><use href="#i-play"/></svg>动效</a>
+    </nav>
 
     <div class="header-actions">
-      <div class="segmented" role="group" aria-label="主题">
-        <button type="button" data-theme-btn="light" aria-pressed="true">
-          <svg class="i" aria-hidden="true"><use href="#i-sun"/></svg>浅色
-        </button>
-        <button type="button" data-theme-btn="dark" aria-pressed="false">
-          <svg class="i" aria-hidden="true"><use href="#i-moon"/></svg>深色
-        </button>
-      </div>
-
-      <div class="segmented" role="group" aria-label="视图">
-        <button type="button" data-view-btn="visual" aria-pressed="true">可视化</button>
-        <button type="button" data-view-btn="raw" aria-pressed="false">源码</button>
-      </div>
-
-      <button class="btn btn--primary" type="button" id="copyAll">
-        <svg class="i" aria-hidden="true"><use href="#i-copy"/></svg>复制全部规范
+      <button class="icon-btn" type="button" aria-label="搜索" title="搜索">
+        <svg class="i" aria-hidden="true"><use href="#i-search"/></svg>
+      </button>
+      <button class="icon-btn icon-btn--badge" type="button" aria-label="通知" title="通知">
+        <svg class="i" aria-hidden="true"><use href="#i-bell"/></svg>
+      </button>
+      <button class="user-chip" type="button" aria-label="当前用户：admin">
+        <span class="user-chip__avatar" aria-hidden="true">A</span>admin
+      </button>
+      <button class="icon-btn" type="button" id="openSettings" aria-label="打开项目配置" title="项目配置">
+        <svg class="i" aria-hidden="true"><use href="#i-cog"/></svg>
       </button>
     </div>
   </div>
 </header>
 
-<div class="page" id="visualView">
+<!-- 标签栏 -->
+<div class="tag-bar">
+  <a class="tag-tab" href="#top">首页</a>
+  <a class="tag-tab is-active" href="#top" aria-current="page">视觉规范</a>
+  <div class="tag-bar__right">
+    <span class="tag" id="themeIndicator">默认蓝</span>
+  </div>
+</div>
 
-  <!-- Hero 示例界面 -->
-  <div class="hero copyable" data-spec="preview" data-label="示例界面" tabindex="0" aria-label="复制示例界面规范">
-    <div class="mock">
-      <aside class="mock__side">
-        <div class="mock__brand">Pure Admin<small>DESIGN SYSTEM</small></div>
-        <nav class="mock__nav" aria-hidden="true">
-          <span class="mock__nav-item"><svg class="i"><use href="#i-home"/></svg>概览</span>
-          <span class="mock__nav-item is-active"><svg class="i"><use href="#i-chart"/></svg>数据报表</span>
-          <span class="mock__nav-item"><svg class="i"><use href="#i-users"/></svg>用户管理</span>
-          <span class="mock__nav-item"><svg class="i"><use href="#i-cog"/></svg>系统设置</span>
-        </nav>
-        <span class="mock__upgrade">升级方案</span>
-      </aside>
+<!-- 主体 -->
+<div class="layout">
+  <!-- 侧边栏（纵向导航模式显示） -->
+  <aside class="sidebar" aria-label="侧边导航">
+    <div class="sidebar__group">
+      <div class="sidebar__label">规范</div>
+      <a href="#top" class="is-active"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg>概览</a>
+      <a href="#colors"><svg class="i" aria-hidden="true"><use href="#i-palette"/></svg>颜色</a>
+      <a href="#type"><svg class="i" aria-hidden="true"><use href="#i-type"/></svg>字体</a>
+      <a href="#components"><svg class="i" aria-hidden="true"><use href="#i-grid"/></svg>组件</a>
+    </div>
+    <div class="sidebar__group">
+      <div class="sidebar__label">其他</div>
+      <a href="#shadow"><svg class="i" aria-hidden="true"><use href="#i-layers"/></svg>阴影层级</a>
+      <a href="#motion"><svg class="i" aria-hidden="true"><use href="#i-play"/></svg>动效</a>
+      <a href="#principles"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>设计原则</a>
+    </div>
+  </aside>
 
-      <div class="mock__main">
-        <div class="mock__top">
-          <span class="mock__search"><svg class="i"><use href="#i-search"/></svg>搜索用户、报表…</span>
-          <span class="mock__icon"><svg class="i"><use href="#i-bell"/></svg></span>
-          <span class="mock__icon"><svg class="i"><use href="#i-help"/></svg></span>
-          <span class="mock__avatar">陈</span>
+  <main class="content" id="top">
+    <div class="content__inner">
+      <!-- 页面标题 -->
+      <div class="page-head">
+        <div>
+          <nav class="breadcrumb" aria-label="面包屑">
+            <a href="#top">首页</a><span>/</span><a href="#top">设计规范</a><span>/</span><span>视觉规范</span>
+          </nav>
+          <h1>视觉规范</h1>
+          <p class="page-head__desc">按 vue-pure-admin 的界面规则整理：顶栏 48px、标签栏 34px、侧边栏 210px，主题色与明暗模式解耦。</p>
         </div>
-
-        <div class="mock__body">
-          <div class="mock__heading">
-            <div>
-              <p class="mock__eyebrow">OVERVIEW</p>
-              <h3 class="mock__title">数据总览</h3>
-            </div>
-            <div class="mock__heading-actions">
-              <span class="mock__range">近 30 天</span>
-              <span class="mock__cta">导出报表</span>
-            </div>
+        <div class="page-head__actions">
+          <div class="segmented" role="group" aria-label="视图">
+            <button type="button" data-view-btn="visual" aria-pressed="true">可视化</button>
+            <button type="button" data-view-btn="raw" aria-pressed="false">源码</button>
           </div>
+          <button class="btn" type="button" id="resetPrefs">
+            <svg class="i" aria-hidden="true"><use href="#i-cog"/></svg>主题配置
+          </button>
+          <button class="btn btn--primary" type="button" id="copyAll">
+            <svg class="i" aria-hidden="true"><use href="#i-copy"/></svg>复制全部规范
+          </button>
+        </div>
+      </div>
 
-          <div class="mock__stats">
-            <div class="mock__stat">
-              <span class="mock__stat-top"><svg class="i"><use href="#i-users"/></svg><span class="mock__delta is-up">+12.5%</span></span>
-              <span class="mock__stat-label">总用户</span>
-              <strong class="mock__stat-value">428,900</strong>
+      <div id="visualView">
+        <!-- 统计卡 -->
+        <section class="stat-grid" aria-label="规范统计">
+          <article class="stat-card copyable" data-spec="statColors" data-label="颜色令牌统计" tabindex="0">
+            <div class="stat-card__top">
+              <span class="stat-card__icon"><svg class="i" aria-hidden="true"><use href="#i-palette"/></svg></span>
             </div>
-            <div class="mock__stat">
-              <span class="mock__stat-top"><svg class="i"><use href="#i-user"/></svg><span class="mock__delta is-up">+8.2%</span></span>
-              <span class="mock__stat-label">活跃用户</span>
-              <strong class="mock__stat-value">84,232</strong>
-            </div>
-            <div class="mock__stat">
-              <span class="mock__stat-top"><svg class="i"><use href="#i-bolt"/></svg><span class="mock__delta is-down">-2.1%</span></span>
-              <span class="mock__stat-label">转化率</span>
-              <strong class="mock__stat-value">4.82%</strong>
-            </div>
-            <div class="mock__stat">
-              <span class="mock__stat-top"><svg class="i"><use href="#i-target"/></svg><span class="mock__delta is-up">达标</span></span>
-              <span class="mock__stat-label">留存率</span>
-              <strong class="mock__stat-value">62.4%</strong>
-            </div>
-          </div>
+            <div class="stat-card__label">颜色令牌</div>
+            <div class="stat-card__value">24</div>
+            <div class="stat-card__delta">+12.5%</div>
+            <svg class="stat-card__spark" viewBox="0 0 72 28" aria-hidden="true">
+              <path d="M2 20 C10 18 14 10 20 11 C26 12 30 20 36 18 C42 16 46 6 52 8 C58 10 64 14 70 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color: var(--c-primary)"/>
+            </svg>
+          </article>
 
-          <div class="mock__charts">
-            <div class="mock__card">
-              <div class="mock__card-head">
-                <strong>收入走势</strong>
-                <span class="mock__legend"><i></i>实际<i></i>目标</span>
+          <article class="stat-card stat-card--purple copyable" data-spec="statType" data-label="字号档位统计" tabindex="0">
+            <div class="stat-card__top">
+              <span class="stat-card__icon"><svg class="i" aria-hidden="true"><use href="#i-type"/></svg></span>
+            </div>
+            <div class="stat-card__label">字号档位</div>
+            <div class="stat-card__value">6</div>
+            <div class="stat-card__delta">+8.2%</div>
+            <svg class="stat-card__spark" viewBox="0 0 72 28" aria-hidden="true">
+              <path d="M2 18 C8 20 12 12 18 13 C24 14 28 22 34 19 C40 16 44 8 50 10 C56 12 62 16 70 11" fill="none" stroke="#693AC9" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </article>
+
+          <article class="stat-card stat-card--green copyable" data-spec="statComponents" data-label="组件示例统计" tabindex="0">
+            <div class="stat-card__top">
+              <span class="stat-card__icon"><svg class="i" aria-hidden="true"><use href="#i-grid"/></svg></span>
+            </div>
+            <div class="stat-card__label">组件示例</div>
+            <div class="stat-card__value">18</div>
+            <div class="stat-card__delta">+99%</div>
+            <svg class="stat-card__spark" viewBox="0 0 72 28" aria-hidden="true">
+              <path d="M2 22 C10 22 14 16 20 17 C26 18 30 12 36 12 C42 12 48 16 54 13 C60 10 64 8 70 8" fill="none" stroke="#67C23A" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </article>
+
+          <article class="stat-card stat-card--orange copyable" data-spec="statCoverage" data-label="规范覆盖度统计" tabindex="0">
+            <div class="stat-card__top">
+              <span class="stat-card__icon"><svg class="i" aria-hidden="true"><use href="#i-target"/></svg></span>
+            </div>
+            <div class="stat-card__label">规范覆盖度</div>
+            <div class="stat-card__value">96<small style="font-size:13px;color:var(--c-text-3)">%</small></div>
+            <div class="stat-card__delta">+100%</div>
+            <svg class="stat-card__spark" viewBox="0 0 72 28" aria-hidden="true">
+              <path d="M2 20 C8 14 14 16 20 12 C26 8 30 18 36 14 C42 10 46 6 52 9 C58 12 64 7 70 6" fill="none" stroke="#E6A23C" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </article>
+        </section>
+
+        <!-- 仪表盘组合 -->
+        <div class="dash-grid">
+          <div class="dash-col">
+            <!-- 分析概览 -->
+            <section class="panel copyable" data-spec="demoChart" data-label="分析概览" tabindex="0">
+              <div class="panel__head">
+                <h2>分析概览</h2>
+                <span class="spacer"></span>
+                <span class="tag tag--info">上周</span>
+                <span class="tag">本周</span>
               </div>
-              <p class="mock__card-sub">预测值与 Q3 实际增长</p>
-              <svg class="mock__line" viewBox="0 0 320 120" preserveAspectRatio="none" aria-hidden="true">
-                <defs>
-                  <linearGradient id="areaBlue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0" stop-color="#3E9FDD" stop-opacity="0.28"/>
-                    <stop offset="1" stop-color="#3E9FDD" stop-opacity="0"/>
-                  </linearGradient>
-                </defs>
-                <path d="M0,96 C30,90 48,60 70,58 C92,56 108,86 132,80 C156,74 168,38 196,40 C224,42 240,14 268,18 C292,22 306,26 320,22 L320,120 L0,120 Z" fill="url(#areaBlue)"/>
-                <path d="M0,96 C30,90 48,60 70,58 C92,56 108,86 132,80 C156,74 168,38 196,40 C224,42 240,14 268,18 C292,22 306,26 320,22" fill="none" stroke="#3E9FDD" stroke-width="2.2" stroke-linecap="round"/>
-                <path d="M0,104 C40,100 60,92 90,94 C120,96 150,88 180,90 C210,92 250,80 280,82 C300,83 312,78 320,76" fill="none" stroke="currentColor" stroke-opacity="0.4" stroke-width="1.6" stroke-dasharray="4 4"/>
-              </svg>
-              <div class="mock__axis"><span>1月</span><span>2月</span><span>3月</span><span>4月</span><span>5月</span><span>6月</span><span>7月</span></div>
+              <div class="panel__body">
+                <div class="chart" role="img" aria-label="本周与上周的规范新增数量对比柱状图">
+                  <div class="chart__group"><span class="chart__bar" style="height:28%"></span><span class="chart__bar chart__bar--alt" style="height:18%"></span></div>
+                  <div class="chart__group"><span class="chart__bar" style="height:44%"></span><span class="chart__bar chart__bar--alt" style="height:30%"></span></div>
+                  <div class="chart__group"><span class="chart__bar" style="height:62%"></span><span class="chart__bar chart__bar--alt" style="height:38%"></span></div>
+                  <div class="chart__group"><span class="chart__bar" style="height:52%"></span><span class="chart__bar chart__bar--alt" style="height:46%"></span></div>
+                  <div class="chart__group"><span class="chart__bar" style="height:78%"></span><span class="chart__bar chart__bar--alt" style="height:58%"></span></div>
+                  <div class="chart__group"><span class="chart__bar" style="height:92%"></span><span class="chart__bar chart__bar--alt" style="height:64%"></span></div>
+                  <div class="chart__group"><span class="chart__bar" style="height:70%"></span><span class="chart__bar chart__bar--alt" style="height:52%"></span></div>
+                </div>
+                <div class="chart__axis"><span>周一</span><span>周二</span><span>周三</span><span>周四</span><span>周五</span><span>周六</span><span>周日</span></div>
+                <div class="chart__legend">
+                  <span><i></i>本周新增</span>
+                  <span><i style="background: var(--c-warning)"></i>上周新增</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- 数据统计表 -->
+            <section class="panel copyable" data-spec="demoTable" data-label="规范明细表" tabindex="0">
+              <div class="panel__head">
+                <h2>规范明细</h2>
+                <span class="spacer"></span>
+                <span class="tag tag--success">全部已同步</span>
+              </div>
+              <div class="table-wrap">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>序号</th><th>规范项</th><th>数量</th><th>覆盖度</th><th>更新日期</th><th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="table__num">1</td><td>颜色令牌</td><td class="table__num">24</td>
+                      <td><span class="tag tag--success">100%</span></td><td>2026-11-12</td>
+                      <td class="table__action">查看</td>
+                    </tr>
+                    <tr>
+                      <td class="table__num">2</td><td>字号档位</td><td class="table__num">6</td>
+                      <td><span class="tag tag--success">100%</span></td><td>2026-11-12</td>
+                      <td class="table__action">查看</td>
+                    </tr>
+                    <tr>
+                      <td class="table__num">3</td><td>组件示例</td><td class="table__num">18</td>
+                      <td><span class="tag">94%</span></td><td>2026-11-10</td>
+                      <td class="table__action">查看</td>
+                    </tr>
+                    <tr>
+                      <td class="table__num">4</td><td>阴影层级</td><td class="table__num">9</td>
+                      <td><span class="tag tag--success">100%</span></td><td>2026-11-08</td>
+                      <td class="table__action">查看</td>
+                    </tr>
+                    <tr>
+                      <td class="table__num">5</td><td>动效规范</td><td class="table__num">4</td>
+                      <td><span class="tag tag--warning">88%</span></td><td>2026-11-05</td>
+                      <td class="table__action">查看</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+
+          <div class="dash-col">
+            <!-- 覆盖率 -->
+            <section class="panel copyable" data-spec="demoCoverage" data-label="规范覆盖度" tabindex="0">
+              <div class="panel__head"><h2>规范覆盖度</h2></div>
+              <div class="panel__body">
+                <div class="coverage">
+                  <div class="coverage__row"><span class="coverage__label">颜色</span><span class="coverage__track"><span class="coverage__bar" style="width:100%"></span></span><span class="coverage__value">100%</span></div>
+                  <div class="coverage__row"><span class="coverage__label">字号</span><span class="coverage__track"><span class="coverage__bar" style="width:96%"></span></span><span class="coverage__value">96%</span></div>
+                  <div class="coverage__row"><span class="coverage__label">组件</span><span class="coverage__track"><span class="coverage__bar coverage__bar--green" style="width:94%"></span></span><span class="coverage__value coverage__value--green">94%</span></div>
+                  <div class="coverage__row"><span class="coverage__label">阴影</span><span class="coverage__track"><span class="coverage__bar" style="width:100%"></span></span><span class="coverage__value">100%</span></div>
+                  <div class="coverage__row"><span class="coverage__label">动效</span><span class="coverage__track"><span class="coverage__bar coverage__bar--green" style="width:88%"></span></span><span class="coverage__value coverage__value--green">88%</span></div>
+                </div>
+              </div>
+            </section>
+
+            <!-- 最新动态 -->
+            <section class="panel copyable" data-spec="demoActivity" data-label="最新动态" tabindex="0">
+              <div class="panel__head">
+                <h2>最新动态</h2>
+                <span class="spacer"></span>
+                <span class="table__action">查看全部</span>
+              </div>
+              <div class="panel__body">
+                <div class="activity">
+                  <div>
+                    <div class="activity__day">2026-11-12 周四</div>
+                    <div class="activity__item">新增 <em>8 个</em> 颜色令牌，已同步到暗色模式</div>
+                    <div class="activity__item activity__item--green">更新组件示例 <em>6 处</em></div>
+                  </div>
+                  <div>
+                    <div class="activity__day">2026-11-08 周日</div>
+                    <div class="activity__item activity__item--orange">补充阴影层级说明 <em>9 条</em></div>
+                    <div class="activity__item activity__item--gray">整理动效时长与曲线</div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <!-- 颜色规范 -->
+        <section class="section" id="colors">
+          <div class="panel">
+            <div class="panel__head">
+              <h2>颜色规范</h2>
+              <span class="spacer"></span>
+              <span class="tag tag--info">点击色卡切换主题色</span>
             </div>
+            <div class="panel__body">
+              <div class="palette-grid" id="paletteGrid" role="radiogroup" aria-label="主题色"></div>
 
-            <div class="mock__card">
-              <div class="mock__card-head"><strong>用户分层</strong></div>
-              <p class="mock__card-sub">按订阅套餐分层</p>
-              <div class="mock__donut"><span>100%<small>TOTAL</small></span></div>
-              <ul class="mock__legend-list">
-                <li><i style="background:var(--c-primary)"></i>企业版 65%</li>
-                <li><i style="background:var(--c-primary-light)"></i>专业版 20%</li>
-                <li><i style="background:var(--c-text-3)"></i>入门版 15%</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <aside class="mock__rail" aria-hidden="true">
-        <div class="mock__rail-head"><strong>洞察</strong><span>⋯</span></div>
-        <div class="mock__rail-title">表现概览<span class="mock__pill">近 30 天</span></div>
-        <div class="mock__mini">
-          <div><span>总用户</span><strong>428,900</strong><em class="mock__delta is-up">+12.5%</em></div>
-          <div><span>活跃用户</span><strong>24,512</strong><em class="mock__delta is-down">-24.0%</em></div>
-        </div>
-
-        <div class="mock__card">
-          <span class="mock__rail-label">收入走势 · 日均 2.4k</span>
-          <div class="mock__bars">
-            <i style="height:38%"></i><i style="height:62%"></i><i style="height:48%"></i>
-            <i style="height:84%"></i><i style="height:92%"></i><i style="height:55%"></i>
-            <i style="height:72%"></i>
-          </div>
-          <div class="mock__axis mock__axis--tiny"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
-        </div>
-
-        <div class="mock__card">
-          <span class="mock__rail-label">用户分层</span>
-          <div class="mock__seg-row">
-            <div class="mock__donut mock__donut--sm"><span>100%</span></div>
-            <ul class="mock__legend-list">
-              <li><i style="background:var(--c-primary)"></i>企业 65%</li>
-              <li><i style="background:var(--c-primary-light)"></i>专业 20%</li>
-              <li><i style="background:var(--c-text-3)"></i>入门 15%</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="mock__card mock__activity">
-          <span class="mock__rail-label">最近动态<span>查看全部</span></span>
-          <ul>
-            <li><span class="mock__avatar">陈</span>陈默 · 新增报表<time>刚刚</time></li>
-            <li><span class="mock__avatar">林</span>林溪 · 升级方案<time>3 分钟</time></li>
-            <li><span class="mock__avatar">周</span>周远 · 注册账号<time>12 分钟</time></li>
-          </ul>
-        </div>
-      </aside>
-    </div>
-  </div>
-
-  <!-- 概览 -->
-  <section class="overview copyable" data-spec="overview" data-label="设计原则概览" tabindex="0" aria-label="复制设计原则概览">
-    <p>
-      Pure Admin 是一套面向中后台的通用设计系统：以 sky blue 为主色，配合中性色构成稳定的信息层级，
-      强调「语义优先、单一主色、双主题可用」。间距、圆角、阴影与字号沿用
-      <code>DESIGN.zh-CN.md</code> 的档位，页面内不再引入第二套品牌色。
-    </p>
-    <ul class="overview__points">
-      <li>单主色：状态色只表达状态，不做第二套品牌色</li>
-      <li>双主题：亮 / 暗模式只改变明度与表层，不换色相</li>
-      <li>交互：点击任意规范块即可复制 Markdown 片段</li>
-    </ul>
-  </section>
-
-  <!-- 规范总览板 -->
-  <div class="board">
-    <!-- 颜色 -->
-    <div class="board__col">
-      <div class="board__cell">
-        <div class="board__cell-title">Colors</div>
-
-        <div class="color-card copyable" data-spec="colorPrimary" data-label="Primary Sky" tabindex="0" style="--swatch:#3E9FDD;--on-swatch:#fff" aria-label="复制 Primary Sky 规范">
-          <div class="color-card__head"><span>Primary Sky</span><code>#3E9FDD</code></div>
-          <div class="color-card__ramp"></div>
-        </div>
-
-        <div class="color-card copyable" data-spec="colorStrong" data-label="Primary Strong" tabindex="0" style="--swatch:#1F7FB8;--on-swatch:#fff" aria-label="复制 Primary Strong 规范">
-          <div class="color-card__head"><span>Primary Strong</span><code>#1F7FB8</code></div>
-          <div class="color-card__ramp"></div>
-        </div>
-
-        <div class="color-card copyable" data-spec="colorLight" data-label="Primary Light" tabindex="0" style="--swatch:#7FC6EC;--on-swatch:#0d3550" aria-label="复制 Primary Light 规范">
-          <div class="color-card__head"><span>Primary Light</span><code>#7FC6EC</code></div>
-          <div class="color-card__ramp"></div>
-        </div>
-
-        <div class="color-card copyable" data-spec="colorBg" data-label="Primary BG" tabindex="0" style="--swatch:#EAF5FC;--on-swatch:#16638F" aria-label="复制 Primary BG 规范">
-          <div class="color-card__head"><span>Primary BG</span><code>#EAF5FC</code></div>
-          <div class="color-card__ramp"></div>
-        </div>
-
-        <div class="color-card copyable" data-spec="colorSurface" data-label="Surface Base" tabindex="0" style="--swatch:#F1F8FD;--on-swatch:#1E2A33" aria-label="复制 Surface Base 规范">
-          <div class="color-card__head"><span>Surface Base</span><code>#F1F8FD</code></div>
-          <div class="color-card__ramp"></div>
-        </div>
-
-        <div class="color-card copyable" data-spec="colorBorder" data-label="Border" tabindex="0" style="--swatch:#D7E7F2;--on-swatch:#1E2A33" aria-label="复制 Border 规范">
-          <div class="color-card__head"><span>Border</span><code>#D7E7F2</code></div>
-          <div class="color-card__ramp"></div>
-        </div>
-
-        <div class="color-card copyable" data-spec="colorText" data-label="Text Primary" tabindex="0" style="--swatch:#1E2A33;--on-swatch:#fff" aria-label="复制 Text Primary 规范">
-          <div class="color-card__head"><span>Text Primary</span><code>#1E2A33</code></div>
-          <div class="color-card__ramp"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 字体 -->
-    <div class="board__col">
-      <div class="board__cell">
-        <div class="board__cell-title">Typography</div>
-
-        <div class="sample copyable" data-spec="typeHeadline" data-label="Headline" tabindex="0" aria-label="复制 Headline 字号规范">
-          <div class="sample__meta"><span>Headline</span><code>600 · 42 / 1.1</code></div>
-          <div class="sample__aa">Aa 设计</div>
-        </div>
-
-        <div class="sample sample--body copyable" data-spec="typeBody" data-label="Body" tabindex="0" aria-label="复制 Body 字号规范">
-          <div class="sample__meta"><span>Body</span><code>400 · 26 / 1.5</code></div>
-          <div class="sample__aa">Aa 设计</div>
-        </div>
-
-        <div class="sample sample--label copyable" data-spec="typeLabel" data-label="Label" tabindex="0" aria-label="复制 Label 字号规范">
-          <div class="sample__meta"><span>Label</span><code>500 · 17 / 1.4</code></div>
-          <div class="sample__aa">Aa 后台界面</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 组件小样 -->
-    <div class="board__col">
-      <div class="board__cell">
-        <div class="board__cell-title">Components</div>
-        <div class="sample-grid">
-
-          <div class="sample-tile copyable" data-spec="buttonPrimary" data-label="按钮组合" tabindex="0" aria-label="复制按钮规范">
-            <span class="mini-btn mini-btn--primary">主要按钮</span>
-            <span class="mini-btn mini-btn--secondary">次要按钮</span>
-            <span class="mini-btn mini-btn--danger">危险操作</span>
-            <span class="mini-btn mini-btn--outline">描边按钮</span>
-          </div>
-
-          <div class="sample-tile copyable" data-spec="iconButton" data-label="图标按钮" tabindex="0" aria-label="复制图标按钮规范">
-            <div class="icon-row">
-              <span class="icon-tile"><svg class="i"><use href="#i-moon"/></svg></span>
-              <span class="icon-tile"><svg class="i"><use href="#i-sun"/></svg></span>
-              <span class="icon-tile icon-tile--soft"><svg class="i"><use href="#i-tag"/></svg></span>
-              <span class="icon-tile icon-tile--danger"><svg class="i"><use href="#i-trash"/></svg></span>
+              <div class="token-grid" style="margin-top: var(--space-4)">
+                <div class="token-card copyable" data-spec="colorPrimary" data-label="主色" tabindex="0">
+                  <span class="token-card__chip" style="--chip: var(--c-primary)"></span>
+                  <span class="token-card__name">主色</span>
+                  <span class="token-card__meta"><code>--c-primary</code><span id="tokenPrimaryHex">#409EFF</span></span>
+                </div>
+                <div class="token-card copyable" data-spec="colorPrimaryBg" data-label="主色浅底" tabindex="0">
+                  <span class="token-card__chip" style="--chip: var(--c-primary-bg)"></span>
+                  <span class="token-card__name">主色浅底</span>
+                  <span class="token-card__meta"><code>--c-primary-bg</code><span>亮 9% / 暗 16%</span></span>
+                </div>
+                <div class="token-card copyable" data-spec="colorBorder" data-label="描边" tabindex="0">
+                  <span class="token-card__chip" style="--chip: var(--c-border)"></span>
+                  <span class="token-card__name">描边</span>
+                  <span class="token-card__meta"><code>--c-border</code><span>亮 #DCDFE6 / 暗 #4C4D4F</span></span>
+                </div>
+                <div class="token-card copyable" data-spec="colorText" data-label="文字层级" tabindex="0">
+                  <span class="token-card__chip" style="--chip: linear-gradient(90deg, #303133 0 33%, #606266 33% 66%, #909399 66% 100%)"></span>
+                  <span class="token-card__name">文字三级</span>
+                  <span class="token-card__meta"><code>--c-text / -2 / -3</code><span>标题 / 正文 / 辅助</span></span>
+                </div>
+              </div>
             </div>
           </div>
+        </section>
 
-          <div class="sample-tile sample-tile--wide copyable" data-spec="input" data-label="输入框" tabindex="0" aria-label="复制输入框规范">
-            <span class="mini-input"><svg class="i"><use href="#i-search"/></svg>搜索用户名或邮箱</span>
-          </div>
-
-          <div class="sample-tile sample-tile--wide copyable" data-spec="navIcon" data-label="导航图标" tabindex="0" aria-label="复制导航图标规范">
-            <div class="icon-row">
-              <span class="icon-tile icon-tile--round"><svg class="i"><use href="#i-home"/></svg></span>
-              <span class="icon-tile icon-tile--round"><svg class="i"><use href="#i-search"/></svg></span>
-              <span class="icon-tile icon-tile--round"><svg class="i"><use href="#i-user"/></svg></span>
-              <span class="icon-tile icon-tile--round"><svg class="i"><use href="#i-chart"/></svg></span>
+        <!-- 字体规范 -->
+        <section class="section" id="type">
+          <div class="panel">
+            <div class="panel__head">
+              <h2>字体规范</h2>
+              <span class="spacer"></span>
+              <span class="tag tag--info">点击任意行复制字号规范</span>
+            </div>
+            <div>
+              <div class="type-row copyable" data-spec="typePageTitle" data-label="pageTitle" tabindex="0" style="--sample-size:20px;--sample-weight:600">
+                <div class="type-row__head"><span class="chip-label">pageTitle</span><span class="type-row__meta">系统字体栈 · 20px · 600 · 行高 1.5</span></div>
+                <div class="type-row__sample">页面标题只出现一次，用于交代当前页面的主任务与上下文。</div>
+              </div>
+              <div class="type-row copyable" data-spec="typeSectionTitle" data-label="sectionTitle" tabindex="0" style="--sample-size:18px;--sample-weight:600">
+                <div class="type-row__head"><span class="chip-label">sectionTitle</span><span class="type-row__meta">系统字体栈 · 18px · 600 · 行高 1.5</span></div>
+                <div class="type-row__sample">区块标题负责切分信息层级，让长页面保持稳定的阅读节奏。</div>
+              </div>
+              <div class="type-row copyable" data-spec="typeBodyLarge" data-label="bodyLarge" tabindex="0" style="--sample-size:16px;--sample-weight:400">
+                <div class="type-row__head"><span class="chip-label">bodyLarge</span><span class="type-row__meta">系统字体栈 · 16px · 400 · 行高 1.5</span></div>
+                <div class="type-row__sample">正文与表单内容使用 16px，保证中英混排下的清晰度与舒适阅读。</div>
+              </div>
+              <div class="type-row copyable" data-spec="typeBody" data-label="body" tabindex="0" style="--sample-size:14px;--sample-weight:400">
+                <div class="type-row__head"><span class="chip-label">body</span><span class="type-row__meta">系统字体栈 · 14px · 400 · 行高 1.5</span></div>
+                <div class="type-row__sample">菜单、标签、二级信息与常规控件统一使用 14px，界面密度稳定。</div>
+              </div>
+              <div class="type-row copyable" data-spec="typeCompact" data-label="compact" tabindex="0" style="--sample-size:13px;--sample-weight:500">
+                <div class="type-row__head"><span class="chip-label">compact</span><span class="type-row__meta">系统字体栈 · 13px · 500 · 行高 1.5</span></div>
+                <div class="type-row__sample">紧凑信息用于说明、辅助标签与按钮文案，强调可读但不抢层级。</div>
+              </div>
+              <div class="type-row copyable" data-spec="typeCaption" data-label="caption" tabindex="0" style="--sample-size:12px;--sample-weight:400">
+                <div class="type-row__head"><span class="chip-label">caption</span><span class="type-row__meta">系统字体栈 · 12px · 400 · 行高 1.5</span></div>
+                <div class="type-row__sample">注释、时间戳与说明文字使用 12px，永不承担关键操作信息。</div>
+              </div>
             </div>
           </div>
+        </section>
 
+        <!-- 组件规范 -->
+        <section class="section" id="components">
+          <div class="panel">
+            <div class="panel__head">
+              <h2>组件规范</h2>
+              <span class="spacer"></span>
+              <span class="tag tag--info">点击示例复制规范</span>
+            </div>
+            <div class="panel__body">
+              <div class="specimen-grid">
+                <div class="specimen copyable" data-spec="buttonPrimary" data-label="主按钮" tabindex="0">
+                  <span class="specimen__label">primary</span>
+                  <button class="sw-btn sw-btn--primary" type="button" tabindex="-1">导出报表</button>
+                </div>
+                <div class="specimen copyable" data-spec="buttonSecondary" data-label="次按钮" tabindex="0">
+                  <span class="specimen__label">secondary</span>
+                  <button class="sw-btn sw-btn--secondary" type="button" tabindex="-1">取消</button>
+                </div>
+                <div class="specimen copyable" data-spec="buttonDanger" data-label="危险按钮" tabindex="0">
+                  <span class="specimen__label">danger</span>
+                  <button class="sw-btn sw-btn--danger" type="button" tabindex="-1">删除账号</button>
+                </div>
+                <div class="specimen copyable" data-spec="buttonOutline" data-label="描边按钮" tabindex="0">
+                  <span class="specimen__label">outline</span>
+                  <button class="sw-btn sw-btn--outline" type="button" tabindex="-1">查看详情</button>
+                </div>
+                <div class="specimen copyable" data-spec="buttonGhost" data-label="文字按钮" tabindex="0">
+                  <span class="specimen__label">ghost</span>
+                  <button class="sw-btn sw-btn--ghost" type="button" tabindex="-1">了解更多</button>
+                </div>
+                <div class="specimen copyable" data-spec="buttonPill" data-label="胶囊按钮" tabindex="0">
+                  <span class="specimen__label">pill</span>
+                  <button class="sw-btn sw-btn--pill" type="button" tabindex="-1">保存修改</button>
+                </div>
+
+                <div class="specimen copyable" data-spec="tagSpec" data-label="标签" tabindex="0">
+                  <span class="specimen__label">tag</span>
+                  <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center">
+                    <span class="tag">主要</span>
+                    <span class="tag tag--success">成功</span>
+                    <span class="tag tag--warning">警告</span>
+                    <span class="tag tag--danger">危险</span>
+                    <span class="tag tag--info">信息</span>
+                  </div>
+                </div>
+
+                <div class="specimen copyable" data-spec="inputSpec" data-label="输入框" tabindex="0">
+                  <span class="specimen__label">input</span>
+                  <span class="input-demo"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg>搜索用户名或邮箱</span>
+                </div>
+
+                <div class="specimen copyable" data-spec="paginationSpec" data-label="分页" tabindex="0">
+                  <span class="specimen__label">pagination</span>
+                  <div class="pagination">
+                    <span>‹</span><span class="is-current">1</span><span>2</span><span>3</span><span>4</span><span>›</span>
+                  </div>
+                </div>
+
+                <div class="specimen copyable" data-spec="cardSelected" data-label="选中卡片" tabindex="0">
+                  <span class="specimen__label">card · selected</span>
+                  <div class="demo-card demo-card--selected">
+                    <strong>已选中</strong>
+                    <p>主色描边与浅底表达当前状态。</p>
+                  </div>
+                </div>
+
+                <div class="specimen copyable" data-spec="cardDefault" data-label="默认卡片" tabindex="0">
+                  <span class="specimen__label">card · default</span>
+                  <div class="demo-card">
+                    <strong>数据卡片</strong>
+                    <p>浅描边 + 主色左侧色条。</p>
+                  </div>
+                </div>
+
+                <div class="specimen copyable" data-spec="cardDisabled" data-label="禁用卡片" tabindex="0">
+                  <span class="specimen__label">card · disabled</span>
+                  <div class="demo-card demo-card--muted">
+                    <strong>已禁用</strong>
+                    <p>降低对比与阴影，文字仍可读。</p>
+                  </div>
+                </div>
+
+                <div class="specimen copyable" data-spec="logoLockup" data-label="品牌组合标" tabindex="0">
+                  <span class="specimen__label">logo · lockup</span>
+                  <div class="logo-tile">
+                    <span class="lockup">
+                      <span class="lockup__mark" aria-hidden="true"><svg class="i"><use href="#i-logo"/></svg></span>
+                      <span class="lockup__text"><strong>PureAdmin</strong><small>DESIGN SYSTEM</small></span>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="specimen copyable" data-spec="logoMark" data-label="Logo 图形标" tabindex="0">
+                  <span class="specimen__label">logo · mark</span>
+                  <div class="logo-tile">
+                    <span class="logo-mark"><svg class="i" aria-hidden="true"><use href="#i-logo"/></svg></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 阴影 -->
+        <section class="section" id="shadow">
+          <div class="panel">
+            <div class="panel__head">
+              <h2>阴影层级</h2>
+              <span class="spacer"></span>
+              <span class="tag tag--info">静态层级只用极轻阴影</span>
+            </div>
+            <div class="panel__body">
+              <div class="elev-grid">
+                <div class="elev copyable" data-spec="shadowSm" data-label="shadow-sm" tabindex="0">
+                  <div class="elev__box" style="--elev:0 1px 2px rgb(0 0 0 / 6%)"></div>
+                  <span class="elev__label">shadow-sm</span>
+                </div>
+                <div class="elev copyable" data-spec="shadowMd" data-label="shadow-md" tabindex="0">
+                  <div class="elev__box" style="--elev:0 2px 8px rgb(0 0 0 / 12%)"></div>
+                  <span class="elev__label">shadow-md</span>
+                </div>
+                <div class="elev copyable" data-spec="shadowLg" data-label="shadow-lg" tabindex="0">
+                  <div class="elev__box" style="--elev:0 4px 16px rgb(0 0 0 / 16%)"></div>
+                  <span class="elev__label">shadow-lg</span>
+                </div>
+                <div class="elev copyable" data-spec="shadowXl" data-label="shadow-xl" tabindex="0">
+                  <div class="elev__box" style="--elev:0 8px 32px rgb(0 0 0 / 18%)"></div>
+                  <span class="elev__label">shadow-xl</span>
+                </div>
+                <div class="elev copyable" data-spec="shadowCard" data-label="shadow-card" tabindex="0">
+                  <div class="elev__box" style="--elev:0 2px 12px rgb(0 0 0 / 6%)"></div>
+                  <span class="elev__label">shadow-card</span>
+                </div>
+                <div class="elev copyable" data-spec="shadowPrimaryGlow" data-label="shadow-primary-glow" tabindex="0">
+                  <div class="elev__box" style="--elev:0 2px 10px color-mix(in srgb, var(--theme-color) 30%, transparent)"></div>
+                  <span class="elev__label">shadow-primary-glow</span>
+                </div>
+                <div class="elev copyable" data-spec="shadowFocus" data-label="shadow-focus" tabindex="0">
+                  <div class="elev__box" style="--elev:0 0 0 3px color-mix(in srgb, var(--theme-color) 25%, transparent)"></div>
+                  <span class="elev__label">shadow-focus</span>
+                </div>
+                <div class="elev copyable" data-spec="shadowOverlay" data-label="shadow-overlay" tabindex="0">
+                  <div class="elev__box" style="--elev:0 12px 32px rgb(0 0 0 / 22%)"></div>
+                  <span class="elev__label">shadow-overlay</span>
+                </div>
+                <div class="elev copyable" data-spec="shadowNone" data-label="shadow-none" tabindex="0">
+                  <div class="elev__box" style="--elev:none"></div>
+                  <span class="elev__label">shadow-none</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 动效 -->
+        <section class="section" id="motion">
+          <div class="panel">
+            <div class="panel__head">
+              <h2>动效</h2>
+              <span class="spacer"></span>
+              <span class="tag tag--info">标准过渡 300ms / 快速反馈 120ms</span>
+            </div>
+            <div class="panel__body">
+              <div class="anim-grid">
+                <div class="anim-card copyable" data-spec="animFade" data-label="Fade Up" tabindex="0">
+                  <div class="anim-card__stage"><span class="anim-demo--fade">已加载</span></div>
+                  <span class="anim-card__name">Fade Up · 内容出现</span>
+                  <span class="anim-card__meta">0.3s · ease-out · 10px 位移</span>
+                </div>
+                <div class="anim-card copyable" data-spec="animSpinner" data-label="Spinner" tabindex="0">
+                  <div class="anim-card__stage"><span class="anim-demo--spinner"></span></div>
+                  <span class="anim-card__name">Spinner · 加载中</span>
+                  <span class="anim-card__meta">0.9s · linear · infinite</span>
+                </div>
+                <div class="anim-card copyable" data-spec="animSkeleton" data-label="Skeleton" tabindex="0">
+                  <div class="anim-card__stage"><span class="anim-demo--skeleton"></span></div>
+                  <span class="anim-card__name">Skeleton · 骨架屏</span>
+                  <span class="anim-card__meta">1.6s · linear · 背景位移</span>
+                </div>
+                <div class="anim-card copyable" data-spec="animPulse" data-label="Pulse" tabindex="0">
+                  <div class="anim-card__stage"><span class="anim-demo--pulse"></span></div>
+                  <span class="anim-card__name">Pulse · 状态提示</span>
+                  <span class="anim-card__meta">2s · ease-out · 光环扩散</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 设计原则 -->
+        <section class="section" id="principles">
+          <div class="panel">
+            <div class="panel__head"><h2>设计原则</h2></div>
+            <div class="panel__body">
+              <div class="principles">
+                <div class="principle principle--do copyable" data-spec="principlesDo" data-label="Do 清单" tabindex="0">
+                  <div class="principle__head">
+                    <svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Do
+                  </div>
+                  <ul>
+                    <li>用语义令牌，不硬编码色值。</li>
+                    <li>主题色切换时，所有派生色一起变化。</li>
+                    <li>亮 / 暗模式分别验证对比度。</li>
+                    <li>布局尺寸固定：顶栏 48px、标签栏 34px、侧边栏 210px。</li>
+                    <li>焦点态明显，且可键盘到达。</li>
+                    <li>动效控制在 300ms 以内。</li>
+                  </ul>
+                </div>
+                <div class="principle principle--dont copyable" data-spec="principlesDont" data-label="Don't 清单" tabindex="0">
+                  <div class="principle__head">
+                    <svg class="i" aria-hidden="true"><use href="#i-x"/></svg>Don't
+                  </div>
+                  <ul>
+                    <li>把主题色写死在组件里。</li>
+                    <li>用状态色大面积铺底充当品牌色。</li>
+                    <li>只靠颜色区分状态。</li>
+                    <li>在 flex 子项的伪元素里写百分比高度。</li>
+                    <li>堆叠无信息的卡片填补留白。</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- 源码视图 -->
+      <div class="panel" id="rawView" hidden>
+        <div class="raw">
+          <div class="raw__head">
+            <h2>Raw Markdown</h2>
+            <button class="btn" type="button" id="copyRaw">
+              <svg class="i" aria-hidden="true"><use href="#i-copy"/></svg>复制本页源码
+            </button>
+          </div>
+          <pre id="rawContent" tabindex="0"></pre>
         </div>
       </div>
+
+      <p class="page-foot">
+        规范来源 <a href="https://github.com/ruzi-sudo/pure-admin-doc/blob/main/DESIGN.zh-CN.md">DESIGN.zh-CN.md</a> ·
+        参考 <a href="https://github.com/pure-admin/vue-pure-admin">vue-pure-admin</a> 界面规则 ·
+        点击任意模块复制 Markdown 片段
+      </p>
     </div>
-  </div>
-
-  <!-- 字体规范 -->
-  <section class="section">
-    <h2 class="section__title">Typography · 字号体系</h2>
-    <p class="section__note">字号、行高与字重按层级固定，避免页面内自由发挥。点击任意一行复制该字号规范。</p>
-
-    <div class="type-row copyable" data-spec="typePageTitle" data-label="pageTitle" tabindex="0" style="--sample-size:20px;--sample-weight:600" aria-label="复制 pageTitle 字号规范">
-      <div class="type-row__head"><span class="chip-label">pageTitle</span><span class="type-row__meta">系统字体栈 · 20px · 600 · 行高 1.5</span></div>
-      <div class="type-row__sample">页面标题只出现一次，用于交代当前页面的主任务与上下文。</div>
-    </div>
-
-    <div class="type-row copyable" data-spec="typeSectionTitle" data-label="sectionTitle" tabindex="0" style="--sample-size:18px;--sample-weight:600" aria-label="复制 sectionTitle 字号规范">
-      <div class="type-row__head"><span class="chip-label">sectionTitle</span><span class="type-row__meta">系统字体栈 · 18px · 600 · 行高 1.5</span></div>
-      <div class="type-row__sample">区块标题负责切分信息层级，让长页面保持稳定的阅读节奏。</div>
-    </div>
-
-    <div class="type-row copyable" data-spec="typeBodyLarge" data-label="bodyLarge" tabindex="0" style="--sample-size:16px;--sample-weight:400" aria-label="复制 bodyLarge 字号规范">
-      <div class="type-row__head"><span class="chip-label">bodyLarge</span><span class="type-row__meta">系统字体栈 · 16px · 400 · 行高 1.5</span></div>
-      <div class="type-row__sample">正文与表单内容使用 16px，保证中英混排下的清晰度与舒适阅读。</div>
-    </div>
-
-    <div class="type-row copyable" data-spec="typeBody" data-label="body" tabindex="0" style="--sample-size:14px;--sample-weight:400" aria-label="复制 body 字号规范">
-      <div class="type-row__head"><span class="chip-label">body</span><span class="type-row__meta">系统字体栈 · 14px · 400 · 行高 1.5</span></div>
-      <div class="type-row__sample">菜单、标签、二级信息与常规控件统一使用 14px，界面密度稳定。</div>
-    </div>
-
-    <div class="type-row copyable" data-spec="typeCompact" data-label="compact" tabindex="0" style="--sample-size:13px;--sample-weight:500" aria-label="复制 compact 字号规范">
-      <div class="type-row__head"><span class="chip-label">compact</span><span class="type-row__meta">系统字体栈 · 13px · 500 · 行高 1.5</span></div>
-      <div class="type-row__sample">紧凑信息用于说明、辅助标签与按钮文案，强调可读但不抢层级。</div>
-    </div>
-
-    <div class="type-row copyable" data-spec="typeCaption" data-label="caption" tabindex="0" style="--sample-size:12px;--sample-weight:400" aria-label="复制 caption 字号规范">
-      <div class="type-row__head"><span class="chip-label">caption</span><span class="type-row__meta">系统字体栈 · 12px · 400 · 行高 1.5</span></div>
-      <div class="type-row__sample">注释、时间戳与说明文字使用 12px，永不承担关键操作信息。</div>
-    </div>
-  </section>
-
-  <!-- 按钮 -->
-  <section class="section">
-    <h2 class="section__title">Components · Buttons</h2>
-    <p class="section__note">主按钮只用于关键动作；危险色只用于破坏性操作，不作为品牌色使用。</p>
-
-    <div class="specimen-grid">
-      <div class="specimen copyable" data-spec="buttonPrimary" data-label="主按钮" tabindex="0" aria-label="复制主按钮规范">
-        <span class="specimen__label">primary</span>
-        <button class="sw-btn sw-btn--primary" type="button" tabindex="-1">导出报表</button>
-      </div>
-
-      <div class="specimen copyable" data-spec="buttonSecondary" data-label="次按钮" tabindex="0" aria-label="复制次按钮规范">
-        <span class="specimen__label">secondary</span>
-        <button class="sw-btn sw-btn--secondary" type="button" tabindex="-1">取消</button>
-      </div>
-
-      <div class="specimen copyable" data-spec="buttonDanger" data-label="危险按钮" tabindex="0" aria-label="复制危险按钮规范">
-        <span class="specimen__label">danger</span>
-        <button class="sw-btn sw-btn--danger" type="button" tabindex="-1">删除账号</button>
-      </div>
-
-      <div class="specimen copyable" data-spec="buttonOutline" data-label="描边按钮" tabindex="0" aria-label="复制描边按钮规范">
-        <span class="specimen__label">outline</span>
-        <button class="sw-btn sw-btn--outline" type="button" tabindex="-1">查看详情</button>
-      </div>
-
-      <div class="specimen copyable" data-spec="buttonGhost" data-label="文字按钮" tabindex="0" aria-label="复制文字按钮规范">
-        <span class="specimen__label">ghost</span>
-        <button class="sw-btn sw-btn--ghost" type="button" tabindex="-1">了解更多</button>
-      </div>
-
-      <div class="specimen copyable" data-spec="buttonPill" data-label="胶囊按钮" tabindex="0" aria-label="复制胶囊按钮规范">
-        <span class="specimen__label">pill</span>
-        <button class="sw-btn sw-btn--pill" type="button" tabindex="-1">保存修改</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- 卡片 -->
-  <section class="section">
-    <h2 class="section__title">Components · Cards</h2>
-    <p class="section__note">卡片靠描边、左侧色条与底色表达状态：常态、选中、禁用，不额外引入其它色相。</p>
-
-    <div class="specimen-grid">
-      <div class="specimen copyable" data-spec="cardDefault" data-label="默认卡片" tabindex="0" aria-label="复制默认卡片规范">
-        <span class="specimen__label">default</span>
-        <div class="demo-card" style="position:relative">
-          <strong>数据卡片</strong>
-          <p>默认状态使用浅描边与主色左侧色条。</p>
-        </div>
-      </div>
-
-      <div class="specimen copyable" data-spec="cardSelected" data-label="选中卡片" tabindex="0" aria-label="复制选中卡片规范">
-        <span class="specimen__label">selected</span>
-        <div class="demo-card demo-card--selected" style="position:relative">
-          <strong>已选中</strong>
-          <p>主色描边 + 主色浅底，配合柔和光晕。</p>
-        </div>
-      </div>
-
-      <div class="specimen copyable" data-spec="cardDisabled" data-label="禁用卡片" tabindex="0" aria-label="复制禁用卡片规范">
-        <span class="specimen__label">disabled</span>
-        <div class="demo-card demo-card--muted" style="position:relative">
-          <strong>已禁用</strong>
-          <p>降低对比与阴影，但文字仍需可读。</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 区块标题与 Logo -->
-  <section class="section">
-    <h2 class="section__title">Components · Section Titles &amp; Logo</h2>
-
-    <div class="specimen-grid">
-      <div class="specimen copyable" data-spec="sectionTitle" data-label="区块标题" tabindex="0" aria-label="复制区块标题规范">
-        <span class="specimen__label">section-title</span>
-        <div class="section-title-demo">
-          <span><i>#</i>数据明细</span>
-        </div>
-      </div>
-
-      <div class="specimen copyable" data-spec="logoLockup" data-label="品牌组合标" tabindex="0" aria-label="复制品牌组合标规范">
-        <span class="specimen__label">logo · lockup</span>
-        <div class="logo-tile">
-          <span class="lockup">
-            <span class="lockup__mark" aria-hidden="true">PA</span>
-            <span class="lockup__text"><strong>Pure Admin</strong><small>DESIGN SYSTEM</small></span>
-          </span>
-        </div>
-      </div>
-
-      <div class="specimen copyable" data-spec="logoMark" data-label="Logo 图形标" tabindex="0" aria-label="复制 Logo 图形标规范">
-        <span class="specimen__label">logo · mark</span>
-        <div class="logo-tile">
-          <span class="logo-mark">PA</span>
-        </div>
-      </div>
-
-      <div class="specimen copyable" data-spec="logoRules" data-label="Logo 使用规则" tabindex="0" aria-label="复制 Logo 使用规则">
-        <span class="specimen__label">logo · rules</span>
-        <div class="section-title-demo" style="border-bottom-style:solid;border-bottom-color:var(--c-border-light)">
-          <span style="font-size:12px;font-weight:400;color:var(--c-text-3);line-height:1.7">
-            图形标最小 24px，组合标最小 96px 宽；四周留白不小于图形标高度的 1/2。
-          </span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 阴影 -->
-  <section class="section">
-    <h2 class="section__title">Elevation &amp; Depth</h2>
-    <p class="section__note">静态层级只用极轻阴影；主色光晕只出现在可交互与焦点元素上。</p>
-
-    <div class="elev-grid">
-      <div class="elev copyable" data-spec="shadowSm" data-label="shadow-sm" tabindex="0" aria-label="复制 shadow-sm 规范">
-        <div class="elev__box" style="--elev:0 1px 2px rgb(16 42 60 / 8%)"></div>
-        <span class="elev__label">shadow-sm</span>
-      </div>
-      <div class="elev copyable" data-spec="shadowMd" data-label="shadow-md" tabindex="0" aria-label="复制 shadow-md 规范">
-        <div class="elev__box" style="--elev:0 2px 8px rgb(16 42 60 / 12%)"></div>
-        <span class="elev__label">shadow-md</span>
-      </div>
-      <div class="elev copyable" data-spec="shadowLg" data-label="shadow-lg" tabindex="0" aria-label="复制 shadow-lg 规范">
-        <div class="elev__box" style="--elev:0 4px 16px rgb(16 42 60 / 16%)"></div>
-        <span class="elev__label">shadow-lg</span>
-      </div>
-      <div class="elev copyable" data-spec="shadowXl" data-label="shadow-xl" tabindex="0" aria-label="复制 shadow-xl 规范">
-        <div class="elev__box" style="--elev:0 8px 32px rgb(16 42 60 / 18%)"></div>
-        <span class="elev__label">shadow-xl</span>
-      </div>
-      <div class="elev copyable" data-spec="shadowCard" data-label="shadow-card" tabindex="0" aria-label="复制 shadow-card 规范">
-        <div class="elev__box" style="--elev:0 2px 12px rgb(31 127 184 / 14%)"></div>
-        <span class="elev__label">shadow-card</span>
-      </div>
-      <div class="elev copyable" data-spec="shadowPrimaryGlow" data-label="shadow-primary-glow" tabindex="0" aria-label="复制 shadow-primary-glow 规范">
-        <div class="elev__box" style="--elev:0 2px 10px rgb(62 159 221 / 30%)"></div>
-        <span class="elev__label">shadow-primary-glow</span>
-      </div>
-      <div class="elev copyable" data-spec="shadowFocus" data-label="shadow-focus" tabindex="0" aria-label="复制 shadow-focus 规范">
-        <div class="elev__box" style="--elev:0 0 0 3px rgb(62 159 221 / 25%)"></div>
-        <span class="elev__label">shadow-focus</span>
-      </div>
-      <div class="elev copyable" data-spec="shadowOverlay" data-label="shadow-overlay" tabindex="0" aria-label="复制 shadow-overlay 规范">
-        <div class="elev__box" style="--elev:0 12px 32px rgb(16 42 60 / 22%)"></div>
-        <span class="elev__label">shadow-overlay</span>
-      </div>
-      <div class="elev copyable" data-spec="shadowNone" data-label="shadow-none" tabindex="0" aria-label="复制 shadow-none 规范">
-        <div class="elev__box" style="--elev:none"></div>
-        <span class="elev__label">shadow-none</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- 动效 -->
-  <section class="section">
-    <h2 class="section__title">Animations</h2>
-    <p class="section__note">动效服务于反馈，不用于炫技；标准过渡 300ms、快速反馈 120ms，全部遵循 prefers-reduced-motion。</p>
-
-    <div class="anim-grid">
-      <div class="anim-card copyable" data-spec="animFade" data-label="Fade Up" tabindex="0" aria-label="复制 Fade Up 动效规范">
-        <div class="anim-card__stage"><span class="anim-demo--fade">已加载</span></div>
-        <span class="anim-card__name">Fade Up · 内容出现</span>
-        <span class="anim-card__meta">0.3s · ease-out · 10px 位移</span>
-      </div>
-
-      <div class="anim-card copyable" data-spec="animSpinner" data-label="Spinner" tabindex="0" aria-label="复制 Spinner 动效规范">
-        <div class="anim-card__stage"><span class="anim-demo--spinner"></span></div>
-        <span class="anim-card__name">Spinner · 加载中</span>
-        <span class="anim-card__meta">0.9s · linear · infinite</span>
-      </div>
-
-      <div class="anim-card copyable" data-spec="animSkeleton" data-label="Skeleton" tabindex="0" aria-label="复制 Skeleton 动效规范">
-        <div class="anim-card__stage"><span class="anim-demo--skeleton"></span></div>
-        <span class="anim-card__name">Skeleton · 骨架屏</span>
-        <span class="anim-card__meta">1.6s · linear · 背景位移</span>
-      </div>
-
-      <div class="anim-card copyable" data-spec="animPulse" data-label="Pulse" tabindex="0" aria-label="复制 Pulse 动效规范">
-        <div class="anim-card__stage"><span class="anim-demo--pulse"></span></div>
-        <span class="anim-card__name">Pulse · 状态提示</span>
-        <span class="anim-card__meta">2s · ease-out · 光环扩散</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- Do / Don't -->
-  <section class="section">
-    <h2 class="section__title">Do's &amp; Don'ts</h2>
-
-    <div class="principles">
-      <div class="principle principle--do copyable" data-spec="principlesDo" data-label="Do 清单" tabindex="0" aria-label="复制 Do 清单">
-        <div class="principle__head">
-          <svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Do
-        </div>
-        <ul>
-          <li>用语义令牌，不硬编码色值。</li>
-          <li>主色只用于关键动作与选中态。</li>
-          <li>焦点态明显，且可键盘到达。</li>
-          <li>字号、间距、圆角走固定档位。</li>
-          <li>亮 / 暗模式都验证对比度。</li>
-          <li>动效控制在 300ms 以内。</li>
-        </ul>
-      </div>
-
-      <div class="principle principle--dont copyable" data-spec="principlesDont" data-label="Don't 清单" tabindex="0" aria-label="复制 Don't 清单">
-        <div class="principle__head">
-          <svg class="i" aria-hidden="true"><use href="#i-x"/></svg>Don't
-        </div>
-        <ul>
-          <li>同一页面混用第二套主色。</li>
-          <li>用状态色大面积铺底充当品牌色。</li>
-          <li>只靠颜色区分状态。</li>
-          <li>在 flex 子项的伪元素里写百分比高度。</li>
-          <li>堆叠无信息的卡片填补留白。</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <p class="page-foot">
-    规范来源 <a href="https://github.com/ruzi-sudo/pure-admin-doc/blob/main/DESIGN.zh-CN.md">DESIGN.zh-CN.md</a> ·
-    参考 <a href="https://github.com/pure-admin/vue-pure-admin">vue-pure-admin</a> 后台设计 ·
-    点击任意模块复制 Markdown 片段
-  </p>
+  </main>
 </div>
 
-<!-- 源码视图 -->
-<div class="page" id="rawView" hidden>
-  <div class="raw">
-    <div class="raw__head">
-      <h2>Raw Markdown</h2>
-      <button class="btn" type="button" id="copyRaw">
-        <svg class="i" aria-hidden="true"><use href="#i-copy"/></svg>复制本页源码
-      </button>
-    </div>
-    <pre id="rawContent" tabindex="0"></pre>
+<!-- 配置抽屉 -->
+<div class="drawer-mask" id="drawerMask"></div>
+<aside class="drawer" id="settingsDrawer" aria-labelledby="drawerTitle" aria-hidden="true">
+  <div class="drawer__head">
+    <h2 id="drawerTitle">项目配置</h2>
+    <button class="icon-btn" type="button" id="closeSettings" aria-label="关闭配置">
+      <svg class="i" aria-hidden="true"><use href="#i-x"/></svg>
+    </button>
   </div>
-</div>
+
+  <div class="drawer__body">
+    <div class="setting">
+      <div class="setting__title">整体风格</div>
+      <div class="option-row" role="group" aria-label="整体风格">
+        <button class="option" type="button" data-mode="light" aria-pressed="true">
+          <svg class="i" aria-hidden="true"><use href="#i-sun"/></svg>亮色
+        </button>
+        <button class="option" type="button" data-mode="dark" aria-pressed="false">
+          <svg class="i" aria-hidden="true"><use href="#i-moon"/></svg>深色
+        </button>
+        <button class="option" type="button" data-mode="auto" aria-pressed="false">
+          <svg class="i" aria-hidden="true"><use href="#i-auto"/></svg>自动
+        </button>
+      </div>
+    </div>
+
+    <div class="setting">
+      <div class="setting__title">主题色<span class="setting__hint" id="colorName">默认蓝</span></div>
+      <div class="color-options" id="colorOptions" role="radiogroup" aria-label="主题色"></div>
+    </div>
+
+    <div class="setting">
+      <div class="setting__title">导航模式</div>
+      <div class="option-row" role="group" aria-label="导航模式">
+        <button class="option" type="button" data-nav-opt="horizontal" aria-pressed="true">
+          <svg class="i" aria-hidden="true"><use href="#i-menu"/></svg>横向
+        </button>
+        <button class="option" type="button" data-nav-opt="vertical" aria-pressed="false">
+          <svg class="i" aria-hidden="true"><use href="#i-column"/></svg>纵向
+        </button>
+      </div>
+    </div>
+
+    <div class="setting">
+      <div class="setting__title">界面效果</div>
+      <div class="switch-list">
+        <button class="switch" type="button" role="switch" aria-checked="false" data-effect="gray">
+          <span class="switch__track" aria-hidden="true"></span>灰色模式
+        </button>
+        <button class="switch" type="button" role="switch" aria-checked="false" data-effect="weak">
+          <span class="switch__track" aria-hidden="true"></span>色弱模式
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="drawer__foot">
+    <button class="btn" type="button" id="resetAll">恢复默认</button>
+    <button class="btn btn--primary" type="button" id="closeSettings2">完成</button>
+  </div>
+</aside>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -1993,333 +2069,245 @@ code { font-family: var(--font-num); }
 (function () {
   "use strict";
 
-  var THEME_KEY = "pureAdmin.spec.theme";
-  var VIEW_KEY = "pureAdmin.spec.view";
+  var PREFS_KEY = "pureAdmin.spec.prefs";
 
   /* ======================================================================
-     规范片段：可视化区块与 Raw 视图共用同一份数据
+     主题色（与 DESIGN.zh-CN.md 的主题色表一致）
+     ====================================================================== */
+  var THEMES = [
+    { id: "blue", name: "默认蓝", hex: "#409EFF", on: "#fff" },
+    { id: "purple", name: "酱紫", hex: "#693AC9", on: "#fff" },
+    { id: "pink", name: "粉色", hex: "#D84493", on: "#fff" },
+    { id: "dusk", name: "深红", hex: "#E13C39", on: "#fff" },
+    { id: "volcano", name: "火山", hex: "#E85F33", on: "#fff" },
+    { id: "mingqing", name: "明青", hex: "#59BFC1", on: "#0d2b2c" },
+    { id: "aurora", name: "极光绿", hex: "#60AC80", on: "#fff" },
+    { id: "slate", name: "石墨蓝", hex: "#4C6A92", on: "#fff" }
+  ];
+
+  var DEFAULT_PREFS = {
+    mode: "light",      /* light | dark | auto */
+    color: "blue",
+    nav: "horizontal",  /* horizontal | vertical */
+    gray: false,
+    weak: false
+  };
+
+  var prefs = loadPrefs();
+  var mediaQuery = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+  var toastTimer = null;
+
+  /* ======================================================================
+     规范片段（可视化与源码视图共用）
      ====================================================================== */
   var SPECS = {
-    preview: "## 示例界面 · 数据总览\n\n" +
-      "三栏后台结构：侧边栏 + 顶栏 + 内容区 + 右侧洞察栏。\n\n" +
-      "- 页面底色：--c-bg（#F7FBFE）\n" +
-      "- 面板衬底：--c-surface-base（#F1F8FD）\n" +
-      "- 表层：--c-surface（#FFFFFF），圆角 --radius-md（6px）\n" +
-      "- 层级：--shadow-subtle（0 1px 2px rgb(16 42 60 / 8%)）\n" +
-      "- 主按钮：--c-primary-strong，承载导出报表等关键动作\n" +
-      "- 图表与选中态：--c-primary\n" +
-      "- 负向指标：--c-danger（只表达状态）\n" +
-      "- 文本：--c-text / --c-text-2 / --c-text-3 三层\n\n" +
-      "    <section class=\"panel\">\n      <h2 class=\"panel__title\">数据总览</h2>\n    </section>",
+    statColors: "### 统计卡 · 颜色令牌\n\n" +
+      "- 白色表层 + 极轻阴影（0 2px 12px rgb(0 0 0 / 6%)）\n" +
+      "- 数值 24px / 600，标签 13px / --c-text-3\n" +
+      "- 右上角图标使用主色浅底，右下角放 72 × 28 迷你折线\n" +
+      "- 点击整卡即可复制该规范片段",
 
-    overview: "## 概览\n\n" +
-      "Pure Admin 是一套面向中后台的通用设计系统：以 sky blue 为主色，配合中性色构成稳定的信息层级，" +
-      "强调语义优先、单一主色、双主题可用。\n\n" +
-      "- 单主色：状态色只表达状态，不做第二套品牌色\n" +
-      "- 双主题：亮 / 暗模式只改变明度与表层，不换色相\n" +
-      "- 可落地：字号、间距、圆角、状态色均有固定档位\n" +
-      "- 可验证：焦点环、对比度与 prefers-reduced-motion 同步覆盖",
+    statType: "### 统计卡 · 字号档位\n\n" +
+      "- 折线颜色可跟随卡片语义（主色 / 紫 / 成功 / 警告）\n" +
+      "- 增量文字使用成功色，下降使用危险色\n" +
+      "- 卡片间距 16px，圆角 6px",
 
-    /* ---- 颜色 ---- */
-    colorPrimary: "### Primary Sky\n\n" +
+    statComponents: "### 统计卡 · 组件示例\n\n" +
+      "- 图标容器 26 × 26px，圆角 4px\n" +
+      "- 成功色只用于正向数据，不用于主操作\n" +
+      "- 暗色模式下表层 #1d1e1f，阴影加深",
+
+    statCoverage: "### 统计卡 · 覆盖度\n\n" +
+      "- 百分比与数值同字号排布，单位字号降为 13px\n" +
+      "- 避免在卡片里再嵌套卡片\n" +
+      "- 四列栅格在 1100px 以下降为两列",
+
+    demoChart: "### 分析概览 · 分组柱状图\n\n" +
+      "- 两组数据：本周使用主色，上周使用警告色\n" +
+      "- 柱宽 9px，圆角 2px，组间距 12px\n" +
+      "- 图例用 8px 色块 + 11px 文字\n" +
+      "- 坐标轴文字 11px / --c-text-3",
+
+    demoTable: "### 规范明细 · 表格\n\n" +
+      "- 表头底色 --c-surface-soft，字号 12px / 500\n" +
+      "- 行高 40px，分隔线 --c-border-light\n" +
+      "- 数字列使用等宽字体，日期使用默认字体\n" +
+      "- 悬停行底色为主色 5% 混合，不改变文字颜色",
+
+    demoCoverage: "### 规范覆盖度 · 进度条\n\n" +
+      "- 轨道 14px 高，胶囊圆角，底色 --c-surface-soft\n" +
+      "- 主色条与成功色条交替使用，区分不同类别\n" +
+      "- 右侧百分号使用深色底白字标签，宽 40px\n" +
+      "- 标签列固定 64px，保证多条对齐",
+
+    demoActivity: "### 最新动态 · 时间线\n\n" +
+      "- 日期 12px / --c-text-3，条目 12.5px / --c-text-2\n" +
+      "- 圆点 6px，颜色表达类型：主色 / 成功 / 警告 / 信息\n" +
+      "- 条目左内边距 16px，与圆点错开\n" +
+      "- 同一天最多展示 2–3 条，其余进入「查看全部」",
+
+    colorPrimary: "### 主色\n\n" +
       "- Token：--c-primary\n" +
-      "- Value：#3E9FDD\n" +
-      "- 深色变体：#6FC0EA\n" +
-      "- 用途：主色、选中态、图标、图表主色、进度条\n" +
-      "- 注意：白字不要直接落在 --c-primary 上，实底按钮请用 --c-primary-strong\n\n" +
-      "    --c-primary: #3E9FDD;",
+      "- 由 --theme-color 派生，切换主题色时整站同步\n" +
+      "- 用途：链接、选中态、图表主色、图标\n" +
+      "- 实底按钮请使用 --c-primary-strong，保证白字对比度\n\n" +
+      "    --theme-color: #409EFF;\n    --c-primary: var(--theme-color);\n    --c-primary-strong: #2C6FB0;",
 
-    colorStrong: "### Primary Strong\n\n" +
-      "- Token：--c-primary-strong\n" +
-      "- Value：#1F7FB8\n" +
-      "- 深色变体：#1F7FB8（保持白字对比度）\n" +
-      "- 用途：实底按钮、导航选中项、头像等需要白字的场景\n" +
-      "- 对比度：白字在该底色上 ≥ 4.5 : 1\n\n" +
-      "    --c-primary-strong: #1F7FB8;",
-
-    colorLight: "### Primary Light\n\n" +
-      "- Token：--c-primary-light\n" +
-      "- Value：#7FC6EC\n" +
-      "- 深色变体：#93D3F3\n" +
-      "- 用途：悬停提亮、图表次色、装饰性描边\n" +
-      "- 注意：只作为同一色相的明度变化，不承担独立语义\n\n" +
-      "    --c-primary-light: #7FC6EC;",
-
-    colorBg: "### Primary BG\n\n" +
+    colorPrimaryBg: "### 主色浅底\n\n" +
       "- Token：--c-primary-bg\n" +
-      "- Value：#EAF5FC\n" +
-      "- 深色变体：#12293A\n" +
-      "- 用途：选中底色、提示条、图例衬底、Do 面板\n\n" +
-      "    --c-primary-bg: #EAF5FC;",
+      "- 亮色：主色 9% 混白；暗色：主色 16% 混 #141414\n" +
+      "- 用途：选中底、悬浮底、Tag 背景、Do 面板\n\n" +
+      "    --c-primary-bg: color-mix(in srgb, var(--theme-color) 9%, #fff);",
 
-    colorSurface: "### Surface Base\n\n" +
-      "- Token：--c-surface-base\n" +
-      "- Value：#F1F8FD\n" +
-      "- 深色变体：#111F2B\n" +
-      "- 用途：Hero 容器、规范板块、图表卡片衬底\n" +
-      "- 注意：表层之间只用明度差，不再换色相\n\n" +
-      "    --c-surface-base: #F1F8FD;",
-
-    colorBorder: "### Border\n\n" +
+    colorBorder: "### 描边\n\n" +
       "- Token：--c-border / --c-border-light\n" +
-      "- Value：#D7E7F2 / #E6F1F8\n" +
-      "- 深色变体：#293D4C / #20323F\n" +
-      "- 用途：卡片描边、分隔线、表格线\n" +
-      "- 注意：描边带一点主色倾向，避免纯灰显得割裂\n\n" +
-      "    --c-border: #D7E7F2;\n    --c-border-light: #E6F1F8;",
+      "- Value：#DCDFE6 / #EBEEF5（暗色 #4C4D4F / #363637）\n" +
+      "- 用途：卡片、输入框、表格分隔线\n\n" +
+      "    --c-border: #DCDFE6;\n    --c-border-light: #EBEEF5;",
 
-    colorText: "### Text Primary\n\n" +
+    colorText: "### 文字三级\n\n" +
       "- Token：--c-text / --c-text-2 / --c-text-3\n" +
-      "- Value：#1E2A33 / #4B5B67 / #6F818E\n" +
-      "- 深色变体：#E6F0F7 / #C2D3DE / #93A7B4\n" +
-      "- 用途：标题 / 正文 / 辅助说明三级\n" +
-      "- 注意：三级文字仍需满足 4.5 : 1 对比度\n\n" +
-      "    --c-text: #1E2A33;\n    --c-text-2: #4B5B67;\n    --c-text-3: #6F818E;",
+      "- Value：#303133 / #606266 / #909399\n" +
+      "- 用途：标题 / 正文 / 辅助说明\n" +
+      "- 注意：三级文字仍要满足对比度要求，关键信息不用它\n\n" +
+      "    --c-text: #303133;\n    --c-text-2: #606266;\n    --c-text-3: #909399;",
 
-    /* ---- 字体小样 ---- */
-    typeHeadline: "### Headline\n\n" +
-      "- 字体栈：\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif\n" +
-      "- 字号 / 行高：42px / 1.1\n" +
-      "- 字重：600\n" +
-      "- 字距：-0.02em\n" +
-      "- 用途：品牌展示与 Hero 主标题，一屏不超过一处",
+    typePageTitle: "### pageTitle\n\n- font-size：20px\n- font-weight：600\n- line-height：1.5\n- 用途：页面级标题，一屏只出现一次",
 
-    typeBody: "### Body\n\n" +
-      "- 字体栈：与 Headline 一致\n" +
-      "- 字号 / 行高：26px / 1.5\n" +
-      "- 字重：400\n" +
-      "- 用途：展示级正文样例，用于规范页说明段落",
+    typeSectionTitle: "### sectionTitle\n\n- font-size：18px\n- font-weight：600\n- line-height：1.5\n- 用途：区块标题",
 
-    typeLabel: "### Label\n\n" +
-      "- 字体栈：系统字体栈\n" +
-      "- 字号 / 行高：17px / 1.4\n" +
-      "- 字重：500\n" +
-      "- 用途：控件文案、标签、图表图例",
+    typeBodyLarge: "### bodyLarge\n\n- font-size：16px\n- font-weight：400\n- line-height：1.5\n- 用途：正文、表单内容",
 
-    /* ---- 字号体系 ---- */
-    typePageTitle: "### pageTitle\n\n" +
-      "- font-size：20px\n" +
-      "- font-weight：600\n" +
-      "- line-height：1.5\n" +
-      "- 用途：页面级标题，一屏只出现一次\n\n" +
-      "    .page-title {\n      font-size: 20px;\n      font-weight: 600;\n      line-height: 1.5;\n    }",
+    typeBody: "### body\n\n- font-size：14px\n- font-weight：400\n- line-height：1.5\n- 用途：菜单、标签、常规控件",
 
-    typeSectionTitle: "### sectionTitle\n\n" +
-      "- font-size：18px\n" +
-      "- font-weight：600\n" +
-      "- line-height：1.5\n" +
-      "- 用途：区块标题，负责切分长页面信息层级",
+    typeCompact: "### compact\n\n- font-size：13px\n- font-weight：500\n- line-height：1.5\n- 用途：按钮文案、辅助标签",
 
-    typeBodyLarge: "### bodyLarge\n\n" +
-      "- font-size：16px\n" +
-      "- font-weight：400\n" +
-      "- line-height：1.5\n" +
-      "- 用途：正文、表单内容、说明段落",
+    typeCaption: "### caption\n\n- font-size：12px\n- font-weight：400\n- line-height：1.5\n- 用途：注释、时间戳；不承担关键信息",
 
-    typeBody: "### body\n\n" +
-      "- font-size：14px\n" +
-      "- font-weight：400\n" +
-      "- line-height：1.5\n" +
-      "- 用途：菜单、标签、二级信息、常规控件",
-
-    typeCompact: "### compact\n\n" +
-      "- font-size：13px\n" +
-      "- font-weight：500\n" +
-      "- line-height：1.5\n" +
-      "- 用途：按钮文案、辅助标签、紧凑列表",
-
-    typeCaption: "### caption\n\n" +
-      "- font-size：12px\n" +
-      "- font-weight：400\n" +
-      "- line-height：1.5\n" +
-      "- 用途：注释、时间戳、图表刻度；不承担关键信息",
-
-    /* ---- 按钮 ---- */
     buttonPrimary: "### button · primary\n\n" +
-      "- 用于关键动作：保存、提交、创建、导出\n" +
-      "- 底色：--c-primary-strong（#1F7FB8，保证白字对比度）\n" +
-      "- 圆角：4px（--radius）；最小高度：34px，移动端 38px\n\n" +
-      "    .btn--primary {\n      min-height: 34px;\n      padding: 0 16px;\n      font-size: 14px;\n      font-weight: 500;\n      color: #fff;\n      background: var(--c-primary-strong);\n      border-radius: var(--radius);\n    }\n    .btn--primary:hover { background: color-mix(in srgb, var(--c-primary-strong) 86%, #fff); }\n    .btn--primary:active { transform: scale(0.97); }",
+      "- 底色 --c-primary-strong，白字，圆角 4px，高度 32px\n" +
+      "- 用于页面级关键动作，一个区域只放一个\n\n" +
+      "    .btn--primary {\n      height: 32px;\n      padding: 0 12px;\n      font-size: 13px;\n      font-weight: 500;\n      color: #fff;\n      background: var(--c-primary-strong);\n      border-radius: var(--radius);\n    }",
 
     buttonSecondary: "### button · secondary\n\n" +
-      "- 用于取消、返回、查看详情等辅助动作\n" +
-      "- 底色：--c-surface，描边：--c-border\n\n" +
-      "    .btn--secondary {\n      color: var(--c-text-2);\n      background: var(--c-surface);\n      border: 1px solid var(--c-border);\n      border-radius: var(--radius);\n    }\n    .btn--secondary:hover {\n      color: var(--c-primary-dark);\n      border-color: var(--c-primary);\n    }",
+      "- 白底 + 描边 --c-border，文字 --c-text-2\n" +
+      "- 悬停转为主色文字与主色浅底\n\n" +
+      "    .btn--secondary {\n      color: var(--c-text-2);\n      background: var(--c-surface);\n      border: 1px solid var(--c-border);\n    }\n    .btn--secondary:hover {\n      color: var(--c-primary);\n      background: var(--c-primary-bg);\n    }",
 
     buttonDanger: "### button · danger\n\n" +
-      "- 只用于删除、清空、移除等破坏性操作\n" +
-      "- 用 --c-danger 描边与文字表达，避免整屏红色\n" +
-      "- 该色为状态色，不作为品牌主色使用\n\n" +
-      "    .btn--danger {\n      color: var(--c-danger);\n      border-color: color-mix(in srgb, var(--c-danger) 45%, transparent);\n      background: var(--c-surface);\n    }\n    .btn--danger:hover {\n      color: #fff;\n      background: var(--c-danger);\n    }",
+      "- 危险色描边 + 危险色浅底，只用于删除、清空等破坏性操作\n\n" +
+      "    .btn--danger {\n      color: var(--c-danger);\n      background: var(--c-danger-bg);\n      border: 1px solid color-mix(in srgb, var(--c-danger) 30%, transparent);\n    }",
 
     buttonOutline: "### button · outline\n\n" +
-      "- 用于次级强调动作，描边与文字同为主色系\n" +
-      "- 底色透明，悬停时为 --c-primary-bg\n\n" +
-      "    .btn--outline {\n      color: var(--c-primary-dark);\n      border: 1px solid var(--c-primary);\n      background: transparent;\n    }\n    .btn--outline:hover { background: var(--c-primary-bg); }",
+      "- 透明底 + 主色描边，用于次级强调动作\n\n" +
+      "    .btn--outline {\n      color: var(--c-primary);\n      border: 1px solid var(--c-primary);\n      background: transparent;\n    }",
 
     buttonGhost: "### button · ghost\n\n" +
-      "- 用于低优先级的辅助入口，没有描边与底色\n\n" +
-      "    .btn--ghost {\n      color: var(--c-primary-dark);\n      background: transparent;\n      border: 1px solid transparent;\n    }\n    .btn--ghost:hover { background: var(--c-primary-bg); }",
+      "- 无底无边，仅主色文字，用于最低优先级入口\n\n" +
+      "    .btn--ghost { color: var(--c-primary); background: transparent; }",
 
     buttonPill: "### button · pill\n\n" +
-      "- 圆角：9999px；最小高度：32px；字重：500\n" +
-      "- 底色：--c-primary-strong；阴影：0 2px 8px rgb(62 159 221 / 35%)\n" +
-      "- 只用于单一明确的确认动作，一个区域最多一个\n\n" +
-      "    .btn--pill {\n      border-radius: var(--radius-pill);\n      background: var(--c-primary-strong);\n      color: #fff;\n      box-shadow: 0 2px 8px rgb(62 159 221 / 35%);\n    }",
+      "- 胶囊圆角，主色实底 + 柔和主色阴影，用于单一确认动作\n\n" +
+      "    .btn--pill {\n      border-radius: 9999px;\n      background: var(--c-primary-strong);\n      color: #fff;\n      box-shadow: 0 2px 8px color-mix(in srgb, var(--theme-color) 32%, transparent);\n    }",
 
-    /* ---- 输入与图标 ---- */
-    input: "### input\n\n" +
-      "- 输入面：--c-surface；描边：--c-border；圆角：4px；高度：34px\n" +
-      "- 焦点：主色描边 + 0 0 0 3px rgb(62 159 221 / 25%)\n" +
-      "- 占位文字：--c-text-3\n" +
-      "- 禁用：底色 --c-surface-soft，文字 --c-text-3\n\n" +
-      "    .input {\n      height: 34px;\n      padding: 0 12px;\n      background: var(--c-surface);\n      border: 1px solid var(--c-border);\n      border-radius: var(--radius);\n    }\n    .input:focus {\n      border-color: var(--c-primary);\n      box-shadow: var(--shadow-focus);\n    }",
+    tagSpec: "### tag\n\n" +
+      "- 高度 22px，圆角 4px，字号 12px\n" +
+      "- 五种状态：主要 / 成功 / 警告 / 危险 / 信息\n" +
+      "- 底色为该语义色的浅底，描边为语义色 30% 混合\n\n" +
+      "    .tag {\n      height: 22px;\n      padding: 0 8px;\n      font-size: 12px;\n      color: var(--c-primary);\n      background: var(--c-primary-bg);\n      border: 1px solid var(--c-primary-line);\n      border-radius: var(--radius);\n    }",
 
-    iconButton: "### icon button\n\n" +
-      "- 尺寸：28–30px 方形，圆角 4px\n" +
-      "- 默认：--c-primary-bg 底 + --c-primary-dark 图标\n" +
-      "- 中性：--c-surface-soft 底 + --c-text-3 图标\n" +
-      "- 删除类：--c-danger-bg 底 + --c-danger 图标\n\n" +
-      "    .icon-btn {\n      width: 30px;\n      height: 30px;\n      border-radius: var(--radius);\n      color: var(--c-primary-dark);\n      background: var(--c-primary-bg);\n    }\n    .icon-btn--danger {\n      color: var(--c-danger);\n      background: var(--c-danger-bg);\n    }",
+    inputSpec: "### input\n\n" +
+      "- 高度 32px，白底 + --c-border 描边，圆角 4px\n" +
+      "- 占位文字 --c-text-3；聚焦描边主色 + 3px 主色焦点环\n\n" +
+      "    .input {\n      height: 32px;\n      padding: 0 10px;\n      background: var(--c-surface);\n      border: 1px solid var(--c-border);\n      border-radius: var(--radius);\n    }\n    .input:focus {\n      border-color: var(--c-primary);\n      box-shadow: 0 0 0 3px color-mix(in srgb, var(--theme-color) 25%, transparent);\n    }",
 
-    navIcon: "### nav icon\n\n" +
-      "- 圆形（9999px）图标按钮，用于顶栏与底栏导航\n" +
-      "- 未选中：--c-text-3；选中：--c-primary-bg + --c-primary-dark\n" +
-      "- 触控区域不小于 44 × 44px（移动端可加 padding）\n\n" +
-      "    .nav-icon {\n      width: 32px;\n      height: 32px;\n      border-radius: 50%;\n      color: var(--c-text-3);\n    }\n    .nav-icon.is-active {\n      color: var(--c-primary-dark);\n      background: var(--c-primary-bg);\n    }",
+    paginationSpec: "### pagination\n\n" +
+      "- 页码按钮 24 × 24px，圆角 4px，间距 4px\n" +
+      "- 当前页使用主色实底白字\n\n" +
+      "    .pagination span {\n      min-width: 24px;\n      height: 24px;\n      border: 1px solid var(--c-border-light);\n      border-radius: var(--radius);\n    }\n    .pagination .is-current {\n      color: #fff;\n      background: var(--c-primary-strong);\n    }",
 
-    /* ---- 卡片 ---- */
     cardDefault: "### card · default\n\n" +
-      "- 表层：--c-surface；描边：--c-border-light\n" +
-      "- 圆角：6px；阴影：--shadow-subtle\n" +
-      "- 左侧 4px 强调条：--c-primary\n\n" +
-      "    .card {\n      padding: 16px 16px 16px 20px;\n      background: var(--c-surface);\n      border: 1px solid var(--c-border-light);\n      border-radius: var(--radius-md);\n      box-shadow: var(--shadow-subtle);\n    }\n    .card::before {\n      content: \"\";\n      position: absolute;\n      inset: 0 auto 0 0;\n      width: 4px;\n      background: var(--c-primary);\n    }",
+      "- 白底 + 极浅描边 + 左侧 4px 主色色条\n" +
+      "- 圆角 6px，阴影 0 2px 12px rgb(0 0 0 / 6%)\n\n" +
+      "    .card {\n      padding: 12px 12px 12px 16px;\n      background: var(--c-surface);\n      border: 1px solid var(--c-border-light);\n      border-radius: var(--radius-md);\n      box-shadow: var(--shadow-subtle);\n    }",
 
     cardSelected: "### card · selected\n\n" +
-      "- 描边：--c-primary；底色：--c-primary-bg\n" +
-      "- 阴影：0 2px 10px rgb(62 159 221 / 25%)\n" +
-      "- 用于当前选中、主推信息与正在编辑的对象\n\n" +
-      "    .card--selected {\n      border-color: var(--c-primary);\n      background: var(--c-primary-bg);\n      box-shadow: 0 2px 10px rgb(62 159 221 / 25%);\n    }",
+      "- 主色描边 + 主色浅底 + 主色光晕\n" +
+      "- 用于当前选中对象，不可用于装饰\n\n" +
+      "    .card--selected {\n      border-color: var(--c-primary);\n      background: var(--c-primary-bg);\n      box-shadow: 0 2px 10px color-mix(in srgb, var(--theme-color) 22%, transparent);\n    }",
 
     cardDisabled: "### card · disabled\n\n" +
-      "- 描边：--c-border；底色：--c-surface-soft；去掉阴影\n" +
-      "- 整体透明度 0.75，但文字仍需保持可读\n" +
-      "- 禁用态必须配合文案或图标说明原因\n\n" +
-      "    .card--disabled {\n      border-color: var(--c-border);\n      background: var(--c-surface-soft);\n      box-shadow: none;\n      opacity: 0.75;\n    }",
-
-    /* ---- 区块标题与 Logo ---- */
-    sectionTitle: "### section title\n\n" +
-      "- 字号：16px / 600\n" +
-      "- 图标或序号放在独立容器中，保证基线对齐\n" +
-      "- 底部 1px 虚线分隔（--c-border）\n\n" +
-      "    .section-title {\n      display: flex;\n      align-items: center;\n      gap: 8px;\n      font-size: 16px;\n      font-weight: 600;\n      padding-bottom: 8px;\n      border-bottom: 1px dashed var(--c-border);\n    }\n    .section-title__icon {\n      width: 24px;\n      height: 24px;\n      display: grid;\n      place-items: center;\n      color: var(--c-primary-dark);\n      background: var(--c-primary-bg);\n      border-radius: var(--radius);\n    }",
+      "- 去掉阴影、降低透明度，但文字保持可读\n" +
+      "- 必须配合文案或图标说明原因\n\n" +
+      "    .card--disabled {\n      background: var(--c-surface-soft);\n      box-shadow: none;\n      opacity: 0.75;\n    }",
 
     logoLockup: "### logo · lockup\n\n" +
-      "- 图形标 32 × 32px，圆角 8px，主色渐变 + 白字 PA\n" +
-      "- 文字部分：Pure Admin 14px / 700，DESIGN SYSTEM 7px / 500 且字距 0.14em\n" +
-      "- 图形标与文字间距 8px，整体左对齐\n\n" +
-      "    .lockup__mark {\n      width: 32px;\n      height: 32px;\n      border-radius: 8px;\n      color: #fff;\n      background: linear-gradient(135deg, var(--c-primary), var(--c-primary-strong));\n    }\n    .lockup__text strong { font-size: 14px; font-weight: 700; }\n    .lockup__text small { font-size: 7px; letter-spacing: 0.14em; color: var(--c-text-3); }",
+      "- 图形标 32 × 32px，圆角 8px，主色渐变 + 白色水滴图标\n" +
+      "- 文字 PureAdmin 14px / 600，DESIGN SYSTEM 7px / 500 字距 0.14em\n" +
+      "- 图形标与文字间距 8px\n\n" +
+      "    .lockup__mark {\n      width: 32px;\n      height: 32px;\n      border-radius: 8px;\n      color: #fff;\n      background: linear-gradient(135deg, var(--theme-color), var(--theme-strong));\n    }",
 
     logoMark: "### logo · mark\n\n" +
-      "- 单字图形标：34px 方形，圆角 8px，白字 PA\n" +
-      "- 底色为 135deg 主色渐变，阴影 0 2px 8px rgb(62 159 221 / 35%)\n" +
-      "- 用于 favicon、移动端顶栏与紧凑场景\n\n" +
-      "    .logo-mark {\n      width: 34px;\n      height: 34px;\n      font-size: 12px;\n      font-weight: 700;\n      color: #fff;\n      background: linear-gradient(135deg, var(--c-primary), var(--c-primary-strong));\n      border-radius: 8px;\n    }",
+      "- 图形标单独使用：34 × 34px，圆角 8px\n" +
+      "- 用于 favicon、顶栏收起态、移动端\n\n" +
+      "    .logo-mark {\n      width: 34px;\n      height: 34px;\n      border-radius: 8px;\n      background: linear-gradient(135deg, var(--theme-color), var(--theme-strong));\n    }",
 
-    logoRules: "### logo · 使用规则\n\n" +
-      "- 图形标最小 24 × 24px，组合标最小 96px 宽\n" +
-      "- 四周留白不小于图形标高度的 1/2\n" +
-      "- 底色使用主色渐变，不替换为其它色相\n" +
-      "- 深色模式下保持白字与渐变，不改为纯深色方块\n" +
-      "- 不要拉伸、旋转或加入额外描边特效",
+    shadowSm: "### shadow-sm\n\n- value：0 1px 2px rgb(0 0 0 / 6%)\n- 用途：卡片、面板的静态层级",
 
-    /* ---- 阴影 ---- */
-    shadowSm: "### shadow-sm\n\n" +
-      "- value：0 1px 2px rgb(16 42 60 / 8%)\n" +
-      "- 用途：卡片、面板的静态层级\n" +
-      "- 深色模式需重新验证强度\n\n" +
-      "    --shadow-subtle: 0 1px 2px rgb(16 42 60 / 8%);",
+    shadowMd: "### shadow-md\n\n- value：0 2px 8px rgb(0 0 0 / 12%)\n- 用途：下拉菜单、悬浮卡片",
 
-    shadowMd: "### shadow-md\n\n" +
-      "- value：0 2px 8px rgb(16 42 60 / 12%)\n" +
-      "- 用途：下拉菜单、悬浮卡片\n\n" +
-      "    --shadow-md: 0 2px 8px rgb(16 42 60 / 12%);",
+    shadowLg: "### shadow-lg\n\n- value：0 4px 16px rgb(0 0 0 / 16%)\n- 用途：弹窗、抽屉",
 
-    shadowLg: "### shadow-lg\n\n" +
-      "- value：0 4px 16px rgb(16 42 60 / 16%)\n" +
-      "- 用途：弹窗、抽屉\n" +
-      "- 注意：后台场景避免更重的投影\n\n" +
-      "    --shadow-lg: 0 4px 16px rgb(16 42 60 / 16%);",
-
-    shadowXl: "### shadow-xl\n\n" +
-      "- value：0 8px 32px rgb(16 42 60 / 18%)\n" +
-      "- 用途：全屏遮罩上的浮层\n\n" +
-      "    --shadow-xl: 0 8px 32px rgb(16 42 60 / 18%);",
+    shadowXl: "### shadow-xl\n\n- value：0 8px 32px rgb(0 0 0 / 18%)\n- 用途：全屏浮层",
 
     shadowCard: "### shadow-card\n\n" +
-      "- value：0 2px 12px rgb(31 127 184 / 14%)\n" +
-      "- 用途：带主色倾向的卡片层级，替代纯黑阴影\n\n" +
-      "    --shadow-card: 0 2px 12px rgb(31 127 184 / 14%);",
+      "- value：0 2px 12px rgb(0 0 0 / 6%)\n" +
+      "- 用途：仪表盘卡片默认层级，亮暗模式分别取值",
 
     shadowPrimaryGlow: "### shadow-primary-glow\n\n" +
-      "- value：0 2px 10px rgb(62 159 221 / 30%)\n" +
-      "- 用途：胶囊主操作、选中卡片、图表强调\n" +
-      "- 注意：只出现在可交互元素上\n\n" +
-      "    --shadow-primary-glow: 0 2px 10px rgb(62 159 221 / 30%);",
+      "- value：0 2px 10px color-mix(in srgb, var(--theme-color) 30%, transparent)\n" +
+      "- 用途：选中卡片、胶囊主按钮\n" +
+      "- 注意：只出现在可交互元素上",
 
     shadowFocus: "### shadow-focus\n\n" +
-      "- value：0 0 0 3px rgb(62 159 221 / 25%)\n" +
+      "- value：0 0 0 3px color-mix(in srgb, var(--theme-color) 25%, transparent)\n" +
       "- 用途：键盘焦点环，必须与主色描边同时出现\n" +
-      "- 不得用状态色充当焦点色\n\n" +
-      "    --shadow-focus: 0 0 0 3px rgb(62 159 221 / 25%);",
+      "- 不得用状态色充当焦点色",
 
-    shadowOverlay: "### shadow-overlay\n\n" +
-      "- value：0 12px 32px rgb(16 42 60 / 22%)\n" +
-      "- 用途：全局浮层、命令面板\n" +
-      "- 深色模式：0 12px 32px rgb(0 0 0 / 55%)\n\n" +
-      "    --shadow-overlay: 0 12px 32px rgb(16 42 60 / 22%);",
+    shadowOverlay: "### shadow-overlay\n\n- value：0 12px 32px rgb(0 0 0 / 22%)\n- 用途：命令面板、全局浮层",
 
-    shadowNone: "### shadow-none\n\n" +
-      "- value：none\n" +
-      "- 用途：嵌套卡片、表格内部、分区容器\n" +
-      "- 用描边代替阴影，避免层级堆叠\n\n" +
-      "    box-shadow: none;\n    border: 1px solid var(--c-border-light);",
+    shadowNone: "### shadow-none\n\n- value：none\n- 用途：嵌套卡片、表格内部、分区容器\n- 用描边代替阴影，避免层级堆叠",
 
-    /* ---- 动效 ---- */
     animFade: "### Fade Up（内容出现）\n\n" +
       "- 0.3s · ease-out · 透明度 0 → 1，位移 10px → 0\n" +
-      "- 只用于首次进入视口的内容，不重复触发\n\n" +
+      "- 只用于首次进入视口的内容\n\n" +
       "    @keyframes fade-up {\n      0%   { opacity: 0; transform: translateY(10px); }\n      100% { opacity: 1; transform: translateY(0); }\n    }",
 
     animSpinner: "### Spinner（加载中）\n\n" +
       "- 0.9s · linear · infinite\n" +
-      "- 轨道使用 --c-primary-bg，指示段使用 --c-primary-strong\n" +
-      "- 加载超过 400ms 才显示，避免闪烁\n\n" +
-      "    @keyframes spinner {\n      0%   { transform: rotate(0deg); }\n      100% { transform: rotate(360deg); }\n    }",
+      "- 轨道 --c-primary-bg，指示段 --c-primary-strong\n\n" +
+      "    @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }",
 
     animSkeleton: "### Skeleton（骨架屏）\n\n" +
       "- 1.6s · linear · 背景位移 200% → -200%\n" +
-      "- 底色 --c-primary-bg，高光为主色 35% 的混合色\n" +
       "- 仅在已知内容结构时使用\n\n" +
       "    @keyframes shimmer {\n      0%   { background-position: 200% 0; }\n      100% { background-position: -200% 0; }\n    }",
 
     animPulse: "### Pulse（状态提示）\n\n" +
       "- 2s · ease-out · 光环 0 → 10px 扩散\n" +
-      "- 用于「正在直播 / 正在同步」等持续状态\n" +
-      "- 必须同时提供文字状态，不能只靠动效\n\n" +
-      "    @keyframes ping {\n      0%        { box-shadow: 0 0 0 0 rgb(62 159 221 / 45%); }\n      70%, 100% { box-shadow: 0 0 0 10px rgb(62 159 221 / 0%); }\n    }",
+      "- 必须同时提供文字状态\n\n" +
+      "    @keyframes ping {\n      0%        { box-shadow: 0 0 0 0 color-mix(in srgb, var(--theme-color) 45%, transparent); }\n      70%, 100% { box-shadow: 0 0 0 10px transparent; }\n    }",
 
-    /* ---- Do / Don't ---- */
     principlesDo: "### Do\n\n" +
       "- 用语义令牌，不硬编码色值\n" +
-      "- 主色只用于关键动作与选中态\n" +
+      "- 主题色切换时，所有派生色一起变化\n" +
+      "- 亮 / 暗模式分别验证对比度\n" +
+      "- 布局尺寸固定：顶栏 48px、标签栏 34px、侧边栏 210px\n" +
       "- 焦点态明显，且可键盘到达\n" +
-      "- 字号、间距、圆角走固定档位\n" +
-      "- 亮 / 暗模式都验证对比度\n" +
       "- 动效控制在 300ms 以内",
 
     principlesDont: "### Don't\n\n" +
-      "- 同一页面混用第二套主色\n" +
+      "- 把主题色写死在组件里\n" +
       "- 用状态色大面积铺底充当品牌色\n" +
       "- 只靠颜色区分状态\n" +
       "- 在 flex 子项的伪元素里写百分比高度\n" +
@@ -2327,14 +2315,14 @@ code { font-family: var(--font-num); }
   };
 
   var SPEC_ORDER = [
-    "preview", "overview",
-    "colorPrimary", "colorStrong", "colorLight", "colorBg", "colorSurface", "colorBorder", "colorText",
-    "typeHeadline", "typeBody", "typeLabel",
+    "statColors", "statType", "statComponents", "statCoverage",
+    "demoChart", "demoCoverage", "demoTable", "demoActivity",
+    "colorPrimary", "colorPrimaryBg", "colorBorder", "colorText",
     "typePageTitle", "typeSectionTitle", "typeBodyLarge", "typeBody", "typeCompact", "typeCaption",
     "buttonPrimary", "buttonSecondary", "buttonDanger", "buttonOutline", "buttonGhost", "buttonPill",
-    "input", "iconButton", "navIcon",
+    "tagSpec", "inputSpec", "paginationSpec",
     "cardDefault", "cardSelected", "cardDisabled",
-    "sectionTitle", "logoLockup", "logoMark", "logoRules",
+    "logoLockup", "logoMark",
     "shadowSm", "shadowMd", "shadowLg", "shadowXl", "shadowCard", "shadowPrimaryGlow",
     "shadowFocus", "shadowOverlay", "shadowNone",
     "animFade", "animSpinner", "animSkeleton", "animPulse",
@@ -2348,19 +2336,201 @@ code { font-family: var(--font-num); }
     rawContent: document.getElementById("rawContent"),
     copyAll: document.getElementById("copyAll"),
     copyRaw: document.getElementById("copyRaw"),
-    themeBtns: Array.prototype.slice.call(document.querySelectorAll("[data-theme-btn]")),
-    viewBtns: Array.prototype.slice.call(document.querySelectorAll("[data-view-btn]"))
+    viewBtns: Array.prototype.slice.call(document.querySelectorAll("[data-view-btn]")),
+    modeBtns: Array.prototype.slice.call(document.querySelectorAll("[data-mode]")),
+    navBtns: Array.prototype.slice.call(document.querySelectorAll("[data-nav-opt]")),
+    effectBtns: Array.prototype.slice.call(document.querySelectorAll("[data-effect]")),
+    colorOptions: document.getElementById("colorOptions"),
+    paletteGrid: document.getElementById("paletteGrid"),
+    colorName: document.getElementById("colorName"),
+    themeIndicator: document.getElementById("themeIndicator"),
+    tokenPrimaryHex: document.getElementById("tokenPrimaryHex"),
+    drawer: document.getElementById("settingsDrawer"),
+    mask: document.getElementById("drawerMask"),
+    openSettings: document.getElementById("openSettings"),
+    resetPrefs: document.getElementById("resetPrefs"),
+    resetAll: document.getElementById("resetAll")
   };
 
-  var toastTimer = null;
+  /* ---------------- 偏好读写 ---------------- */
+  function loadPrefs() {
+    var prefs = Object.assign({}, DEFAULT_PREFS);
+    try {
+      var raw = localStorage.getItem(PREFS_KEY);
+      if (raw) {
+        var saved = JSON.parse(raw);
+        ["mode", "color", "nav"].forEach(function (key) {
+          if (saved && typeof saved[key] === "string") prefs[key] = saved[key];
+        });
+        prefs.gray = !!(saved && saved.gray);
+        prefs.weak = !!(saved && saved.weak);
+      }
+    } catch (err) { /* 忽略 */ }
 
+    if (["light", "dark", "auto"].indexOf(prefs.mode) === -1) prefs.mode = "light";
+    if (["horizontal", "vertical"].indexOf(prefs.nav) === -1) prefs.nav = "horizontal";
+    var known = THEMES.some(function (theme) { return theme.id === prefs.color; });
+    if (!known) prefs.color = "blue";
+    return prefs;
+  }
+
+  function savePrefs() {
+    try { localStorage.setItem(PREFS_KEY, JSON.stringify(prefs)); } catch (err) { /* 忽略 */ }
+  }
+
+  function themeOf(id) {
+    return THEMES.filter(function (t) { return t.id === id; })[0] || THEMES[0];
+  }
+
+  function resolvedMode() {
+    if (prefs.mode === "auto") {
+      return mediaQuery && mediaQuery.matches ? "dark" : "light";
+    }
+    return prefs.mode;
+  }
+
+  /* ---------------- 应用配置 ---------------- */
+  function applyPrefs() {
+    var theme = themeOf(prefs.color);
+
+    document.documentElement.setAttribute("data-theme", resolvedMode());
+    document.documentElement.setAttribute("data-theme-color", theme.id);
+    document.body.setAttribute("data-nav", prefs.nav);
+    document.body.classList.toggle("mode-gray", prefs.gray);
+    document.body.classList.toggle("mode-weak", prefs.weak);
+
+    els.modeBtns.forEach(function (btn) {
+      btn.setAttribute("aria-pressed", String(btn.getAttribute("data-mode") === prefs.mode));
+    });
+    els.navBtns.forEach(function (btn) {
+      btn.setAttribute("aria-pressed", String(btn.getAttribute("data-nav-opt") === prefs.nav));
+    });
+    els.effectBtns.forEach(function (btn) {
+      var key = btn.getAttribute("data-effect");
+      btn.setAttribute("aria-checked", String(!!prefs[key]));
+    });
+    Array.prototype.forEach.call(document.querySelectorAll(".color-dot"), function (dot) {
+      dot.setAttribute("aria-checked", String(dot.getAttribute("data-color") === theme.id));
+    });
+    Array.prototype.forEach.call(document.querySelectorAll(".theme-tile"), function (tile) {
+      tile.classList.toggle("is-active", tile.getAttribute("data-color") === theme.id);
+    });
+
+    els.colorName.textContent = theme.name;
+    els.themeIndicator.textContent = theme.name;
+    els.tokenPrimaryHex.textContent = theme.hex;
+    savePrefs();
+  }
+
+  /* ---------------- 主题色按钮 ---------------- */
+  function buildColorControls() {
+    els.colorOptions.innerHTML = THEMES.map(function (theme) {
+      return '<button class="color-dot" type="button" role="radio" aria-checked="false" ' +
+        'data-color="' + theme.id + '" style="--dot:' + theme.hex + '" ' +
+        'aria-label="主题色：' + theme.name + '" title="' + theme.name + ' ' + theme.hex + '"></button>';
+    }).join("");
+
+    els.paletteGrid.innerHTML = THEMES.map(function (theme) {
+      return '<button class="theme-tile" type="button" data-color="' + theme.id + '" ' +
+        'style="--tile-color:' + theme.hex + ';--tile-on:' + theme.on + '" ' +
+        'aria-pressed="false" aria-label="应用主题色：' + theme.name + '（' + theme.hex + '）">' +
+        '<span class="theme-tile__swatch"><span>' + theme.hex + '</span>' +
+        '<svg class="i" aria-hidden="true"><use href="#i-palette"/></svg></span>' +
+        '<span class="theme-tile__meta"><span>' + theme.name + '</span><span class="tag">' + theme.id + '</span></span>' +
+        '</button>';
+    }).join("");
+  }
+
+  function setColor(id) {
+    prefs.color = themeOf(id).id;
+    applyPrefs();
+    showToast("已切换主题色 · " + themeOf(prefs.color).name);
+  }
+
+  document.addEventListener("click", function (event) {
+    var tile = event.target.closest("[data-color]");
+    if (tile) {
+      setColor(tile.getAttribute("data-color"));
+      return;
+    }
+    var spec = event.target.closest("[data-spec]");
+    if (spec) copySpec(spec);
+  });
+
+  els.modeBtns.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      prefs.mode = btn.getAttribute("data-mode");
+      applyPrefs();
+    });
+  });
+
+  els.navBtns.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      prefs.nav = btn.getAttribute("data-nav-opt");
+      applyPrefs();
+    });
+  });
+
+  els.effectBtns.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var key = btn.getAttribute("data-effect");
+      prefs[key] = !prefs[key];
+      applyPrefs();
+    });
+  });
+
+  if (mediaQuery) {
+    var onSchemeChange = function () { if (prefs.mode === "auto") applyPrefs(); };
+    if (mediaQuery.addEventListener) mediaQuery.addEventListener("change", onSchemeChange);
+    else if (mediaQuery.addListener) mediaQuery.addListener(onSchemeChange);
+  }
+
+  /* ---------------- 抽屉 ---------------- */
+  function openDrawer() {
+    els.drawer.classList.add("is-open");
+    els.mask.classList.add("is-open");
+    els.drawer.setAttribute("aria-hidden", "false");
+    els.closeSettingsBtn = document.getElementById("closeSettings");
+    if (els.closeSettingsBtn) els.closeSettingsBtn.focus();
+  }
+
+  function closeDrawer() {
+    els.drawer.classList.remove("is-open");
+    els.mask.classList.remove("is-open");
+    els.drawer.setAttribute("aria-hidden", "true");
+    els.openSettings.focus();
+  }
+
+  els.openSettings.addEventListener("click", openDrawer);
+  els.resetPrefs.addEventListener("click", openDrawer);
+  els.mask.addEventListener("click", closeDrawer);
+  document.getElementById("closeSettings").addEventListener("click", closeDrawer);
+  document.getElementById("closeSettings2").addEventListener("click", closeDrawer);
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && els.drawer.classList.contains("is-open")) closeDrawer();
+    if (event.key === "Enter" || event.key === " ") {
+      var spec = event.target.closest("[data-spec]");
+      if (spec) {
+        event.preventDefault();
+        copySpec(spec);
+      }
+    }
+  });
+
+  els.resetAll.addEventListener("click", function () {
+    prefs = Object.assign({}, DEFAULT_PREFS);
+    applyPrefs();
+    showToast("已恢复默认配置");
+  });
+
+  /* ---------------- 复制 ---------------- */
   function fullMarkdown() {
-    return "# Pure Admin 设计系统 · 视觉规范\n\n" +
-      "> 单一主色（sky blue）+ 中性色；状态色只用于状态。单击任意区块可复制 Markdown 片段。\n\n" +
+    return "# PureAdmin 设计系统 · 视觉规范\n\n" +
+      "> 界面规则参考 vue-pure-admin：顶栏 48px、标签栏 34px、侧边栏 210px；主题色与明暗模式解耦。\n\n" +
       SPEC_ORDER.map(function (key) { return SPECS[key]; }).join("\n\n---\n\n") + "\n";
   }
 
-  /* ---------------- 复制 ---------------- */
   function copyText(text) {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       return navigator.clipboard.writeText(text).then(function () { return true; }).catch(function () {
@@ -2396,12 +2566,7 @@ code { font-family: var(--font-num); }
     window.clearTimeout(toastTimer);
     toastTimer = window.setTimeout(function () {
       els.toast.className = "toast" + (isError ? " is-error" : "");
-    }, 2400);
-  }
-
-  function flashCopied(el) {
-    el.classList.add("is-copied");
-    window.setTimeout(function () { el.classList.remove("is-copied"); }, 1400);
+    }, 2200);
   }
 
   function copySpec(el) {
@@ -2411,28 +2576,14 @@ code { font-family: var(--font-num); }
     if (!text) return;
     copyText(text).then(function (ok) {
       if (ok) {
-        flashCopied(el);
-        showToast("已复制 · " + label, false);
+        el.classList.add("is-copied");
+        window.setTimeout(function () { el.classList.remove("is-copied"); }, 1300);
+        showToast("已复制 · " + label);
       } else {
         showToast("复制失败，请手动选择文本", true);
       }
     });
   }
-
-  document.addEventListener("click", function (event) {
-    var el = event.target.closest("[data-spec]");
-    if (!el) return;
-    if (event.target.closest("a[href]")) event.preventDefault();
-    copySpec(el);
-  });
-
-  document.addEventListener("keydown", function (event) {
-    if (event.key !== "Enter" && event.key !== " ") return;
-    var el = event.target.closest("[data-spec]");
-    if (!el) return;
-    event.preventDefault();
-    copySpec(el);
-  });
 
   els.copyAll.addEventListener("click", function () {
     copyText(fullMarkdown()).then(function (ok) {
@@ -2446,32 +2597,7 @@ code { font-family: var(--font-num); }
     });
   });
 
-  /* ---------------- 主题 ---------------- */
-  function applyTheme(theme) {
-    var isDark = theme === "dark";
-    document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
-    els.themeBtns.forEach(function (btn) {
-      btn.setAttribute("aria-pressed", String(btn.getAttribute("data-theme-btn") === theme));
-    });
-    try { localStorage.setItem(THEME_KEY, theme); } catch (err) { /* 隐私模式忽略 */ }
-  }
-
-  function initTheme() {
-    var saved = null;
-    try { saved = localStorage.getItem(THEME_KEY); } catch (err) { /* 忽略 */ }
-    if (!saved && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      saved = "dark";
-    }
-    applyTheme(saved === "dark" ? "dark" : "light");
-  }
-
-  els.themeBtns.forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      applyTheme(btn.getAttribute("data-theme-btn"));
-    });
-  });
-
-  /* ---------------- 视图 ---------------- */
+  /* ---------------- 视图切换 ---------------- */
   function applyView(view) {
     var raw = view === "raw";
     els.visualView.hidden = raw;
@@ -2479,16 +2605,9 @@ code { font-family: var(--font-num); }
     els.viewBtns.forEach(function (btn) {
       btn.setAttribute("aria-pressed", String(btn.getAttribute("data-view-btn") === view));
     });
-    try { localStorage.setItem(VIEW_KEY, view); } catch (err) { /* 忽略 */ }
     if (raw && !els.rawContent.textContent) {
       els.rawContent.textContent = fullMarkdown();
     }
-  }
-
-  function initView() {
-    var saved = null;
-    try { saved = localStorage.getItem(VIEW_KEY); } catch (err) { /* 忽略 */ }
-    applyView(saved === "raw" ? "raw" : "visual");
   }
 
   els.viewBtns.forEach(function (btn) {
@@ -2497,8 +2616,39 @@ code { font-family: var(--font-num); }
     });
   });
 
-  initTheme();
-  initView();
+  /* ---------------- 导航高亮 ---------------- */
+  (function initScrollSpy() {
+    var links = Array.prototype.slice.call(document.querySelectorAll('.nav-horizontal a[href^="#"], .sidebar a[href^="#"]'));
+    var ids = ["top", "colors", "type", "components", "shadow", "motion", "principles"];
+    var sections = ids.map(function (id) { return document.getElementById(id); }).filter(Boolean);
+
+    function setActive(id) {
+      links.forEach(function (link) {
+        link.classList.toggle("is-active", link.getAttribute("href") === "#" + id);
+      });
+    }
+
+    if ("IntersectionObserver" in window) {
+      var observer = new IntersectionObserver(function (entries) {
+        var visible = entries.filter(function (entry) { return entry.isIntersecting; });
+        if (!visible.length) return;
+        visible.sort(function (a, b) { return b.intersectionRatio - a.intersectionRatio; });
+        setActive(visible[0].target.id);
+      }, { rootMargin: "-30% 0px -55% 0px", threshold: [0.05, 0.25, 0.5] });
+      sections.forEach(function (section) { observer.observe(section); });
+    }
+
+    links.forEach(function (link) {
+      link.addEventListener("click", function () {
+        if (link.getAttribute("href") === "#top") setActive("top");
+      });
+    });
+  })();
+
+  /* ---------------- 启动 ---------------- */
+  buildColorControls();
+  applyPrefs();
+  applyView("visual");
 })();
 </script>
 </body>
