@@ -27,18 +27,18 @@ python -m http.server 8080
 
 ## GitHub Pages
 
-页面由 `main` 分支的 `/pages` 目录直接发布（Source: Deploy from a branch）。
+页面由 GitHub Actions 发布：推送 `main` 时把 `pages/` 目录打包为 Pages 站点（见 [`.github/workflows/pages.yml`](.github/workflows/pages.yml)）。
 
 - Demo: https://ruzi-sudo.github.io/pure-admin-doc/
-- 首次启用：
+- 启用 Pages（Source 需要为 `GitHub Actions`）：
 
   ```bash
-  gh api --method POST repos/ruzi-sudo/pure-admin-doc/pages \
-    -f "source[branch]=main" -f "source[path]=/pages"
+  gh api --method POST repos/ruzi-sudo/pure-admin-doc/pages -f build_type=workflow
   ```
 
-- 查看最新构建：
+- 触发并查看部署：
 
   ```bash
-  gh api repos/ruzi-sudo/pure-admin-doc/pages/builds/latest --jq '.status'
+  gh workflow run pages.yml --repo ruzi-sudo/pure-admin-doc
+  gh run list --repo ruzi-sudo/pure-admin-doc --workflow pages.yml --limit 3
   ```
